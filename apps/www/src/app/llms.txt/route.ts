@@ -8,6 +8,8 @@ function buildLlmsTxt() {
     "",
     `> ${siteConfig.description}`,
     "",
+    `Logo: ${siteConfig.url}/logo.svg`,
+    "",
     "Monorch is a TypeScript AI control-plane library (`@monorch/ai`) backed by a Rust execution engine (`@monorch/runtime`). It is not a framework, HTTP stack, ORM, Studio, or RAG product. Bring your own Fastify or Hono.",
     "",
     "## Product lock",

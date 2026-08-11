@@ -1,6 +1,6 @@
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
-import { DocCode, DocH1, DocH2, DocLead, DocNext, DocP } from "@/components/docs/doc-blocks";
+import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
 
 const page = docPages.find((p) => p.path === "/docs/checkpoints")!;
@@ -136,8 +136,6 @@ const refund = graph("refund")
           },
         ]}
       />
-
-      <DocNext href="/docs/streaming" label="Streaming" />
     </>
   );
 }

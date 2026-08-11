@@ -1,9 +1,19 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { CodeBlock } from "@/components/code-block";
 import type { HighlightLang } from "@/lib/highlight";
+import { slugifyHeading } from "@/lib/docs-nav";
 import { cn } from "@/lib/utils";
+
+function headingText(node: ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(headingText).join("");
+  if (typeof node === "object" && node !== null && "props" in node) {
+    const props = (node as { props?: { children?: ReactNode } }).props;
+    return headingText(props?.children);
+  }
+  return "";
+}
 
 export function DocH1({ children }: { children: ReactNode }) {
   return (
@@ -17,17 +27,27 @@ export function DocLead({ children }: { children: ReactNode }) {
   return <p className="mt-5 text-xl leading-relaxed text-muted-foreground">{children}</p>;
 }
 
-export function DocH2({ children }: { children: ReactNode }) {
+export function DocH2({ children, id }: { children: ReactNode; id?: string }) {
+  const text = headingText(children);
+  const headingId = id ?? (text ? slugifyHeading(text) : undefined);
   return (
-    <h2 className="mt-14 scroll-mt-28 font-display text-3xl font-semibold tracking-tight text-ink">
+    <h2
+      id={headingId}
+      className="mt-14 scroll-mt-28 font-display text-3xl font-semibold tracking-tight text-ink"
+    >
       {children}
     </h2>
   );
 }
 
-export function DocH3({ children }: { children: ReactNode }) {
+export function DocH3({ children, id }: { children: ReactNode; id?: string }) {
+  const text = headingText(children);
+  const headingId = id ?? (text ? slugifyHeading(text) : undefined);
   return (
-    <h3 className="mt-10 scroll-mt-28 font-display text-xl font-semibold tracking-tight text-ink">
+    <h3
+      id={headingId}
+      className="mt-10 scroll-mt-28 font-display text-xl font-semibold tracking-tight text-ink"
+    >
       {children}
     </h3>
   );
@@ -74,12 +94,4 @@ export async function DocCode({
   );
 }
 
-export function DocNext({ href, label }: { href: string; label: string }) {
-  return (
-    <div className="mt-16">
-      <Button asChild variant="outline" size="lg" className="text-base">
-        <Link href={href}>Next: {label}</Link>
-      </Button>
-    </div>
-  );
-}
+

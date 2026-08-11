@@ -9,6 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { MonorchLogo } from "@/components/monorch-logo";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 
@@ -29,8 +30,12 @@ export function SiteHeader({ className }: { className?: string }) {
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <Link href="/" className="font-display text-xl font-bold tracking-tight text-ink">
-            Monorch
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 font-display text-xl font-bold tracking-tight text-ink"
+          >
+            <MonorchLogo className="h-7 w-auto text-signal" />
+            <span>Monorch</span>
           </Link>
           <Link href="/docs/changelog" className="hidden sm:inline-flex">
             <Badge
@@ -73,7 +78,10 @@ export function SiteHeader({ className }: { className?: string }) {
           </SheetTrigger>
           <SheetContent side="right" className="w-[280px]">
             <SheetHeader>
-              <SheetTitle className="font-display text-left">Monorch</SheetTitle>
+              <SheetTitle className="flex items-center gap-2.5 font-display text-left">
+                <MonorchLogo className="h-6 w-auto text-signal" />
+                Monorch
+              </SheetTitle>
             </SheetHeader>
             <div className="mt-8 flex flex-col gap-4">
               <Badge variant="secondary" className="w-fit font-mono text-xs">

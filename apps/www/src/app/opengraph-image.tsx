@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { MONORCH_LOGO_PATH } from "@/components/monorch-logo";
 import { siteConfig } from "@/lib/site";
 
 export const runtime = "edge";
@@ -22,17 +23,22 @@ export default function OpenGraphImage() {
           fontFamily: "ui-sans-serif, system-ui, sans-serif",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            fontSize: 28,
-            letterSpacing: 4,
-            textTransform: "uppercase",
-            color: "#b4f05a",
-            fontWeight: 600,
-          }}
-        >
-          Monorch
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <svg width="42" height="50" viewBox="0 0 46 55" fill="none">
+            <path d={MONORCH_LOGO_PATH} fill="#b4f05a" />
+          </svg>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 28,
+              letterSpacing: 4,
+              textTransform: "uppercase",
+              color: "#b4f05a",
+              fontWeight: 600,
+            }}
+          >
+            Monorch
+          </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <div style={{ fontSize: 64, fontWeight: 700, lineHeight: 1.1, maxWidth: 900 }}>

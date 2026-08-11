@@ -6,7 +6,6 @@ import {
   DocH1,
   DocH2,
   DocLead,
-  DocNext,
   DocP,
   DocTerm,
   DocTerms,
@@ -85,8 +84,6 @@ export default function OpenaiReferencePage() {
           },
         ]}
       />
-
-      <DocNext href="/docs/reference/postgres" label="@monorch/ai/postgres" />
     </>
   );
 }

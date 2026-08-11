@@ -7,6 +7,8 @@ function buildLlmsFull() {
 
 ${siteConfig.description}
 
+Logo: ${siteConfig.url}/logo.svg
+
 ## Positioning
 
 Monorch competes with DIY agent loops and light glue libraries. It is a library, not a framework (contrast with products that own your HTTP stack or ship a Studio). You own Fastify/Hono handlers; Monorch owns the agent loop and graph cursor.

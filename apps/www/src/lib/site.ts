@@ -53,12 +53,6 @@ export const docPages: DocPageMeta[] = [
       "Install, build the native runtime, run the Fastify smoke, and copy the smallest agent and graph patterns.",
   },
   {
-    title: "Fastify in 5 minutes",
-    path: "/docs/recipes/fastify",
-    description:
-      "End-to-end Fastify recipe: install, agent SSE, interrupt + resume, and Postgres adapters.",
-  },
-  {
     title: "Compare",
     path: "/docs/compare",
     description:
@@ -74,6 +68,18 @@ export const docPages: DocPageMeta[] = [
     path: "/docs/architecture",
     description:
       "How @monorch/ai, @monorch/runtime, and the Rust engine split responsibilities across TypeScript and native code.",
+  },
+  {
+    title: "Platforms",
+    path: "/docs/platforms",
+    description:
+      "Node and native @monorch/runtime builds, supported platforms, and CI pointers.",
+  },
+  {
+    title: "Security",
+    path: "/docs/security",
+    description:
+      "MIT license, library data posture, and how to report security issues.",
   },
   {
     title: "Agents",
@@ -136,6 +142,42 @@ export const docPages: DocPageMeta[] = [
       "Tap AiEvent streams with createOtelListener and tapEvents for OpenTelemetry and custom sinks.",
   },
   {
+    title: "Fastify in 5 minutes",
+    path: "/docs/recipes/fastify",
+    description:
+      "End-to-end Fastify recipe: install, agent SSE, interrupt + resume, and Postgres adapters.",
+  },
+  {
+    title: "HITL refund",
+    path: "/docs/recipes/hitl-refund",
+    description: "Interrupt + checkpoint resume across HTTP requests.",
+  },
+  {
+    title: "Multi-agent handoff",
+    path: "/docs/recipes/handoff",
+    description: "triage → billing with handoffs and handoff().",
+  },
+  {
+    title: "MCP stdio",
+    path: "/docs/recipes/mcp-stdio",
+    description: "Local MCP server tools via mcpStdio + mcpTools.",
+  },
+  {
+    title: "LiteLLM proxy",
+    path: "/docs/recipes/litellm",
+    description: "OpenAI-compatible baseUrl through LiteLLM or similar.",
+  },
+  {
+    title: "Abort + timeouts",
+    path: "/docs/recipes/abort",
+    description: "AbortSignal on agents and timeoutMs on providers.",
+  },
+  {
+    title: "Graph hot-reload",
+    path: "/docs/recipes/hot-reload",
+    description: "compile({ replace }) and defHash safety for in-flight runs.",
+  },
+  {
     title: "@monorch/ai",
     path: "/docs/reference/ai",
     description:
@@ -159,6 +201,11 @@ export const docPages: DocPageMeta[] = [
     description:
       "Package reference for the N-API Rust engine binding. Prefer @monorch/ai in application code.",
   },
+  {
+    title: "Error codes",
+    path: "/docs/reference/errors",
+    description: "AiError codes: when they happen and what to do.",
+  },
 ];
 
 export function absoluteUrl(path = "/") {
@@ -173,8 +220,9 @@ export function installSnippet(): string {
     return `pnpm add @monorch/ai
 # optional: pnpm add pg   # only for @monorch/ai/postgres`;
   }
+  const repo = siteConfig.github.replace(/\/$/, "").replace(/\.git$/i, "");
   return `# Packages are developed in the monorepo (npm publish may not be live yet).
-git clone ${siteConfig.github}.git
+git clone ${repo}.git
 cd monorch
 pnpm install
 pnpm build          # includes native @monorch/runtime

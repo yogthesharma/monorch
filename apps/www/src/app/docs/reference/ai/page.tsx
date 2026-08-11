@@ -7,7 +7,6 @@ import {
   DocH2,
   DocH3,
   DocLead,
-  DocNext,
   DocP,
   DocTerm,
   DocTerms,
@@ -167,7 +166,7 @@ export default function AiReferencePage() {
           },
           {
             q: "Where are openai() and postgres adapters documented?",
-            a: "Sibling Reference pages for @monorch/ai/openai and @monorch/ai/postgres.",
+            a: "Sibling Reference pages for @monorch/ai/openai and @monorch/ai/postgres. Error codes have their own Reference page.",
           },
           {
             q: "Do I import @monorch/runtime directly?",
@@ -175,8 +174,6 @@ export default function AiReferencePage() {
           },
         ]}
       />
-
-      <DocNext href="/docs/reference/openai" label="@monorch/ai/openai" />
     </>
   );
 }

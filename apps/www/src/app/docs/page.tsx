@@ -1,7 +1,7 @@
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { DocH1, DocH2, DocLead, DocNext, DocP } from "@/components/docs/doc-blocks";
+import { DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
 
 const page = docPages.find((p) => p.path === "/docs")!;
@@ -70,12 +70,10 @@ export default function DocsIntroPage() {
           },
           {
             q: "What should I learn first?",
-            a: "Tools, then agents with stream, then a linear graph with interrupt + memorySaver. Use Reference for package surfaces (@monorch/ai, openai, postgres, runtime).",
+            a: "Open Fastify in 5 minutes, then Tools → Agents → Graphs. Use Compare if you are choosing vs Mastra or LangGraph.",
           },
         ]}
       />
-
-      <DocNext href="/docs/getting-started" label="Getting started" />
     </>
   );
 }

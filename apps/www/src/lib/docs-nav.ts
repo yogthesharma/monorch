@@ -1,5 +1,6 @@
 export type DocNavItem = {
   title: string;
+  description?: string;
   href: string;
 };
 
@@ -12,48 +13,123 @@ export const docsNav: DocNavGroup[] = [
   {
     title: "Start",
     items: [
-      { title: "Introduction", href: "/docs" },
-      { title: "Getting started", href: "/docs/getting-started" },
-      { title: "Fastify in 5 minutes", href: "/docs/recipes/fastify" },
-      { title: "Compare", href: "/docs/compare" },
-      { title: "Changelog", href: "/docs/changelog" },
-      { title: "Architecture", href: "/docs/architecture" },
+      { title: "Introduction", href: "/docs", description: "What Monorch is" },
+      {
+        title: "Getting started",
+        href: "/docs/getting-started",
+        description: "Install and smoke",
+      },
+      { title: "Compare", href: "/docs/compare", description: "Vs Mastra, LangGraph, DIY" },
+      { title: "Changelog", href: "/docs/changelog", description: "Release notes" },
+      {
+        title: "Architecture",
+        href: "/docs/architecture",
+        description: "Rust + TypeScript split",
+      },
+      {
+        title: "Platforms",
+        href: "/docs/platforms",
+        description: "Native builds and Node targets",
+      },
+      {
+        title: "Security",
+        href: "/docs/security",
+        description: "License and data posture",
+      },
     ],
   },
   {
     title: "Core",
     items: [
-      { title: "Agents", href: "/docs/agents" },
-      { title: "Tools", href: "/docs/tools" },
-      { title: "Graphs", href: "/docs/graphs" },
-      { title: "Checkpoints", href: "/docs/checkpoints" },
-      { title: "Streaming", href: "/docs/streaming" },
-      { title: "Workflows", href: "/docs/workflows" },
+      { title: "Agents", href: "/docs/agents", description: "run, stream, handoffs" },
+      { title: "Tools", href: "/docs/tools", description: "Zod tools + permissions" },
+      { title: "Graphs", href: "/docs/graphs", description: "Nodes, edges, interrupt" },
+      { title: "Checkpoints", href: "/docs/checkpoints", description: "Persist and restore" },
+      { title: "Streaming", href: "/docs/streaming", description: "AiEvent bus" },
+      { title: "Workflows", href: "/docs/workflows", description: "Linear graph sugar" },
     ],
   },
   {
     title: "Integrations",
     items: [
-      { title: "Providers", href: "/docs/providers" },
-      { title: "MCP", href: "/docs/mcp" },
-      { title: "Memory", href: "/docs/memory" },
-      { title: "Observability", href: "/docs/observability" },
+      { title: "Providers", href: "/docs/providers", description: "openai + mock" },
+      { title: "MCP", href: "/docs/mcp", description: "stdio / HTTP tools" },
+      { title: "Memory", href: "/docs/memory", description: "Store + threads" },
+      { title: "Observability", href: "/docs/observability", description: "OTel via AiEvent" },
+    ],
+  },
+  {
+    title: "Recipes",
+    items: [
+      {
+        title: "Fastify in 5 minutes",
+        href: "/docs/recipes/fastify",
+        description: "SSE, interrupt, Postgres",
+      },
+      {
+        title: "HITL refund",
+        href: "/docs/recipes/hitl-refund",
+        description: "Interrupt + checkpoint resume",
+      },
+      {
+        title: "Multi-agent handoff",
+        href: "/docs/recipes/handoff",
+        description: "triage → billing",
+      },
+      {
+        title: "MCP stdio",
+        href: "/docs/recipes/mcp-stdio",
+        description: "Local MCP server as tools",
+      },
+      {
+        title: "LiteLLM proxy",
+        href: "/docs/recipes/litellm",
+        description: "OpenAI-compatible baseUrl",
+      },
+      {
+        title: "Abort + timeouts",
+        href: "/docs/recipes/abort",
+        description: "AbortSignal and timeoutMs",
+      },
+      {
+        title: "Graph hot-reload",
+        href: "/docs/recipes/hot-reload",
+        description: "compile({ replace })",
+      },
     ],
   },
   {
     title: "Reference",
     items: [
-      { title: "@monorch/ai", href: "/docs/reference/ai" },
-      { title: "@monorch/ai/openai", href: "/docs/reference/openai" },
-      { title: "@monorch/ai/postgres", href: "/docs/reference/postgres" },
-      { title: "@monorch/runtime", href: "/docs/reference/runtime" },
+      { title: "@monorch/ai", href: "/docs/reference/ai", description: "Main package surface" },
+      {
+        title: "@monorch/ai/openai",
+        href: "/docs/reference/openai",
+        description: "Provider constructors",
+      },
+      {
+        title: "@monorch/ai/postgres",
+        href: "/docs/reference/postgres",
+        description: "Durable adapters",
+      },
+      {
+        title: "@monorch/runtime",
+        href: "/docs/reference/runtime",
+        description: "N-API engine binding",
+      },
+      {
+        title: "Error codes",
+        href: "/docs/reference/errors",
+        description: "AiError codes and fixes",
+      },
     ],
   },
 ];
 
 export function findDocTitle(pathname: string): string {
+  const normalized = pathname.replace(/\/$/, "") || "/";
   for (const group of docsNav) {
-    const hit = group.items.find((i) => i.href === pathname);
+    const hit = group.items.find((i) => i.href === normalized);
     if (hit) return hit.title;
   }
   return "Docs";
@@ -61,4 +137,26 @@ export function findDocTitle(pathname: string): string {
 
 export function flattenDocsNav(): DocNavItem[] {
   return docsNav.flatMap((g) => g.items);
+}
+
+export function docsNavNeighbors(pathname: string): {
+  prev: DocNavItem | null;
+  next: DocNavItem | null;
+} {
+  const normalized = pathname.replace(/\/$/, "") || "/";
+  const flat = flattenDocsNav();
+  const idx = flat.findIndex((i) => i.href === normalized);
+  if (idx < 0) return { prev: null, next: null };
+  return {
+    prev: idx > 0 ? flat[idx - 1]! : null,
+    next: idx < flat.length - 1 ? flat[idx + 1]! : null,
+  };
+}
+
+export function slugifyHeading(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/&amp;/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }

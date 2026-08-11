@@ -1,6 +1,6 @@
 import { docPages, installSnippet, siteConfig } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
-import { DocCode, DocH1, DocH2, DocLead, DocNext, DocP } from "@/components/docs/doc-blocks";
+import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
 
 const page = docPages.find((p) => p.path === "/docs/recipes/fastify")!;
@@ -152,8 +152,6 @@ const threads = postgresThreads(pool);
           },
         ]}
       />
-
-      <DocNext href="/docs/compare" label="Compare" />
     </>
   );
 }

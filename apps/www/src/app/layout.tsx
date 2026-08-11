@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Source_Sans_3, Syne } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,6 +22,11 @@ const mono = IBM_Plex_Mono({
   variable: "--font-mono",
   weight: ["400", "500"],
 });
+
+export const viewport: Viewport = {
+  themeColor: "#0a1a14",
+  colorScheme: "dark",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -57,6 +62,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
+    site: siteConfig.twitter,
+    creator: siteConfig.twitter,
   },
   robots: {
     index: true,

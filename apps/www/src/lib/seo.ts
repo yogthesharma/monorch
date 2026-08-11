@@ -36,6 +36,8 @@ export function pageMetadata({
       card: "summary_large_image",
       title: ogTitle,
       description,
+      site: siteConfig.twitter,
+      creator: siteConfig.twitter,
     },
     robots: noIndex ? { index: false, follow: false } : undefined,
   };

@@ -1,6 +1,6 @@
 import { docPages, siteConfig } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
-import { DocH1, DocH2, DocLead, DocNext, DocP } from "@/components/docs/doc-blocks";
+import { DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
 
 const page = docPages.find((p) => p.path === "/docs/changelog")!;
@@ -24,10 +24,16 @@ export default function ChangelogPage() {
       <ul className="mt-5 list-disc space-y-2 pl-6 text-base leading-relaxed text-foreground/90">
         <li>Agents with tool loop (Rust state) + stream() / run() AiEvent bus</li>
         <li>Explicit handoffs (handoffs: [...], handoff_to_* tools)</li>
-        <li>Graphs: nodes, conditional edges, interrupts, cycle maxSteps, compile({"{"} replace {"}"})</li>
+        <li>
+          Graphs: nodes, conditional edges, interrupts, cycle maxSteps,{" "}
+          <code className="font-mono text-sm">compile({"{ replace }"})</code>
+        </li>
         <li>Checkpoint v2 blobs (version, input, defHash) + memorySaver()</li>
         <li>Postgres adapters: postgresCheckpointer, postgresThreads, postgresStore</li>
-        <li>Thread memory: agent.run(input, {"{"} threadId, memory, signal {"}"})</li>
+        <li>
+          Thread memory:{" "}
+          <code className="font-mono text-sm">agent.run(input, {"{ threadId, memory, signal }"})</code>
+        </li>
         <li>MCP: mcpStdio / mcpHttp + mcpTools JSON Schema → IR</li>
         <li>OTel hooks via createOtelListener</li>
         <li>OpenAI-compatible provider with SSE, AbortSignal, timeouts</li>
@@ -66,8 +72,6 @@ export default function ChangelogPage() {
           },
         ]}
       />
-
-      <DocNext href="/docs/architecture" label="Architecture" />
     </>
   );
 }

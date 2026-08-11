@@ -42,6 +42,7 @@ export function softwareJsonLd(): Record<string, unknown> {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Cross-platform",
     description: siteConfig.description,
+    image: `${siteConfig.url}/logo.svg`,
     offers: {
       "@type": "Offer",
       price: "0",
@@ -67,6 +68,7 @@ export function organizationJsonLd(): Record<string, unknown> {
     "@type": "Organization",
     name: siteConfig.name,
     url: siteConfig.url,
+    logo: `${siteConfig.url}/logo.svg`,
     ...(siteConfig.github ? { sameAs: [siteConfig.github] } : {}),
   };
 }

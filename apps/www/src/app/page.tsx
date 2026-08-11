@@ -19,10 +19,12 @@ import {
   softwareJsonLd,
   websiteJsonLd,
 } from "@/components/json-ld";
+import { MonorchLogo } from "@/components/monorch-logo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SmokeDemo } from "@/components/smoke-demo";
 import { pageMetadata } from "@/lib/seo";
-import { absoluteUrl, siteConfig } from "@/lib/site";
+import { absoluteUrl, installSnippet, siteConfig } from "@/lib/site";
 
 const homeFaqs = [
   {
@@ -48,9 +50,7 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-const installSnippet = `pnpm install
-pnpm build
-pnpm smoke`;
+const installCode = installSnippet();
 
 const agentSnippet = `import { agent, tool, createOtelListener } from "@monorch/ai";
 import { openai } from "@monorch/ai/openai";
@@ -119,40 +119,46 @@ export default async function HomePage() {
       <SiteHeader />
 
       <main>
+        {/* First viewport: brand, one claim, one support line, one CTA group, diagram */}
         <section className="relative isolate min-h-[calc(100svh-4rem)] overflow-hidden">
           <HeroPlane />
-          <div className="relative mx-auto grid min-h-[calc(100svh-4rem)] max-w-6xl items-center gap-12 px-5 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-8 lg:py-20">
+          <div className="relative mx-auto grid min-h-[calc(100svh-4rem)] max-w-6xl items-center gap-10 px-5 py-14 sm:px-6 lg:grid-cols-[1fr_1fr] lg:gap-14 lg:px-8 lg:py-16">
             <div className="max-w-xl">
-              <p className="animate-rise font-display text-6xl font-bold tracking-tight text-ink sm:text-7xl lg:text-8xl">
-                Monorch
+              <p className="animate-rise flex items-center gap-4 font-display text-6xl font-bold tracking-tight text-ink sm:gap-5 sm:text-7xl lg:gap-6 lg:text-8xl">
+                <MonorchLogo className="h-[0.85em] w-auto text-signal" />
+                <span>Monorch</span>
               </p>
-              <h1 className="animate-rise-delay mt-6 text-balance text-3xl font-medium leading-tight text-foreground sm:text-4xl lg:text-[2.75rem]">
+              <h1 className="animate-rise-delay mt-5 text-balance text-3xl font-medium leading-tight text-foreground sm:text-4xl lg:text-[2.6rem]">
                 The AI control plane for TypeScript backends.
               </h1>
-              <p className="animate-rise-delay-2 mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                Run agents and graphs in the server you already have. Stream one event bus to your
-                UI. Interrupt, checkpoint, hand off, and hook MCP or OTel without adopting a
-                framework.
+              <p className="animate-rise-delay-2 mt-4 max-w-md text-lg leading-relaxed text-muted-foreground">
+                Agents and graphs in the server you already have. One event bus. No framework.
               </p>
-              <div className="animate-rise-delay-2 mt-10 flex flex-wrap items-center gap-3">
+              <div className="animate-rise-delay-2 mt-8 flex flex-wrap items-center gap-3">
                 <Button asChild size="lg" className="h-12 rounded-md px-7 text-base">
-                  <Link href="/docs/getting-started">
-                    Read the docs
+                  <Link href="/docs/recipes/fastify">
+                    Fastify in 5 minutes
                     <ArrowRight className="ml-1.5 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button
                   asChild
-                  variant="outline"
+                  variant="ghost"
                   size="lg"
-                  className="h-12 rounded-md border-border/80 bg-background/40 px-7 text-base backdrop-blur"
+                  className="h-12 rounded-md px-5 text-base text-muted-foreground hover:text-foreground"
                 >
-                  <Link href="/docs">
+                  <Link href="/docs/compare">
                     <BookOpen className="mr-1.5 h-4 w-4" />
-                    What Monorch is
+                    Compare
                   </Link>
                 </Button>
               </div>
+              <p className="animate-rise-delay-2 mt-4 font-mono text-xs text-muted-foreground/90">
+                v{siteConfig.version}
+                {siteConfig.npmPublished
+                  ? " · pnpm add @monorch/ai"
+                  : " · monorepo install (npm publish pending)"}
+              </p>
             </div>
 
             <HeroDiagram />
@@ -160,6 +166,30 @@ export default async function HomePage() {
         </section>
 
         <CapabilityStrip />
+
+        <section className="border-t border-border/70 bg-card/30">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-20 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14 lg:px-8">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                Smoke path
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                What the Fastify smoke looks like.
+              </h2>
+              <p className="mt-4 max-w-md text-lg leading-relaxed text-muted-foreground">
+                SSE from <code className="font-mono text-sm">agent.stream</code>, then interrupt,
+                checkpoint, and resume. Same events you wire to OTel. Not a Studio.
+              </p>
+              <Button asChild variant="outline" className="mt-8">
+                <Link href="/docs/recipes/fastify">
+                  Run it yourself
+                  <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+            <SmokeDemo />
+          </div>
+        </section>
 
         <section className="bg-card/40">
           <div className="mx-auto grid max-w-6xl gap-12 px-5 py-24 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:px-8">
@@ -174,9 +204,8 @@ export default async function HomePage() {
                 What actually ships.
               </h2>
               <p className="mt-5 max-w-prose text-lg leading-relaxed text-muted-foreground">
-                The exciting part is not another chat UI. It is a small control plane: tool loops
-                with permissions, graphs you can pause and restore, a shared event stream, and thin
-                bridges for MCP and OpenTelemetry. Rust keeps the state honest.
+                Tool loops with permissions, graphs you can pause and restore, a shared event
+                stream, and thin bridges for MCP and OpenTelemetry. Rust keeps the state honest.
               </p>
             </div>
             <dl className="grid gap-7 sm:grid-cols-2">
@@ -227,7 +256,7 @@ export default async function HomePage() {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="install" className="mt-5">
-                <CodeBlock code={installSnippet} lang="bash" filename="terminal" />
+                <CodeBlock code={installCode} lang="bash" filename="terminal" />
               </TabsContent>
               <TabsContent value="agent" className="mt-5">
                 <CodeBlock code={agentSnippet} lang="typescript" filename="agent.ts" />
@@ -313,15 +342,15 @@ export default async function HomePage() {
             <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
               <div>
                 <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Start with the docs.
+                  Fastify in 5 minutes.
                 </h2>
                 <p className="mt-3 text-lg text-muted-foreground">
-                  Graphs, streaming, checkpoints, MCP, and observability.
+                  Agent SSE, interrupt + resume, optional Postgres.
                 </p>
               </div>
               <Button asChild size="lg" className="h-12 px-7 text-base">
-                <Link href="/docs/getting-started">
-                  Open getting started
+                <Link href="/docs/recipes/fastify">
+                  Open the recipe
                   <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Link>
               </Button>

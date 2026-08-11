@@ -6,7 +6,6 @@ import {
   DocH1,
   DocH2,
   DocLead,
-  DocNext,
   DocP,
   DocTerm,
   DocTerms,
@@ -99,8 +98,6 @@ await ensureMonorchSchema(pool);`}</DocCode>
           },
         ]}
       />
-
-      <DocNext href="/docs/reference/runtime" label="@monorch/runtime" />
     </>
   );
 }

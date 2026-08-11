@@ -1,6 +1,6 @@
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
-import { DocCode, DocH1, DocH2, DocLead, DocNext } from "@/components/docs/doc-blocks";
+import { DocCode, DocH1, DocH2, DocLead } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
 
 const page = docPages.find((p) => p.path === "/docs/streaming")!;
@@ -86,8 +86,6 @@ for await (const ev of tapEvents(bot.stream("hi"), createOtelListener())) {
           },
         ]}
       />
-
-      <DocNext href="/docs/workflows" label="Workflows" />
     </>
   );
 }
