@@ -13,13 +13,6 @@ import { MonorchLogo } from "@/components/monorch-logo";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 
-const links = [
-  { href: "/docs/recipes/fastify", label: "Quickstart" },
-  { href: "/docs", label: "Docs" },
-  { href: "/compare", label: "Compare" },
-  { href: "/changelog", label: "Changelog" },
-];
-
 export function SiteHeader({ className }: { className?: string }) {
   return (
     <header
@@ -48,15 +41,12 @@ export function SiteHeader({ className }: { className?: string }) {
         </div>
 
         <nav className="hidden items-center gap-7 md:flex">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-base text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            href="/docs"
+            className="text-base text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Docs
+          </Link>
           <a
             href={siteConfig.github}
             target="_blank"
@@ -87,11 +77,9 @@ export function SiteHeader({ className }: { className?: string }) {
               <Badge variant="secondary" className="w-fit font-mono text-xs">
                 v{siteConfig.version}
               </Badge>
-              {links.map((link) => (
-                <Link key={link.href} href={link.href} className="text-base text-foreground">
-                  {link.label}
-                </Link>
-              ))}
+              <Link href="/docs" className="text-base text-foreground">
+                Docs
+              </Link>
               <a
                 href={siteConfig.github}
                 target="_blank"

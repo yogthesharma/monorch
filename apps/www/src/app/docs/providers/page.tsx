@@ -27,13 +27,39 @@ const model = openai("gpt-4.1-mini", {
   defaultHeaders: { "x-custom": "1" },
 });`}</DocCode>
 
+      <DocH2>Generate options</DocH2>
+      <DocP>
+        Per-call <code className="font-mono text-sm">GenerateOptions</code> on{" "}
+        <code className="font-mono text-sm">generate</code> /{" "}
+        <code className="font-mono text-sm">stream</code>:{" "}
+        <code className="font-mono text-sm">temperature</code>,{" "}
+        <code className="font-mono text-sm">maxTokens</code>,{" "}
+        <code className="font-mono text-sm">toolChoice</code> (
+        <code className="font-mono text-sm">auto</code> |{" "}
+        <code className="font-mono text-sm">none</code> |{" "}
+        <code className="font-mono text-sm">required</code> | named function),{" "}
+        <code className="font-mono text-sm">signal</code>, and{" "}
+        <code className="font-mono text-sm">timeoutMs</code>. Agent loops set messages/tools for you;
+        use these when calling the model handle directly.
+      </DocP>
+      <DocCode lang="typescript" filename="generate-opts.ts">{`const handle = model(openai("gpt-4.1-mini"));
+
+await handle.generate({
+  messages: [{ role: "user", content: "Summarize the order" }],
+  temperature: 0.2,
+  maxTokens: 256,
+  toolChoice: "none",
+  timeoutMs: 15_000,
+});`}</DocCode>
+
       <DocH2>Streaming and abort</DocH2>
       <DocP>
         <code className="font-mono text-sm">openai()</code> implements provider{" "}
         <code className="font-mono text-sm">stream()</code> over SSE. Per-call{" "}
         <code className="font-mono text-sm">signal</code> and{" "}
         <code className="font-mono text-sm">timeoutMs</code> merge into the fetch abort. Agent{" "}
-        <code className="font-mono text-sm">opts.signal</code> forwards here.
+        <code className="font-mono text-sm">opts.signal</code> forwards here. Non-OK HTTP responses
+        throw <code className="font-mono text-sm">OPENAI_HTTP</code>.
       </DocP>
       <DocCode lang="typescript" filename="abort.ts">{`const ctrl = new AbortController();
 const handle = model(openai("gpt-4.1-mini"));

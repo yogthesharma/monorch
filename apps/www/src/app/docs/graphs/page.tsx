@@ -79,6 +79,15 @@ const draft = graph("draft")
 
 const run = await draft.start({ topic: "refunds" });
 // write output is the agent text`}</DocCode>
+      <DocP>
+        <code className="font-mono text-sm">agentNode</code> calls{" "}
+        <code className="font-mono text-sm">agent.run(prompt)</code> with the prompt string only —
+        it does <strong>not</strong> forward the graph{" "}
+        <code className="font-mono text-sm">threadId</code>, AbortSignal, or{" "}
+        <code className="font-mono text-sm">ThreadMemory</code>. For threaded or abortable agent
+        steps, use a plain <code className="font-mono text-sm">node</code> that calls{" "}
+        <code className="font-mono text-sm">getAgent(...).run(input, opts)</code> yourself.
+      </DocP>
 
       <DocH2>Compile options</DocH2>
       <DocP>
@@ -155,8 +164,12 @@ refund.restore(threadId);`}</DocCode>
             a: "By name via getAgent. Create the agent before compile/start so the registry has that name.",
           },
           {
+            q: "Can agentNode use thread memory or AbortSignal?",
+            a: "Not automatically. Wrap getAgent().run(..., { threadId, memory, signal }) in a node() if you need those options.",
+          },
+          {
             q: "Is workflow() still supported?",
-            a: "Yes as sugar. Prefer graph() for anything non-linear.",
+            a: "Yes as sugar. Prefer graph() for anything non-linear. workflow maxRetries is a no-op.",
           },
         ]}
       />

@@ -18,7 +18,7 @@ export default function WorkflowsPage() {
       <DocH2>Builder</DocH2>
       <DocCode lang="typescript" filename="refund-workflow.ts">{`import { workflow, memorySaver } from "@monorch/ai";
 
-const refund = workflow("refund", { maxRetries: 1 })
+const refund = workflow("refund", { maxSteps: 16 })
   .step("lookup", async ({ input }) => \`order:\${input.orderId}\`)
   .human("approve", { prompt: "Approve refund?" })
   .step("pay", async ({ outputs }) => \`refunded:\${outputs.lookup}\`)
@@ -41,6 +41,16 @@ if (run.status === "waitingInterrupt") {
         <code className="font-mono text-sm">waitingInterrupt</code> replaces older waitingHuman
         naming.
       </DocP>
+      <DocP>
+        <code className="font-mono text-sm">workflow(name, {"{ maxRetries }"})</code> accepts{" "}
+        <code className="font-mono text-sm">maxRetries</code> for API compatibility but it is a{" "}
+        <strong>no-op</strong> today — the builder compiles to{" "}
+        <code className="font-mono text-sm">graph()</code> and uses fail-fast +{" "}
+        <code className="font-mono text-sm">maxSteps</code>. Pass{" "}
+        <code className="font-mono text-sm">maxSteps</code> on{" "}
+        <code className="font-mono text-sm">workflow()</code> or{" "}
+        <code className="font-mono text-sm">build()</code> for step budgets.
+      </DocP>
 
       <DocFaq
         path="/docs/workflows"
@@ -51,7 +61,7 @@ if (run.status === "waitingInterrupt") {
           },
           {
             q: "Does maxRetries still apply?",
-            a: "Workflow options are mapped into the graph compile path. Prefer graph maxSteps for step budgets.",
+            a: "No. It is ignored. Use maxSteps (and graph() for real control). Retries are not automatic.",
           },
           {
             q: "Can workflows branch?",

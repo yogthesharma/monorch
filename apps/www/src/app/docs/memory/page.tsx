@@ -17,6 +17,14 @@ export default function MemoryPage() {
       </DocLead>
 
       <DocH2>Key/value store</DocH2>
+      <DocP>
+        <code className="font-mono text-sm">MemoryStore</code> is a BYO interface. Agents and graphs
+        do <strong>not</strong> auto-read it — call{" "}
+        <code className="font-mono text-sm">put</code> /{" "}
+        <code className="font-mono text-sm">get</code> from tool{" "}
+        <code className="font-mono text-sm">execute</code> or graph node handlers. Prefer{" "}
+        <code className="font-mono text-sm">ThreadMemory</code> for chat history.
+      </DocP>
       <DocCode lang="typescript" filename="memory.ts">{`import { inMemoryStore } from "@monorch/ai";
 
 const memory = inMemoryStore();
@@ -85,7 +93,11 @@ await store.put(["orders"], "ord_9", { lookedUp: true });`}</DocCode>
           },
           {
             q: "Checkpoint vs memory vs threads?",
-            a: "Checkpoint = graph cursor resume. MemoryStore = namespaced KV. ThreadMemory = message lists per thread id for agents.",
+            a: "Checkpoint = graph cursor resume. MemoryStore = namespaced KV you call yourself. ThreadMemory = message lists per thread id for agents.",
+          },
+          {
+            q: "Does MemoryStore plug into agent.run automatically?",
+            a: "No. Only ThreadMemory loads/appends when you pass threadId + memory. MemoryStore is for your node/tool code.",
           },
           {
             q: "Does the agent automatically load ThreadMemory?",

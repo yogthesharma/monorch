@@ -77,11 +77,19 @@ export default function ErrorsReferencePage() {
         <DocTerm name="INVALID_JSON">Model text was not parseable JSON.</DocTerm>
         <DocTerm name="VALIDATION_FAILED">JSON failed Rust schema validation against Zod IR.</DocTerm>
         <DocTerm name="OPENAI_AUTH">API key missing for openai().</DocTerm>
+        <DocTerm name="OPENAI_HTTP">
+          Provider returned a non-OK HTTP status from chat completions. Check baseUrl, model id,
+          quotas, and the response body in details when present.
+        </DocTerm>
         <DocTerm name="OPENAI_STREAM">SSE body missing or stream error.</DocTerm>
       </DocTerms>
 
       <DocH2>MCP</DocH2>
       <DocTerms>
+        <DocTerm name="MCP_CONNECT">
+          mcpHttp could not open Streamable HTTP or SSE. Verify URL, headers, and that the server
+          speaks one of those transports.
+        </DocTerm>
         <DocTerm name="MCP_TOOL_MISSING">Requested MCP tool name not in listTools.</DocTerm>
         <DocTerm name="MCP_TOOL_ERROR">Remote tool returned isError / failed payload.</DocTerm>
       </DocTerms>

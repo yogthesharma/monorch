@@ -36,7 +36,9 @@ export default function AiReferencePage() {
       <DocTerms>
         <DocTerm name="tool(def)">
           Register a Zod-validated tool. Also{" "}
-          <code className="font-mono text-sm">toolWithIr</code> when you already have schema IR.
+          <code className="font-mono text-sm">toolWithIr</code> +{" "}
+          <code className="font-mono text-sm">jsonSchemaToIr</code> when you already have JSON
+          Schema (see Tools).
         </DocTerm>
         <DocTerm name="agent(options)">
           Create/register an agent. Methods:{" "}
@@ -47,7 +49,10 @@ export default function AiReferencePage() {
         <DocTerm name="graph(name)">
           Graph builder. Prefer over <code className="font-mono text-sm">workflow()</code>.
         </DocTerm>
-        <DocTerm name="workflow(name?)">Linear sugar over graph.</DocTerm>
+        <DocTerm name="workflow(name?)">
+          Linear sugar over graph. <code className="font-mono text-sm">maxRetries</code> is a no-op;
+          use <code className="font-mono text-sm">maxSteps</code>.
+        </DocTerm>
         <DocTerm name="model(provider)">
           Handle with <code className="font-mono text-sm">generate</code> /{" "}
           <code className="font-mono text-sm">stream</code> /{" "}
@@ -70,7 +75,12 @@ export default function AiReferencePage() {
         <DocTerm name="getAgent(name)">Process agent registry lookup.</DocTerm>
         <DocTerm name="callTool / listTools">Execute or list registered tools.</DocTerm>
         <DocTerm name="memorySaver()">In-process checkpointer.</DocTerm>
-        <DocTerm name="inMemoryStore / inMemoryThreads">Process-local memory helpers.</DocTerm>
+        <DocTerm name="inMemoryStore / inMemoryThreads">
+          Process-local helpers. Store is BYO from nodes/tools; threads wire into{" "}
+          <code className="font-mono text-sm">agent.run</code> via{" "}
+          <code className="font-mono text-sm">threadId</code> +{" "}
+          <code className="font-mono text-sm">memory</code>.
+        </DocTerm>
         <DocTerm name="mcpTools / mockMcp / mcpStdio / mcpHttp">
           MCP → <code className="font-mono text-sm">tool()</code>. See{" "}
           <Link href="/docs/mcp" className="text-foreground underline-offset-4 hover:underline">
