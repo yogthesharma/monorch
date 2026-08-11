@@ -1,0 +1,26 @@
+# Dependencies & build
+node_modules/
+.pnpm-store/
+dist/
+target/
+.next/
+*.node
+npm/
+
+# Env & OS
+.DS_Store
+.env
+.env.*
+*.log
+*.tgz
+packs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Coverage / caches
+coverage/
+.turbo/
+.cache/

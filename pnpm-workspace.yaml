@@ -1,0 +1,5 @@
+packages:
+  - "bindings/node"
+  - "packages/*"
+  - "examples/*"
+  - "apps/*"

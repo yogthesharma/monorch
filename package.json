@@ -1,0 +1,22 @@
+{
+  "name": "monorch",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "build": "pnpm build:native && pnpm --filter @monorch/ai build",
+    "build:native": "pnpm --filter @monorch/runtime build",
+    "build:www": "pnpm --filter @monorch/www build",
+    "dev:www": "pnpm --filter @monorch/www dev",
+    "typecheck": "pnpm --filter @monorch/ai typecheck && pnpm --filter @monorch/example-fastify typecheck",
+    "test:engine": "cargo test -p monorch-engine",
+    "ci": "pnpm test:engine && pnpm build && pnpm typecheck && pnpm smoke",
+    "example": "pnpm --filter @monorch/example-fastify start",
+    "smoke": "SMOKE=1 pnpm example",
+    "smoke:live": "SMOKE=1 LIVE_SMOKE=1 pnpm example",
+    "pack:check": "node scripts/pack-check.mjs",
+    "version:stamp": "node scripts/set-version.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

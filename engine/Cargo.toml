@@ -1,0 +1,14 @@
+[package]
+name = "monorch-engine"
+description = "Monorch AI execution engine — schema, tools, agents, workflows"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+name = "monorch_engine"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
