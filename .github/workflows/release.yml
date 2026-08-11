@@ -142,7 +142,12 @@ jobs:
               echo "Skip already published ${name}@${version}"
             else
               echo "Publishing ${name}@${version} from ${dir}"
-              (cd "$dir" && npm publish --access public)
+              if [[ "$dir" == bindings/node/npm/* ]]; then
+                (cd "$dir" && npm publish --access public)
+              else
+                # pnpm rewrites workspace:* for consumers
+                (cd "$dir" && pnpm publish --access public --no-git-checks)
+              fi
             fi
           }
           for dir in bindings/node/npm/*; do
