@@ -24,8 +24,11 @@ export default function AiReferencePage() {
       </DocH1>
       <DocLead>
         Sole user-facing TypeScript API. Agents, tools, graphs, memory helpers, MCP bridges, events,
-        and errors. Guides under Core / Integrations own the tutorials; this page is the package
-        surface.
+        and errors. For the supported contract and SemVer rules, start with{" "}
+        <Link href="/docs/api" className="text-foreground underline-offset-4 hover:underline">
+          Public API
+        </Link>
+        . Guides under Core / Integrations own the tutorials; this page is the package map.
       </DocLead>
 
       <DocH2>Install</DocH2>
@@ -50,8 +53,10 @@ export default function AiReferencePage() {
           Graph builder. Prefer over <code className="font-mono text-sm">workflow()</code>.
         </DocTerm>
         <DocTerm name="workflow(name?)">
-          Linear sugar over graph. <code className="font-mono text-sm">maxRetries</code> is a no-op;
-          use <code className="font-mono text-sm">maxSteps</code>.
+          Linear sugar over <code className="font-mono text-sm">graph()</code>. Prefer{" "}
+          <code className="font-mono text-sm">graph()</code> for new code.{" "}
+          <code className="font-mono text-sm">maxRetries</code> is a no-op; use{" "}
+          <code className="font-mono text-sm">maxSteps</code>.
         </DocTerm>
         <DocTerm name="model(provider)">
           Handle with <code className="font-mono text-sm">generate</code> /{" "}

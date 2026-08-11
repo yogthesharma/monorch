@@ -1,6 +1,9 @@
 /**
  * @monorch/ai — TypeScript AI control-plane library.
  * Runtime truth lives in Rust (`engine/` via `@monorch/runtime`).
+ *
+ * Public contract: https://monorch.vercel.app/docs/api
+ * Only `package.json#exports` (`.`, `./openai`, `./postgres`) are supported.
  */
 
 export { model } from "./model.js";

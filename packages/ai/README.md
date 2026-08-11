@@ -46,6 +46,8 @@ for await (const event of assistant.stream("What's the weather in Lisbon?")) {
 }
 ```
 
+Prefer `graph()` for orchestration. `workflow()` is linear sugar only.
+
 ## Packages
 
 | Import | Purpose |
@@ -54,9 +56,27 @@ for await (const event of assistant.stream("What's the weather in Lisbon?")) {
 | `@monorch/ai/openai` | OpenAI-compatible provider |
 | `@monorch/ai/postgres` | Checkpoints, threads, store (`pg` peer) |
 
+## Public API
+
+Supported contract (do not deep-import `dist/`):
+
+- **Core:** `agent`, `getAgent`, `tool`, `toolWithIr`, `callTool`, `listTools`, `graph`, `GRAPH_END`, `workflow` (sugar), `model`, `memorySaver`, `inMemoryStore`, `inMemoryThreads`, `createOtelListener`, `tapEvents`, `collectEvents`, `AiError`, `mock`, `openai`
+- **MCP:** `mcpStdio`, `mcpHttp`, `mcpTools`, `mockMcp`, `jsonSchemaToIr`
+- **Postgres:** `ensureMonorchSchema`, `postgresCheckpointer`, `postgresThreads`, `postgresStore`
+
+**Not public:** `getRuntime()` / Engine methods, undocumented deep paths, relying on a single `@monorch/runtime-*` platform package from app code.
+
+Full write-up: [Public API docs](https://monorch.vercel.app/docs/api).
+
+## SemVer
+
+- **0.x:** minors may add APIs; breaking changes to the public surface are allowed but changelogged.
+- **1.0+:** documented public exports stay backward compatible within a major; breaking changes need `2.0`.
+
 ## Docs
 
 - Site: [monorch.vercel.app](https://monorch.vercel.app/)
+- Public API: [monorch.vercel.app/docs/api](https://monorch.vercel.app/docs/api)
 - Docs: [monorch.vercel.app/docs](https://monorch.vercel.app/docs)
 - GitHub: [yogthesharma/monorch](https://github.com/yogthesharma/monorch)
 - Changelog: [CHANGELOG.md](https://github.com/yogthesharma/monorch/blob/main/CHANGELOG.md)

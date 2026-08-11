@@ -50,7 +50,11 @@ function toWfCtx(ctx: GraphContext): WorkflowContext {
   return { input: ctx.input, outputs: ctx.outputs, state: ctx.state };
 }
 
-/** Define a linear workflow (compiles to a path graph). */
+/**
+ * Linear workflow sugar over {@link graph}.
+ * Prefer `graph()` for branching, cycles, interrupts, and checkpoints.
+ * `workflow()` remains a supported public API (see docs/api SemVer policy).
+ */
 export function workflow(
   name: string,
   opts?: { maxRetries?: number; maxSteps?: number },

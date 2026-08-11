@@ -19,6 +19,11 @@ export const docsNav: DocNavGroup[] = [
         href: "/docs/getting-started",
         description: "Install and smoke",
       },
+      {
+        title: "Public API",
+        href: "/docs/api",
+        description: "Supported exports + SemVer",
+      },
     ],
   },
   {

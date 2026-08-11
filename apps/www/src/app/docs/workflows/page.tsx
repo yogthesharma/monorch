@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
@@ -11,8 +12,13 @@ export default function WorkflowsPage() {
     <>
       <DocH1>Workflows</DocH1>
       <DocLead>
-        Linear sugar over <code className="font-mono text-sm">graph()</code>. Fine for simple step
-        chains. Prefer graphs when you need branching, cycles, or explicit edges.
+        Linear sugar over <code className="font-mono text-sm">graph()</code>. Kept for simple step
+        chains. <strong>Prefer graphs</strong> for new code (branching, cycles, interrupts,
+        checkpoints). See the{" "}
+        <Link href="/docs/api" className="text-foreground underline-offset-4 hover:underline">
+          Public API
+        </Link>{" "}
+        contract.
       </DocLead>
 
       <DocH2>Builder</DocH2>
@@ -57,7 +63,7 @@ if (run.status === "waitingInterrupt") {
         items={[
           {
             q: "Should new code use workflow()?",
-            a: "Only for dead-simple linear flows. Otherwise start with graph() so you do not rewrite later.",
+            a: "No for anything beyond a dead-simple linear chain. Start with graph() so you do not rewrite later. workflow() remains supported sugar under the Public API policy.",
           },
           {
             q: "Does maxRetries still apply?",
@@ -68,8 +74,8 @@ if (run.status === "waitingInterrupt") {
             a: "Not meaningfully. Use graph().edge(...) for conditions and cycles.",
           },
           {
-            q: "Are workflow docs deprecated?",
-            a: "The API stays for convenience. Graphs are the source of truth in STRUCTURE.md.",
+            q: "Is workflow() part of the public API?",
+            a: "Yes, as documented sugar. Stability follows the Public API / SemVer page. Graphs are still the source of truth in STRUCTURE.md.",
           },
         ]}
       />

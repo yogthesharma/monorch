@@ -90,6 +90,12 @@ export const docPages: DocPageMeta[] = [
       "Install, build the native runtime, run the repo smoke, and copy the smallest agent and graph patterns into your HTTP handlers.",
   },
   {
+    title: "Public API",
+    path: "/docs/api",
+    description:
+      "Supported @monorch/ai exports, SemVer policy, prefer graph() over workflow(), and intentional non-public surfaces.",
+  },
+  {
     title: "Agents",
     path: "/docs/agents",
     description:

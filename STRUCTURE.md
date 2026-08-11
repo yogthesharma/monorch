@@ -46,3 +46,4 @@ monorch/
 4. Examples never become frameworks — they only show Fastify/Hono importing the lib.
 5. `apps/www` is marketing/docs only — it must not import engine internals or become a product Studio.
 6. Prefer `graph()` over `workflow()` for new code; workflow is sugar.
+7. Public consumer contract is documented at `/docs/api` (SemVer + supported exports).
