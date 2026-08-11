@@ -1,5 +1,7 @@
 packages:
   - "bindings/node"
   - "packages/*"
-  - "examples/*"
+  - "examples/fastify"
   - "apps/*"
+  # examples/npm-smoke is intentionally outside the workspace so it installs
+  # @monorch/ai from the npm registry instead of linking packages/ai.

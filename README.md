@@ -1,10 +1,14 @@
+<p align="center">
+  <img src="assets/logo.svg" alt="Monorch" width="72" />
+</p>
+
 # Monorch AI
 
 **TypeScript AI control-plane library** with a **Rust execution engine**.
 
 Not a framework. Not an HTTP stack. Bring your own Fastify/Hono/Nest.
 
-**Current:** `0.1.0` — see [CHANGELOG.md](./CHANGELOG.md).
+**Current:** `0.1.2` — see [CHANGELOG.md](./CHANGELOG.md). Path to v1: [ROADMAP.md](./ROADMAP.md).
 
 ## Product lock
 
@@ -32,7 +36,8 @@ monorch/
 ├── engine/                 # Rust — source of truth (validate, tools, agent, workflow)
 ├── bindings/node/          # @monorch/runtime — N-API only (no business logic)
 ├── packages/ai/            # @monorch/ai — sole TypeScript user API
-├── examples/fastify/       # BYO-backend example
+├── examples/fastify/       # BYO-backend example (workspace @monorch/ai)
+├── examples/npm-smoke/     # Consumer smoke using published npm @monorch/ai
 └── apps/www/               # Homepage + docs (Next.js + shadcn)
 ```
 
@@ -43,7 +48,8 @@ See `STRUCTURE.md` for folder rules.
 ```bash
 pnpm install
 pnpm build
-pnpm smoke              # Fastify agent + graph smoke
+pnpm smoke              # Fastify agent + graph smoke (workspace)
+pnpm smoke:npm          # consumer smoke against published @monorch/ai on npm
 pnpm smoke:live         # optional live provider (needs API key)
 pnpm dev:www            # homepage + docs on :3100
 ```
