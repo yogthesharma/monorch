@@ -19,23 +19,6 @@ export const docsNav: DocNavGroup[] = [
         href: "/docs/getting-started",
         description: "Install and smoke",
       },
-      { title: "Compare", href: "/docs/compare", description: "Vs Mastra, LangGraph, DIY" },
-      { title: "Changelog", href: "/docs/changelog", description: "Release notes" },
-      {
-        title: "Architecture",
-        href: "/docs/architecture",
-        description: "Rust + TypeScript split",
-      },
-      {
-        title: "Platforms",
-        href: "/docs/platforms",
-        description: "Native builds and Node targets",
-      },
-      {
-        title: "Security",
-        href: "/docs/security",
-        description: "License and data posture",
-      },
     ],
   },
   {

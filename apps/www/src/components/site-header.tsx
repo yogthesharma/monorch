@@ -16,8 +16,8 @@ import { siteConfig } from "@/lib/site";
 const links = [
   { href: "/docs/recipes/fastify", label: "Quickstart" },
   { href: "/docs", label: "Docs" },
-  { href: "/docs/compare", label: "Compare" },
-  { href: "/docs/changelog", label: "Changelog" },
+  { href: "/compare", label: "Compare" },
+  { href: "/changelog", label: "Changelog" },
 ];
 
 export function SiteHeader({ className }: { className?: string }) {
@@ -37,7 +37,7 @@ export function SiteHeader({ className }: { className?: string }) {
             <MonorchLogo className="h-7 w-auto text-signal" />
             <span>Monorch</span>
           </Link>
-          <Link href="/docs/changelog" className="hidden sm:inline-flex">
+          <Link href="/changelog" className="hidden sm:inline-flex">
             <Badge
               variant="secondary"
               className="rounded-md px-2 py-0.5 font-mono text-[0.7rem] uppercase tracking-wider text-muted-foreground"

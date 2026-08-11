@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { absoluteUrl, docPages } from "@/lib/site";
+import { absoluteUrl, docPages, productPages } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -10,6 +10,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1,
   };
 
+  const product: MetadataRoute.Sitemap = productPages.map((page) => ({
+    url: absoluteUrl(page.path),
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
   const docs: MetadataRoute.Sitemap = docPages.map((page, i) => ({
     url: absoluteUrl(page.path),
     lastModified: now,
@@ -17,5 +24,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: i === 0 ? 0.9 : 0.8,
   }));
 
-  return [home, ...docs, { url: absoluteUrl("/llms.txt"), lastModified: now, changeFrequency: "monthly", priority: 0.3 }];
+  return [
+    home,
+    ...product,
+    ...docs,
+    {
+      url: absoluteUrl("/llms.txt"),
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+  ];
 }

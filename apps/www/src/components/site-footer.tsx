@@ -23,16 +23,19 @@ export function SiteFooter() {
           <Link href="/docs" className="hover:text-foreground">
             Docs
           </Link>
-          <Link href="/docs/compare" className="hover:text-foreground">
+          <Link href="/compare" className="hover:text-foreground">
             Compare
           </Link>
-          <Link href="/docs/changelog" className="hover:text-foreground">
+          <Link href="/architecture" className="hover:text-foreground">
+            Architecture
+          </Link>
+          <Link href="/changelog" className="hover:text-foreground">
             Changelog
           </Link>
-          <Link href="/docs/security" className="hover:text-foreground">
+          <Link href="/security" className="hover:text-foreground">
             Security
           </Link>
-          <Link href="/docs/platforms" className="hover:text-foreground">
+          <Link href="/platforms" className="hover:text-foreground">
             Platforms
           </Link>
           <Link href="/llms.txt" className="hover:text-foreground">

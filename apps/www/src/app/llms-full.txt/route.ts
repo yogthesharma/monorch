@@ -1,4 +1,4 @@
-import { docPages, siteConfig } from "@/lib/site";
+import { docPages, productPages, siteConfig } from "@/lib/site";
 
 export const dynamic = "force-static";
 
@@ -39,6 +39,10 @@ Monorch competes with DIY agent loops and light glue libraries. It is a library,
 ## Checkpoint blob v2
 
 Persisted checkpoints include \`version\`, \`defHash\`, and \`input\` for safe restore and graph definition matching.
+
+## Product pages
+
+${productPages.map((p) => `### ${p.title}\nURL: ${siteConfig.url}${p.path}\n${p.description}\n`).join("\n")}
 
 ## Docs index
 

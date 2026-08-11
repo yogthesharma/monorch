@@ -53,7 +53,7 @@ export default function RuntimeReferencePage() {
       <DocP>
         Architecture:{" "}
         <Link
-          href="/docs/architecture"
+          href="/architecture"
           className="text-foreground underline-offset-4 hover:underline"
         >
           Architecture

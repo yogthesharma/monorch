@@ -38,6 +38,39 @@ export type DocPageMeta = {
   path: string;
 };
 
+/** Standalone product/marketing pages (not under /docs). */
+export const productPages: DocPageMeta[] = [
+  {
+    title: "Compare",
+    path: "/compare",
+    description:
+      "Monorch vs Mastra, LangGraph, and DIY agent loops. Library positioning and product lock.",
+  },
+  {
+    title: "Changelog",
+    path: "/changelog",
+    description: "Release notes for @monorch/ai and @monorch/runtime.",
+  },
+  {
+    title: "Architecture",
+    path: "/architecture",
+    description:
+      "How @monorch/ai, @monorch/runtime, and the Rust engine split responsibilities across TypeScript and native code.",
+  },
+  {
+    title: "Platforms",
+    path: "/platforms",
+    description:
+      "Node and native @monorch/runtime builds, supported platforms, and CI pointers.",
+  },
+  {
+    title: "Security",
+    path: "/security",
+    description:
+      "MIT license, library data posture, and how to report security issues.",
+  },
+];
+
 /** Canonical doc index for sitemap, llms.txt, and page metadata. */
 export const docPages: DocPageMeta[] = [
   {
@@ -51,35 +84,6 @@ export const docPages: DocPageMeta[] = [
     path: "/docs/getting-started",
     description:
       "Install, build the native runtime, run the Fastify smoke, and copy the smallest agent and graph patterns.",
-  },
-  {
-    title: "Compare",
-    path: "/docs/compare",
-    description:
-      "Monorch vs Mastra, LangGraph, and DIY agent loops. Library positioning and product lock.",
-  },
-  {
-    title: "Changelog",
-    path: "/docs/changelog",
-    description: "Release notes for @monorch/ai and @monorch/runtime.",
-  },
-  {
-    title: "Architecture",
-    path: "/docs/architecture",
-    description:
-      "How @monorch/ai, @monorch/runtime, and the Rust engine split responsibilities across TypeScript and native code.",
-  },
-  {
-    title: "Platforms",
-    path: "/docs/platforms",
-    description:
-      "Node and native @monorch/runtime builds, supported platforms, and CI pointers.",
-  },
-  {
-    title: "Security",
-    path: "/docs/security",
-    description:
-      "MIT license, library data posture, and how to report security issues.",
   },
   {
     title: "Agents",

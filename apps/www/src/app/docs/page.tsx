@@ -70,7 +70,7 @@ export default function DocsIntroPage() {
           },
           {
             q: "What should I learn first?",
-            a: "Open Fastify in 5 minutes, then Tools → Agents → Graphs. Use Compare if you are choosing vs Mastra or LangGraph.",
+            a: "Open Fastify in 5 minutes, then Tools → Agents → Graphs. Use /compare if you are choosing vs Mastra or LangGraph.",
           },
         ]}
       />

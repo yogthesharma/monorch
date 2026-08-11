@@ -1,4 +1,4 @@
-import { docPages, siteConfig } from "@/lib/site";
+import { docPages, productPages, siteConfig } from "@/lib/site";
 
 export const dynamic = "force-static";
 
@@ -16,6 +16,10 @@ function buildLlmsTxt() {
     "",
     "- Provide: model/tool/agent/graph/workflow, MCP bridge, memory interfaces, OTel via AiEvent, OpenAI-compatible providers",
     "- Do not provide: HTTP framework, auth/ORM/queues, React chat UI, RAG product, Studio",
+    "",
+    "## Product pages",
+    "",
+    ...productPages.map((p) => `- [${p.title}](${siteConfig.url}${p.path}): ${p.description}`),
     "",
     "## Docs",
     "",

@@ -147,7 +147,7 @@ export default async function HomePage() {
                   size="lg"
                   className="h-12 rounded-md px-5 text-base text-muted-foreground hover:text-foreground"
                 >
-                  <Link href="/docs/compare">
+                  <Link href="/compare">
                     <BookOpen className="mr-1.5 h-4 w-4" />
                     Compare
                   </Link>

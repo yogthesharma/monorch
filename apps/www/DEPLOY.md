@@ -29,6 +29,6 @@ pnpm --filter @monorch/www start   # or deploy .next to your host
 
 - [ ] `/` hero loads, logo + CTA → `/docs/recipes/fastify`
 - [ ] Docs search filters nav
-- [ ] `/docs/changelog` matches `siteConfig.version`
+- [ ] `/changelog` matches `siteConfig.version`
 - [ ] Footer GitHub / Discussions open the real repo
 - [ ] JSON-LD present on home (view-source)
