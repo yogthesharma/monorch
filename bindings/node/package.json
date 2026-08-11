@@ -1,8 +1,26 @@
 {
   "name": "@monorch/runtime",
-  "version": "0.1.0",
-  "description": "Native runtime for @monorch/ai (N-API)",
+  "version": "0.1.1",
+  "description": "Prebuilt N-API bindings for the Monorch Rust engine — agents, tools, and graphs. Required by @monorch/ai.",
   "license": "MIT",
+  "keywords": [
+    "monorch",
+    "napi",
+    "rust",
+    "ai",
+    "agents",
+    "native",
+    "nodejs"
+  ],
+  "homepage": "https://monorch.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yogthesharma/monorch.git",
+    "directory": "bindings/node"
+  },
+  "bugs": {
+    "url": "https://github.com/yogthesharma/monorch/issues"
+  },
   "main": "index.js",
   "types": "index.d.ts",
   "files": [

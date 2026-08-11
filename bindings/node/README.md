@@ -1,18 +1,32 @@
 # @monorch/runtime
 
-N-API bindings for the Monorch Rust engine. Used by `@monorch/ai`.
+Prebuilt **N-API** bindings for the Monorch Rust engine.
 
-## Install
-
-```bash
-pnpm add @monorch/ai   # pulls @monorch/runtime + the matching platform binary
-```
-
-Published builds ship **prebuilt** `.node` files via `optionalDependencies`
-(`@monorch/runtime-darwin-arm64`, `…-linux-x64-gnu`, etc.).
-
-## Develop (monorepo)
+You usually install this transitively:
 
 ```bash
-pnpm build   # napi build --platform --release
+npm i @monorch/ai
 ```
+
+That pulls `@monorch/runtime` plus the matching platform binary
+(`@monorch/runtime-darwin-arm64`, `…-linux-x64-gnu`, `…-win32-x64-msvc`, …).
+
+## What this package is
+
+- Loader + TypeScript types for the native addon
+- No business logic — agents, tools, and graphs live in Rust and are exposed through [`@monorch/ai`](https://www.npmjs.com/package/@monorch/ai)
+
+## Supported platforms
+
+- macOS `x64` / `arm64`
+- Linux GNU `x64` / `arm64`
+- Windows `x64` / `arm64`
+
+## Docs
+
+- Site: [monorch.ai](https://monorch.ai)
+- GitHub: [yogthesharma/monorch](https://github.com/yogthesharma/monorch)
+
+## License
+
+MIT

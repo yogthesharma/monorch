@@ -1,19 +1,35 @@
 {
   "name": "@monorch/ai",
-  "version": "0.1.0",
-  "description": "TypeScript AI control-plane library (agents, tools, graphs) powered by a Rust engine",
+  "version": "0.1.1",
+  "description": "Typed AI agents & graphs for Node.js — Rust-backed tool loops, HITL checkpoints, MCP, and OpenAI-compatible streaming. Bring your own HTTP stack.",
   "type": "module",
   "license": "MIT",
   "keywords": [
     "ai",
     "agents",
-    "tools",
-    "workflow",
-    "graph",
     "llm",
+    "tools",
+    "mcp",
+    "openai",
     "typescript",
-    "rust"
+    "rust",
+    "graph",
+    "workflow",
+    "hitl",
+    "checkpoint",
+    "streaming",
+    "zod",
+    "control-plane"
   ],
+  "homepage": "https://monorch.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yogthesharma/monorch.git",
+    "directory": "packages/ai"
+  },
+  "bugs": {
+    "url": "https://github.com/yogthesharma/monorch/issues"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
