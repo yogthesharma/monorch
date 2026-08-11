@@ -1,8 +1,8 @@
 # @monorch/ai
 
-**Typed AI agents & graphs for Node.js** — with a Rust execution engine.
+**The AI control plane for TypeScript backends.**
 
-Not a framework. Not an HTTP stack. Bring Fastify, Hono, Nest, or anything else.
+Agents and graphs in the server you already have. One event bus. No framework.
 
 ```bash
 npm i @monorch/ai
@@ -13,11 +13,11 @@ npm i @monorch/ai
 | You get | You keep |
 | ------- | -------- |
 | Agents with a real tool loop (limits, streaming events) | Your server framework |
-| Zod → validated tools | Your ORM / auth / queues |
-| Graphs with interrupts & checkpoints (HITL) | Your UI |
+| Zod to validated tools | Your ORM / auth / queues |
+| Graphs with interrupts and checkpoints (HITL) | Your UI |
 | MCP (stdio / Streamable HTTP / SSE) | Your model host |
 | OpenAI-compatible providers (SSE, AbortSignal, timeouts) | |
-| Postgres adapters for checkpoints & memory | |
+| Postgres adapters for checkpoints and memory | |
 
 Runtime truth lives in Rust via [`@monorch/runtime`](https://www.npmjs.com/package/@monorch/runtime).
 
@@ -56,8 +56,8 @@ for await (const event of assistant.stream("What's the weather in Lisbon?")) {
 
 ## Docs
 
-- Site: [monorch.ai](https://monorch.ai)
-- Docs: [monorch.ai/docs](https://monorch.ai/docs)
+- Site: [monorch.vercel.app](https://monorch.vercel.app/)
+- Docs: [monorch.vercel.app/docs](https://monorch.vercel.app/docs)
 - GitHub: [yogthesharma/monorch](https://github.com/yogthesharma/monorch)
 - Changelog: [CHANGELOG.md](https://github.com/yogthesharma/monorch/blob/main/CHANGELOG.md)
 

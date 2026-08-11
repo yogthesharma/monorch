@@ -9,12 +9,12 @@ npm i @monorch/ai
 ```
 
 That pulls `@monorch/runtime` plus the matching platform binary
-(`@monorch/runtime-darwin-arm64`, `…-linux-x64-gnu`, `…-win32-x64-msvc`, …).
+(`@monorch/runtime-darwin-arm64`, `...-linux-x64-gnu`, `...-win32-x64-msvc`, and so on).
 
 ## What this package is
 
 - Loader + TypeScript types for the native addon
-- No business logic — agents, tools, and graphs live in Rust and are exposed through [`@monorch/ai`](https://www.npmjs.com/package/@monorch/ai)
+- No business logic: agents, tools, and graphs live in Rust and are exposed through [`@monorch/ai`](https://www.npmjs.com/package/@monorch/ai)
 
 ## Supported platforms
 
@@ -24,7 +24,7 @@ That pulls `@monorch/runtime` plus the matching platform binary
 
 ## Docs
 
-- Site: [monorch.ai](https://monorch.ai)
+- Site: [monorch.vercel.app](https://monorch.vercel.app/)
 - GitHub: [yogthesharma/monorch](https://github.com/yogthesharma/monorch)
 
 ## License

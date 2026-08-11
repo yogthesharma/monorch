@@ -1,7 +1,7 @@
 {
   "name": "@monorch/runtime",
-  "version": "0.1.1",
-  "description": "Prebuilt N-API bindings for the Monorch Rust engine — agents, tools, and graphs. Required by @monorch/ai.",
+  "version": "0.1.2",
+  "description": "Prebuilt N-API bindings for the Monorch Rust engine (agents, tools, and graphs). Required by @monorch/ai.",
   "license": "MIT",
   "keywords": [
     "monorch",
@@ -12,7 +12,7 @@
     "native",
     "nodejs"
   ],
-  "homepage": "https://monorch.ai",
+  "homepage": "https://monorch.vercel.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yogthesharma/monorch.git",
