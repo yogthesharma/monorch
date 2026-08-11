@@ -39,13 +39,5 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  },
-  "optionalDependencies": {
-    "@monorch/runtime-darwin-arm64": "0.1.0",
-    "@monorch/runtime-darwin-x64": "0.1.0",
-    "@monorch/runtime-linux-arm64-gnu": "0.1.0",
-    "@monorch/runtime-linux-x64-gnu": "0.1.0",
-    "@monorch/runtime-win32-arm64-msvc": "0.1.0",
-    "@monorch/runtime-win32-x64-msvc": "0.1.0"
   }
 }

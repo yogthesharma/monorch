@@ -10,6 +10,10 @@
 
 `pnpm publish` rewrites `workspace:*` → the real version automatically.
 
+`optionalDependencies` for platform packages are **stamped in CI** by
+`scripts/stamp-optional-deps.mjs` right before pack/publish (so local/CI
+installs do not need unpublished `@monorch/runtime-*` packages).
+
 ## Prerequisites
 
 1. GitHub repo with Actions enabled
