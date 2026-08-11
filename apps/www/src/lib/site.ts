@@ -3,21 +3,24 @@ export const siteConfig = {
   tagline: "AI control plane for TypeScript",
   description:
     "Agents, tools, graphs, and workflows as a TypeScript library with a Rust execution engine. Bring your own HTTP server — Fastify, Hono, Nest, or anything else.",
-  /** Keep in sync with packages/ai package.json */
-  version: "0.1.0",
   /**
-   * Flip to true when `@monorch/ai` is on the public npm registry.
-   * Until then the site shows monorepo / git install paths only.
+   * Injected from packages/ai/package.json via next.config.ts.
+   * Keep that package version aligned with the npm release you want the site to advertise.
    */
-  npmPublished: process.env.NEXT_PUBLIC_NPM_PUBLISHED === "1",
+  version: process.env.NEXT_PUBLIC_MONORCH_VERSION ?? "0.1.2",
+  /**
+   * Packages are on the public npm registry. Set NEXT_PUBLIC_NPM_PUBLISHED=0 to force
+   * monorepo/git install copy on the site.
+   */
+  npmPublished: process.env.NEXT_PUBLIC_NPM_PUBLISHED !== "0",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://monorch.ai",
   locale: "en_US",
   twitter: "@monorch",
-  github: process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/monorch/monorch",
+  github: process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/yogthesharma/monorch",
   npm: "https://www.npmjs.com/package/@monorch/ai",
   discussions:
     process.env.NEXT_PUBLIC_DISCUSSIONS_URL ??
-    "https://github.com/monorch/monorch/discussions",
+    "https://github.com/yogthesharma/monorch/discussions",
   keywords: [
     "Monorch",
     "TypeScript AI agents",
