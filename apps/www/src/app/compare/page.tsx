@@ -18,7 +18,7 @@ const rows = [
   },
   {
     dim: "HTTP",
-    monorch: "BYO Fastify / Hono",
+    monorch: "BYO HTTP (Fastify, Hono, …)",
     mastra: "Owns more of the app shell",
     lang: "BYO / Lang ecosystem",
     diy: "Yours",
@@ -73,7 +73,7 @@ const faqs = [
   },
   {
     q: "Where do I try it?",
-    plain: "Fastify in 5 minutes recipe, then examples/fastify smoke.",
+    plain: "Getting started, then recipes — HTTP with Fastify is one option. Repo smoke is examples/fastify.",
   },
 ];
 

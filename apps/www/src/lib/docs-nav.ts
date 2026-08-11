@@ -45,9 +45,9 @@ export const docsNav: DocNavGroup[] = [
     title: "Recipes",
     items: [
       {
-        title: "Fastify in 5 minutes",
+        title: "HTTP with Fastify",
         href: "/docs/recipes/fastify",
-        description: "SSE, interrupt, Postgres",
+        description: "One BYO HTTP example (same patterns in Hono)",
       },
       {
         title: "HITL refund",

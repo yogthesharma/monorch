@@ -108,7 +108,7 @@ type McpSession = McpTransport & { close(): Promise<void> };`}</DocCode>
           },
           {
             q: "Where is this smoked?",
-            a: "examples/fastify smokes mock MCP, a real stdio demo server, and a Streamable HTTP demo server.",
+            a: "The repo smoke covers mock MCP, a real stdio demo server, and a Streamable HTTP demo server.",
           },
           {
             q: "When do I call close()?",

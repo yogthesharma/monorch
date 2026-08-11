@@ -90,7 +90,7 @@ await ensureMonorchSchema(pool);`}</DocCode>
         items={[
           {
             q: "Do I need Postgres for smoke?",
-            a: "No. Adapters take SqlQueryable. The Fastify smoke uses an in-memory SQL stand-in.",
+            a: "No. Adapters take SqlQueryable. The repo smoke uses an in-memory SQL stand-in.",
           },
           {
             q: "Is pg required always?",

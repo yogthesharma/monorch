@@ -33,10 +33,11 @@ export default function DocsIntroPage() {
 
       <DocH2>Mental model</DocH2>
       <DocP>
-        Your Fastify or Hono handler owns HTTP. Monorch owns the agent loop and graph cursor. Model
-        HTTP, tool <code className="font-mono text-sm">execute</code>, edge predicates, and
-        checkpointer I/O stay in TypeScript. One <code className="font-mono text-sm">AiEvent</code>{" "}
-        stream feeds SSE, logs, and optional OpenTelemetry.
+        Your HTTP handler owns the request — Fastify, Hono, Nest, or anything else. Monorch owns the
+        agent loop and graph cursor. Model HTTP, tool{" "}
+        <code className="font-mono text-sm">execute</code>, edge predicates, and checkpointer I/O
+        stay in TypeScript. One <code className="font-mono text-sm">AiEvent</code> stream feeds SSE,
+        logs, and optional OpenTelemetry.
       </DocP>
 
       <DocH2>What feels different</DocH2>
@@ -70,7 +71,7 @@ export default function DocsIntroPage() {
           },
           {
             q: "What should I learn first?",
-            a: "Open Fastify in 5 minutes, then Tools → Agents → Graphs. Use /compare if you are choosing vs Mastra or LangGraph.",
+            a: "Start with Getting started, then Tools → Agents → Graphs. Use /compare if you are choosing vs Mastra or LangGraph. HTTP with Fastify is one optional recipe.",
           },
         ]}
       />

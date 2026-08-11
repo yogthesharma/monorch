@@ -103,7 +103,7 @@ const reply = await handle.generateObject({
 
       <DocH2>Live smoke</DocH2>
       <DocP>
-        The Fastify example supports{" "}
+        The repo example supports{" "}
         <code className="font-mono text-sm">LIVE_SMOKE=1</code> with{" "}
         <code className="font-mono text-sm">OPENAI_API_KEY</code> or{" "}
         <code className="font-mono text-sm">LITELLM_API_KEY</code> (optional{" "}

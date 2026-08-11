@@ -15,7 +15,7 @@ const layers = [
   {
     name: "examples/fastify",
     role: "BYO HTTP example",
-    detail: "Shows how handlers call agent.stream and graph.start.",
+    detail: "Sample handlers (Fastify host). Same APIs for Hono or Nest.",
   },
   {
     name: "packages/ai",

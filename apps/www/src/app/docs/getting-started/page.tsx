@@ -11,8 +11,8 @@ export default function GettingStartedPage() {
     <>
       <DocH1>Getting started</DocH1>
       <DocLead>
-        Build the native runtime, run the Fastify smoke, then copy the smallest agent and graph
-        patterns into your app.
+        Build the native runtime, run the repo smoke, then copy the smallest agent and graph
+        patterns into your own HTTP handlers (Fastify, Hono, Nest, …).
       </DocLead>
 
       <DocH2>Install and build</DocH2>
@@ -22,7 +22,7 @@ export default function GettingStartedPage() {
       </DocP>
       <DocCode lang="bash" filename="terminal">{`pnpm install
 pnpm build          # @monorch/runtime + @monorch/ai
-pnpm smoke          # Fastify agent + graph + MCP + stream
+pnpm smoke          # BYO HTTP example (examples/fastify)
 pnpm ci             # engine tests + build + typecheck + smoke
 pnpm dev:www        # docs site on :3100`}</DocCode>
 
@@ -81,11 +81,17 @@ if (run.status === "waitingInterrupt") {
 
       <DocH2>Reference example</DocH2>
       <DocP>
-        <code className="font-mono text-sm">examples/fastify</code> covers agent run, SSE stream,
-        handoffs, MCP tools, OTel listener, branching/cycles, checkpoint v2 restore, idempotent{" "}
+        The repo smoke lives under <code className="font-mono text-sm">examples/fastify</code> — a
+        BYO HTTP sample, not a Fastify requirement. It covers agent run, SSE stream, handoffs, MCP
+        tools, OTel listener, branching/cycles, checkpoint v2 restore, idempotent{" "}
         <code className="font-mono text-sm">drive()</code> while waiting, thread memory, abort, graph{" "}
         <code className="font-mono text-sm">replace</code>, Postgres adapters (in-memory SQL
-        stand-in), and optional <code className="font-mono text-sm">LIVE_SMOKE=1</code>.
+        stand-in), and optional <code className="font-mono text-sm">LIVE_SMOKE=1</code>. For a
+        walkthrough of the HTTP wiring, see{" "}
+        <a href="/docs/recipes/fastify" className="text-foreground underline-offset-4 hover:underline">
+          HTTP with Fastify
+        </a>
+        .
       </DocP>
 
       <DocFaq

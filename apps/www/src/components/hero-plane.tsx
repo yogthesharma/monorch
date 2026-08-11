@@ -29,7 +29,7 @@ export function HeroDiagram() {
         <div className="mt-5 space-y-3">
           <Node
             title="Your server"
-            detail="Fastify · Hono · Nest"
+            detail="Your HTTP · Fastify · Hono · Nest"
             tone="muted"
             step={0}
           />

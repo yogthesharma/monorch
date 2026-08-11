@@ -44,7 +44,7 @@ await bot.run("ping");`}</DocCode>
         items={[
           {
             q: "How do I smoke live?",
-            a: "LIVE_SMOKE=1 with OPENAI_API_KEY or LITELLM_API_KEY in examples/fastify.",
+            a: "LIVE_SMOKE=1 with OPENAI_API_KEY or LITELLM_API_KEY against the repo smoke example.",
           },
         ]}
       />

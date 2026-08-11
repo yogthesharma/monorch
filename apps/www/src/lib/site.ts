@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Monorch",
   tagline: "AI control plane for TypeScript",
   description:
-    "Agents, tools, graphs, and workflows as a TypeScript library with a Rust execution engine. Bring your own Fastify or Hono.",
+    "Agents, tools, graphs, and workflows as a TypeScript library with a Rust execution engine. Bring your own HTTP server — Fastify, Hono, Nest, or anything else.",
   /** Keep in sync with packages/ai package.json */
   version: "0.1.0",
   /**
@@ -26,8 +26,9 @@ export const siteConfig = {
     "MCP tools",
     "graph checkpoints",
     "OpenAI compatible",
-    "Fastify AI",
+    "BYO HTTP",
     "Hono AI",
+    "Fastify AI",
     "AiEvent streaming",
   ],
 };
@@ -83,7 +84,7 @@ export const docPages: DocPageMeta[] = [
     title: "Getting started",
     path: "/docs/getting-started",
     description:
-      "Install, build the native runtime, run the Fastify smoke, and copy the smallest agent and graph patterns.",
+      "Install, build the native runtime, run the repo smoke, and copy the smallest agent and graph patterns into your HTTP handlers.",
   },
   {
     title: "Agents",
@@ -146,10 +147,10 @@ export const docPages: DocPageMeta[] = [
       "Tap AiEvent streams with createOtelListener and tapEvents for OpenTelemetry and custom sinks.",
   },
   {
-    title: "Fastify in 5 minutes",
+    title: "HTTP with Fastify",
     path: "/docs/recipes/fastify",
     description:
-      "End-to-end Fastify recipe: install, agent SSE, interrupt + resume, and Postgres adapters.",
+      "One BYO HTTP recipe using Fastify: agent SSE, interrupt + resume, and Postgres adapters. Same patterns work in Hono or Nest.",
   },
   {
     title: "HITL refund",
@@ -230,7 +231,7 @@ git clone ${repo}.git
 cd monorch
 pnpm install
 pnpm build          # includes native @monorch/runtime
-pnpm smoke          # Fastify example
+pnpm smoke          # examples/fastify (BYO HTTP smoke)
 
 # App code imports workspace packages:
 #   "@monorch/ai": "workspace:*"`;

@@ -72,7 +72,7 @@ export default function RuntimeReferencePage() {
         path="/docs/reference/runtime"
         items={[
           {
-            q: "Should my Fastify app import @monorch/runtime?",
+            q: "Should my app import @monorch/runtime?",
             a: "No. Import @monorch/ai. Runtime is a dependency of the AI package.",
           },
           {

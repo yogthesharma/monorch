@@ -45,8 +45,8 @@ export default function OpenGraphImage() {
             AI control plane for TypeScript
           </div>
           <div style={{ fontSize: 28, color: "#a8bdb0", maxWidth: 820, lineHeight: 1.35 }}>
-            Agents, tools, and graphs as a library. Rust engine underneath. Bring your own Fastify
-            or Hono.
+            Agents, tools, and graphs as a library. Rust engine underneath. Bring your own HTTP
+            server.
           </div>
         </div>
         <div style={{ display: "flex", fontSize: 22, color: "#7f9a8a" }}>@monorch/ai</div>

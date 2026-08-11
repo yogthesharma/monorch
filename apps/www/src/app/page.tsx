@@ -136,8 +136,8 @@ export default async function HomePage() {
               </p>
               <div className="animate-rise-delay-2 mt-8 flex flex-wrap items-center gap-3">
                 <Button asChild size="lg" className="h-12 rounded-md px-7 text-base">
-                  <Link href="/docs/recipes/fastify">
-                    Fastify in 5 minutes
+                  <Link href="/docs/getting-started">
+                    Get started
                     <ArrowRight className="ml-1.5 h-4 w-4" />
                   </Link>
                 </Button>
@@ -174,15 +174,15 @@ export default async function HomePage() {
                 Smoke path
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-                What the Fastify smoke looks like.
+                What a library smoke looks like.
               </h2>
               <p className="mt-4 max-w-md text-lg leading-relaxed text-muted-foreground">
                 SSE from <code className="font-mono text-sm">agent.stream</code>, then interrupt,
                 checkpoint, and resume. Same events you wire to OTel. Not a Studio.
               </p>
               <Button asChild variant="outline" className="mt-8">
-                <Link href="/docs/recipes/fastify">
-                  Run it yourself
+                <Link href="/docs/getting-started">
+                  Run the smoke
                   <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Link>
               </Button>
@@ -283,7 +283,7 @@ export default async function HomePage() {
               {[
                 {
                   title: "HTTP",
-                  body: "Fastify, Hono, or Nest keep the request lifecycle. Monorch runs inside handlers.",
+                  body: "Your server keeps the request lifecycle — Fastify, Hono, Nest, or plain Node. Monorch runs inside handlers.",
                 },
                 {
                   title: "Models",
@@ -342,18 +342,24 @@ export default async function HomePage() {
             <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
               <div>
                 <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Fastify in 5 minutes.
+                  Drop into your handlers.
                 </h2>
-                <p className="mt-3 text-lg text-muted-foreground">
-                  Agent SSE, interrupt + resume, optional Postgres.
+                <p className="mt-3 max-w-xl text-lg text-muted-foreground">
+                  Start with Getting started, then pick a recipe — HTTP with Fastify is one option
+                  among several.
                 </p>
               </div>
-              <Button asChild size="lg" className="h-12 px-7 text-base">
-                <Link href="/docs/recipes/fastify">
-                  Open the recipe
-                  <ArrowRight className="ml-1.5 h-4 w-4" />
-                </Link>
-              </Button>
+              <div className="flex flex-wrap gap-3">
+                <Button asChild size="lg" className="h-12 px-7 text-base">
+                  <Link href="/docs/getting-started">
+                    Get started
+                    <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="h-12 px-7 text-base">
+                  <Link href="/docs/recipes/fastify">HTTP with Fastify</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>

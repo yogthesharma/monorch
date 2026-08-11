@@ -66,7 +66,7 @@ for await (const ev of tapEvents(bot.stream(msg), createOtelListener())) {
           },
           {
             q: "Where is this smoked?",
-            a: "examples/fastify attaches createOtelListener and records event types during agent runs.",
+            a: "The repo smoke (examples/fastify) attaches createOtelListener and records event types during agent runs.",
           },
         ]}
       />

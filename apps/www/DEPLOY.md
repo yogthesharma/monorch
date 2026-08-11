@@ -27,7 +27,7 @@ pnpm --filter @monorch/www start   # or deploy .next to your host
 
 ## Post-deploy smoke
 
-- [ ] `/` hero loads, logo + CTA → `/docs/recipes/fastify`
+- [ ] `/` hero loads, logo + CTA → `/docs/getting-started`
 - [ ] Docs search filters nav
 - [ ] `/changelog` matches `siteConfig.version`
 - [ ] Footer GitHub / Discussions open the real repo

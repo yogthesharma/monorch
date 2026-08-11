@@ -20,7 +20,7 @@ const release = {
     "MCP: mcpStdio / mcpHttp + mcpTools JSON Schema → IR",
     "OTel hooks via createOtelListener",
     "OpenAI-compatible provider with SSE, AbortSignal, timeouts",
-    "Fastify BYO example + pnpm smoke / smoke:live",
+    "BYO HTTP example (examples/fastify) + pnpm smoke / smoke:live",
   ],
 };
 

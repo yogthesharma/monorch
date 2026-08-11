@@ -4,7 +4,7 @@ import { siteConfig } from "@/lib/site";
 
 const productLinks = [
   { href: "/docs", label: "Docs" },
-  { href: "/docs/recipes/fastify", label: "Quickstart" },
+  { href: "/docs/getting-started", label: "Quickstart" },
   { href: "/compare", label: "Compare" },
   { href: "/architecture", label: "Architecture" },
   { href: "/changelog", label: "Changelog" },

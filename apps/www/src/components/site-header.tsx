@@ -56,7 +56,7 @@ export function SiteHeader({ className }: { className?: string }) {
             GitHub
           </a>
           <Button asChild size="default" className="rounded-md text-base">
-            <Link href="/docs/recipes/fastify">Get started</Link>
+            <Link href="/docs/getting-started">Get started</Link>
           </Button>
         </nav>
 
@@ -89,7 +89,7 @@ export function SiteHeader({ className }: { className?: string }) {
                 GitHub
               </a>
               <Button asChild className="mt-2">
-                <Link href="/docs/recipes/fastify">Get started</Link>
+                <Link href="/docs/getting-started">Get started</Link>
               </Button>
             </div>
           </SheetContent>

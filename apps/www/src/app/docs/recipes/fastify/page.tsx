@@ -9,10 +9,10 @@ export const metadata = docMetadata(page);
 export default function FastifyRecipePage() {
   return (
     <>
-      <DocH1>Fastify in 5 minutes</DocH1>
+      <DocH1>HTTP with Fastify</DocH1>
       <DocLead>
-        One path from zero to agent SSE, interruptible graph, and durable Postgres adapters. Fastify
-        owns HTTP. Monorch owns the control plane.
+        One concrete BYO HTTP recipe: agent SSE, interruptible graph, and durable Postgres adapters.
+        Fastify is the sample server — the same patterns drop into Hono, Nest, or plain Node.
       </DocLead>
 
       <DocH2>1. Install</DocH2>
@@ -131,8 +131,9 @@ const threads = postgresThreads(pool);
 # optional live provider:
 # LIVE_SMOKE=1 OPENAI_API_KEY=... pnpm smoke:live`}</DocCode>
       <DocP>
-        The repo example at <code className="font-mono text-sm">examples/fastify</code> covers
-        handoffs, MCP, OTel, branching, abort, hot-reload, and Postgres stand-ins.
+        The repo smoke at <code className="font-mono text-sm">examples/fastify</code> covers
+        handoffs, MCP, OTel, branching, abort, hot-reload, and Postgres stand-ins — Fastify is only
+        the sample host.
       </DocP>
 
       <DocFaq
@@ -140,7 +141,7 @@ const threads = postgresThreads(pool);
         items={[
           {
             q: "Do I need Fastify specifically?",
-            a: "No. The same patterns work in Hono or Nest. This recipe uses Fastify because the repo smoke does.",
+            a: "No. Same agent.stream / graph.start patterns work in Hono, Nest, or plain Node. This recipe uses Fastify because the repo smoke does.",
           },
           {
             q: "Why mock instead of OpenAI first?",
@@ -148,7 +149,7 @@ const threads = postgresThreads(pool);
           },
           {
             q: "Where next?",
-            a: "Agents and Graphs for depth. Compare if you are choosing vs Mastra or LangGraph.",
+            a: "Getting started, then Agents and Graphs. Compare if you are choosing vs Mastra or LangGraph.",
           },
         ]}
       />

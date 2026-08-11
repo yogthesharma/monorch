@@ -119,7 +119,7 @@ await store.put(["orders"], "ord_9", { lookedUp: true });`}</DocCode>
           },
           {
             q: "Do I need a real Postgres for local smoke?",
-            a: "No. Adapters take any SqlQueryable. The Fastify smoke uses an in-memory SQL stand-in; point a pg.Pool at DATABASE_URL in production.",
+            a: "No. Adapters take any SqlQueryable. The repo smoke uses an in-memory SQL stand-in; point a pg.Pool at DATABASE_URL in production.",
           },
         ]}
       />
