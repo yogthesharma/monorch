@@ -15,7 +15,6 @@
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
     "create-npm-dir": "napi create-npm-dir -t .",
-    "prepublishOnly": "napi prepublish -t npm --skip-gh-release",
     "version": "napi version"
   },
   "napi": {

@@ -133,14 +133,26 @@ jobs:
             echo "NPM_TOKEN secret is required to publish"
             exit 1
           fi
-          for dir in bindings/node/npm/*; do
-            if [ -d "$dir" ]; then
-              echo "Publishing platform package $dir"
+          publish_if_needed() {
+            local dir="$1"
+            local name version
+            name="$(node -p "require('./${dir}/package.json').name")"
+            version="$(node -p "require('./${dir}/package.json').version")"
+            if npm view "${name}@${version}" version >/dev/null 2>&1; then
+              echo "Skip already published ${name}@${version}"
+            else
+              echo "Publishing ${name}@${version} from ${dir}"
               (cd "$dir" && npm publish --access public)
             fi
+          }
+          for dir in bindings/node/npm/*; do
+            if [ -d "$dir" ]; then
+              publish_if_needed "$dir"
+            fi
           done
-          (cd bindings/node && pnpm publish --access public --no-git-checks)
-          (cd packages/ai && pnpm publish --access public --no-git-checks)
+          publish_if_needed bindings/node
+          publish_if_needed packages/ai
+
       - uses: actions/upload-artifact@v4
         with:
           name: npm-packs
