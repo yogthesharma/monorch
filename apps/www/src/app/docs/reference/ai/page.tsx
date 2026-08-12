@@ -165,11 +165,19 @@ export default function AiReferencePage() {
         <code className="font-mono text-sm">AGENT_FAILED</code>,{" "}
         <code className="font-mono text-sm">AGENT_MISSING</code>,{" "}
         <code className="font-mono text-sm">HANDOFF_DENIED</code>,{" "}
+        <code className="font-mono text-sm">TOOL_PREPARE_FAILED</code>,{" "}
         <code className="font-mono text-sm">GRAPH_FAILED</code>,{" "}
         <code className="font-mono text-sm">GRAPH_ROUTE</code>,{" "}
         <code className="font-mono text-sm">CHECKPOINT_NOT_FOUND</code>,{" "}
         <code className="font-mono text-sm">VALIDATION_FAILED</code>,{" "}
-        <code className="font-mono text-sm">NODE_MISSING</code>.
+        <code className="font-mono text-sm">NODE_MISSING</code>. Full catalog and recovery:{" "}
+        <Link
+          href="/docs/reference/errors"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          Errors &amp; failure modes
+        </Link>
+        .
       </DocP>
 
       <DocFaq

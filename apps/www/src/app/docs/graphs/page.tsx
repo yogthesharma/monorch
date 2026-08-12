@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
@@ -109,6 +110,18 @@ graph("hot")
   .compile({ replace: true });
 
 await run.resume("approved"); // throws — defHash no longer matches`}</DocCode>
+      <DocP>
+        Mismatch and bad resume surface as{" "}
+        <code className="font-mono text-sm">GRAPH_FAILED</code> /{" "}
+        <code className="font-mono text-sm">GRAPH_RESUME_INVALID</code>. Recovery steps:{" "}
+        <Link
+          href="/docs/reference/errors"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          Errors &amp; failure modes
+        </Link>
+        .
+      </DocP>
 
       <DocH2>Run handle</DocH2>
       <DocP>
@@ -138,7 +151,23 @@ refund.restore(threadId);`}</DocCode>
           },
           {
             q: "What does compile({ replace: true }) do?",
-            a: "It swaps the registered graph definition for that name. Existing runs keep their old defHash and fail if you try to advance them after the swap. Omit replace to reject duplicate names.",
+            plain:
+              "It swaps the registered graph definition for that name. Existing runs keep their old defHash and fail (GRAPH_FAILED) if you try to advance them after the swap. See Errors & failure modes.",
+            a: (
+              <>
+                It swaps the registered graph definition for that name. Existing runs keep their old{" "}
+                <code className="font-mono text-sm">defHash</code> and fail (
+                <code className="font-mono text-sm">GRAPH_FAILED</code>) if you try to advance them
+                after the swap. Omit replace to reject duplicate names. See{" "}
+                <Link
+                  href="/docs/reference/errors"
+                  className="text-foreground underline-offset-4 hover:underline"
+                >
+                  Errors &amp; failure modes
+                </Link>
+                .
+              </>
+            ),
           },
           {
             q: "Can node state merge across steps?",

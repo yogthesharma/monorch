@@ -30,7 +30,7 @@ Tracking: [issues labeled `roadmap`](https://github.com/yogthesharma/monorch/iss
 
 ## 0.3 — Production ops
 
-- [ ] [#6](https://github.com/yogthesharma/monorch/issues/6) Document failure modes and stable AiError codes
+- [x] [#6](https://github.com/yogthesharma/monorch/issues/6) Document failure modes and stable AiError codes
 - [ ] [#7](https://github.com/yogthesharma/monorch/issues/7) Checkpoint migration story (v2 and beyond)
 - [ ] [#8](https://github.com/yogthesharma/monorch/issues/8) npm provenance and release integrity
 - [ ] [#9](https://github.com/yogthesharma/monorch/issues/9) Performance baselines for agent loop and graphs

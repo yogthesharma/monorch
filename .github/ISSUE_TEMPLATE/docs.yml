@@ -7,7 +7,7 @@ body:
     id: location
     attributes:
       label: Where?
-      description: URL or file path (e.g. https://monorch.ai/docs/agents or packages/ai/README.md)
+      description: URL or file path (e.g. https://monorch.vercel.app/docs/agents or packages/ai/README.md)
     validations:
       required: true
   - type: textarea

@@ -1,12 +1,14 @@
 # Deploying apps/www
 
-Checklist for putting the Monorch site on **monorch.ai** (or your domain).
+**Current production:** [https://monorch.vercel.app](https://monorch.vercel.app)
+
+Custom domain (`monorch.ai`) is optional later — until then keep `NEXT_PUBLIC_SITE_URL` on the Vercel origin.
 
 ## Env
 
 | Variable | Purpose |
 | -------- | ------- |
-| `NEXT_PUBLIC_SITE_URL` | Canonical origin, e.g. `https://monorch.ai` (drives metadata, sitemap, OG) |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin, e.g. `https://monorch.vercel.app` (metadata, sitemap, OG) |
 | `NEXT_PUBLIC_GITHUB_URL` | Optional override; default `https://github.com/yogthesharma/monorch` |
 | `NEXT_PUBLIC_DISCUSSIONS_URL` | Optional Discussions URL |
 | `NEXT_PUBLIC_NPM_PUBLISHED=0` | Force monorepo/git install copy (default: npm install paths — packages are published) |
@@ -20,10 +22,10 @@ pnpm --filter @monorch/www build
 pnpm --filter @monorch/www start   # or deploy .next to your host
 ```
 
-## DNS / host
+## Host / domain
 
-1. Point `monorch.ai` (and `www` if needed) at your host (Vercel, Cloudflare, etc.).
-2. Set `NEXT_PUBLIC_SITE_URL` to the production HTTPS origin before build.
+1. Deploy `apps/www` to Vercel (already live at `monorch.vercel.app`).
+2. Set `NEXT_PUBLIC_SITE_URL` to that HTTPS origin before build (or to `https://monorch.ai` once DNS is attached).
 3. Confirm `/robots.txt`, `/sitemap.xml`, `/llms.txt`, `/opengraph-image` respond 200.
 4. Share a link once and verify OG preview (title, description, image).
 

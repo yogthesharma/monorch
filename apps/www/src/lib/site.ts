@@ -13,7 +13,7 @@ export const siteConfig = {
    * monorepo/git install copy on the site.
    */
   npmPublished: process.env.NEXT_PUBLIC_NPM_PUBLISHED !== "0",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://monorch.ai",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://monorch.vercel.app",
   locale: "en_US",
   twitter: "@monorch",
   github: process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/yogthesharma/monorch",
@@ -218,7 +218,7 @@ export const docPages: DocPageMeta[] = [
   {
     title: "Error codes",
     path: "/docs/reference/errors",
-    description: "AiError codes: when they happen and what to do.",
+    description: "Failure modes and stable AiError codes — abort, tools, interrupt, def-hash.",
   },
 ];
 

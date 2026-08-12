@@ -108,7 +108,7 @@ export const docsNav: DocNavGroup[] = [
       {
         title: "Error codes",
         href: "/docs/reference/errors",
-        description: "AiError codes and fixes",
+        description: "Failure modes and AiError codes",
       },
     ],
   },

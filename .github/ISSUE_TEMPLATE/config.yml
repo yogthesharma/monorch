@@ -13,5 +13,5 @@ contact_links:
     url: https://github.com/yogthesharma/monorch/security/advisories/new
     about: Privately report security issues. Do not open a public issue.
   - name: Documentation
-    url: https://monorch.ai/docs
+    url: https://monorch.vercel.app/docs
     about: Product docs, recipes, and API reference.

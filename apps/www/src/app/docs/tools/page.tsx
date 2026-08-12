@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
@@ -45,7 +46,15 @@ const value = await callTool("lookup_order", { orderId: "ord_9" }, { roles: ["ag
         <code className="font-mono text-sm">ToolCaller</code> also accepts optional{" "}
         <code className="font-mono text-sm">subject</code> (user/tenant id). Rust authorization keys
         off roles; <code className="font-mono text-sm">subject</code> is forwarded into{" "}
-        <code className="font-mono text-sm">execute</code> for audit and app-level checks.
+        <code className="font-mono text-sm">execute</code> for audit and app-level checks. Failures
+        use <code className="font-mono text-sm">TOOL_PREPARE_FAILED</code> — see{" "}
+        <Link
+          href="/docs/reference/errors"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          Errors &amp; failure modes
+        </Link>
+        .
       </DocP>
       <DocCode lang="typescript" filename="caller.ts">{`await callTool(
   "lookup_order",

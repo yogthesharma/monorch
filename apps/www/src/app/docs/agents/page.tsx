@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
@@ -162,7 +163,23 @@ await triage.handoff(billing, "Customer wants a refund");`}</DocCode>
           },
           {
             q: "What happens when maxSteps is hit?",
-            a: "The Rust agent run fails. You get an AiError / failed event rather than an infinite loop.",
+            plain:
+              "The Rust agent run fails with AiError AGENT_FAILED rather than an infinite loop. See Errors & failure modes.",
+            a: (
+              <>
+                The Rust agent run fails with{" "}
+                <code className="font-mono text-sm">AiError</code> code{" "}
+                <code className="font-mono text-sm">AGENT_FAILED</code> rather than an infinite loop.
+                Full catalog:{" "}
+                <Link
+                  href="/docs/reference/errors"
+                  className="text-foreground underline-offset-4 hover:underline"
+                >
+                  Errors &amp; failure modes
+                </Link>
+                .
+              </>
+            ),
           },
           {
             q: "Can two agents share tools?",
@@ -181,7 +198,25 @@ await triage.handoff(billing, "Customer wants a refund");`}</DocCode>
           },
           {
             q: "What run_end status do handoffs and aborts use?",
-            a: "Handoffs emit run_end with status handed_off before the target agent starts. Aborts emit run_end with status aborted and throw AiError with code ABORTED.",
+            plain:
+              "Handoffs emit run_end with status handed_off before the target agent starts. Aborts emit run_end with status aborted and throw AiError ABORTED. See Errors & failure modes.",
+            a: (
+              <>
+                Handoffs emit <code className="font-mono text-sm">run_end</code> with status{" "}
+                <code className="font-mono text-sm">handed_off</code> before the target agent starts.
+                Aborts emit <code className="font-mono text-sm">run_end</code> with status{" "}
+                <code className="font-mono text-sm">aborted</code> and throw{" "}
+                <code className="font-mono text-sm">AiError</code> with code{" "}
+                <code className="font-mono text-sm">ABORTED</code>. See{" "}
+                <Link
+                  href="/docs/reference/errors"
+                  className="text-foreground underline-offset-4 hover:underline"
+                >
+                  Errors &amp; failure modes
+                </Link>
+                .
+              </>
+            ),
           },
           {
             q: "Why do smoke tests create unique agent names?",

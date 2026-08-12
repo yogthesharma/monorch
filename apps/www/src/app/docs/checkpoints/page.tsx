@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
@@ -93,6 +94,16 @@ const refund = graph("refund")
   input: { orderId: "ord_9" },
   // plus run cursor / state / outputs from the engine
 }`}</DocCode>
+      <DocP>
+        After a definition replace, restore / resume can fail on hash mismatch. Codes and recovery:{" "}
+        <Link
+          href="/docs/reference/errors"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          Errors &amp; failure modes
+        </Link>
+        .
+      </DocP>
 
       <DocFaq
         path="/docs/checkpoints"
@@ -115,10 +126,19 @@ const refund = graph("refund")
           },
           {
             q: "What if restore finds nothing?",
-            plain: "Monorch throws CHECKPOINT_NOT_FOUND. Start a new run for that thread.",
+            plain:
+              "Monorch throws CHECKPOINT_NOT_FOUND. Start a new run for that thread. See Errors & failure modes.",
             a: (
               <>
-                Monorch throws <code className="font-mono text-sm">CHECKPOINT_NOT_FOUND</code>.
+                Monorch throws <code className="font-mono text-sm">CHECKPOINT_NOT_FOUND</code>. Start
+                a new run for that thread. Catalog:{" "}
+                <Link
+                  href="/docs/reference/errors"
+                  className="text-foreground underline-offset-4 hover:underline"
+                >
+                  Errors &amp; failure modes
+                </Link>
+                .
               </>
             ),
           },
