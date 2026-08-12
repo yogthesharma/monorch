@@ -1,7 +1,7 @@
 name: Native builds
 
 # Builds platform `.node` artifacts for @monorch/runtime.
-# Defaults triples: darwin-x64/arm64, linux-x64/arm64-gnu, win32-x64/arm64-msvc
+# Triples: darwin x64/arm64, linux gnu + musl x64/arm64, win32 x64/arm64-msvc
 
 on:
   workflow_dispatch:
@@ -27,6 +27,12 @@ jobs:
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             linker: aarch64-linux-gnu-gcc
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            cross: musl
+          - host: ubuntu-latest
+            target: aarch64-unknown-linux-musl
+            cross: musl
           - host: windows-latest
             target: x86_64-pc-windows-msvc
           - host: windows-latest
@@ -60,9 +66,24 @@ jobs:
           echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> "$GITHUB_ENV"
           echo "CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc" >> "$GITHUB_ENV"
           echo "CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++" >> "$GITHUB_ENV"
+      - name: Install zig (musl cross)
+        if: matrix.settings.cross == 'musl'
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.14.1
+      - name: Install cargo-zigbuild (musl cross)
+        if: matrix.settings.cross == 'musl'
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-zigbuild
       - name: Build native
         working-directory: bindings/node
-        run: pnpm exec napi build --platform --release --target ${{ matrix.settings.target }}
+        run: |
+          EXTRA=""
+          if [ "${{ matrix.settings.cross }}" = "musl" ]; then
+            EXTRA="--cross-compile"
+          fi
+          pnpm exec napi build --platform --release --target ${{ matrix.settings.target }} $EXTRA
       - uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}

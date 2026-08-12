@@ -50,3 +50,36 @@ jobs:
         run: pnpm test:ai
       - name: Smoke
         run: pnpm smoke
+
+  alpine-musl:
+    name: Alpine musl native smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-musl
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            . -> target
+            bindings/node -> target
+          key: musl-x64
+      - uses: mlugg/setup-zig@v2
+        with:
+          version: 0.14.1
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-zigbuild
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: pnpm install --frozen-lockfile
+      - name: Build linux-x64-musl native
+        working-directory: bindings/node
+        run: pnpm exec napi build --platform --release --target x86_64-unknown-linux-musl --cross-compile
+      - name: Smoke on Alpine (node:22-alpine)
+        run: docker run --rm -v "$PWD:/work" -w /work node:22-alpine node scripts/alpine-musl-smoke.mjs

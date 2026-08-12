@@ -32,8 +32,8 @@ run("pnpm", ["pack", "--pack-destination", packs], join(root, "packages/ai"));
 
 const runtimePkg = JSON.parse(readFileSync(join(root, "bindings/node", "package.json"), "utf8"));
 const opts = Object.keys(runtimePkg.optionalDependencies ?? {});
-if (opts.length < 6) {
-  console.error(`Expected >=6 optionalDependencies, got ${opts.length}:`, opts);
+if (opts.length < 8) {
+  console.error(`Expected >=8 optionalDependencies, got ${opts.length}:`, opts);
   process.exit(1);
 }
 

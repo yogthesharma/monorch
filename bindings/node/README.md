@@ -19,8 +19,12 @@ That pulls `@monorch/runtime` plus the matching platform binary
 ## Supported platforms
 
 - macOS `x64` / `arm64`
-- Linux GNU `x64` / `arm64`
+- Linux GNU `x64` / `arm64` (glibc — typical Debian/Ubuntu/RHEL VMs)
+- Linux musl `x64` / `arm64` (Alpine, distroless musl, many Docker images)
 - Windows `x64` / `arm64`
+
+Platform packages look like `@monorch/runtime-linux-x64-gnu` or `@monorch/runtime-linux-x64-musl`.
+The loader picks gnu vs musl at install/runtime based on the host libc.
 
 ## Docs
 

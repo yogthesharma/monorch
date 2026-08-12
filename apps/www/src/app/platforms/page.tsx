@@ -9,9 +9,12 @@ export const metadata = pageMetadata(page);
 const targets = [
   { os: "darwin", arch: "arm64", note: "Apple Silicon" },
   { os: "darwin", arch: "x64", note: "Intel Mac" },
-  { os: "linux", arch: "arm64", note: "Graviton / aarch64" },
-  { os: "linux", arch: "x64", note: "Most cloud VMs" },
+  { os: "linux", arch: "arm64-gnu", note: "Graviton / aarch64 (glibc)" },
+  { os: "linux", arch: "x64-gnu", note: "Most cloud VMs (glibc)" },
+  { os: "linux", arch: "arm64-musl", note: "Alpine / musl aarch64" },
+  { os: "linux", arch: "x64-musl", note: "Alpine / musl Docker" },
   { os: "win32", arch: "x64", note: "Windows servers" },
+  { os: "win32", arch: "arm64", note: "Windows on ARM" },
 ];
 
 export default function PlatformsPage() {
@@ -94,7 +97,10 @@ export default function PlatformsPage() {
             <pre className="overflow-x-auto p-5 font-mono text-sm leading-relaxed text-foreground/90">
               <code>{`pnpm build:native   # from monorepo root
 pnpm build
-pnpm smoke`}</code>
+pnpm test:engine    # Rust unit tests
+pnpm test:ai        # @monorch/ai TS tests
+pnpm smoke          # examples/fastify
+pnpm smoke:npm      # published @monorch/ai consumer smoke`}</code>
             </pre>
           </div>
 
@@ -108,7 +114,8 @@ pnpm smoke`}</code>
             >
               {siteConfig.github.replace("https://", "")}
             </a>{" "}
-            for build and smoke status.
+            for build, test, and smoke status. GNU vs musl Linux is selected automatically
+            at runtime (`@monorch/runtime-linux-*-gnu` vs `...-musl`).
           </p>
         </div>
       </section>

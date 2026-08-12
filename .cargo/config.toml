@@ -1,0 +1,6 @@
+# Required for cdylib on musl (see https://napi.rs/docs/more/faq#build-for-linux-alpine)
+[target.x86_64-unknown-linux-musl]
+rustflags = ["-C", "target-feature=-crt-static"]
+
+[target.aarch64-unknown-linux-musl]
+rustflags = ["-C", "target-feature=-crt-static"]
