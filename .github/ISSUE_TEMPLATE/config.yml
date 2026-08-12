@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question (Discussions)
+    url: https://github.com/yogthesharma/monorch/discussions/new?category=q-a
+    about: How-to questions, integration help, and “is this expected?” — not bugs.
+  - name: Propose an idea (Discussions)
+    url: https://github.com/yogthesharma/monorch/discussions/new?category=ideas
+    about: Feature ideas and RFCs. Check ROADMAP.md first.
+  - name: Show and tell (Discussions)
+    url: https://github.com/yogthesharma/monorch/discussions/new?category=show-and-tell
+    about: Share demos, blogs, and production stories.
+  - name: Report a security vulnerability
+    url: https://github.com/yogthesharma/monorch/security/advisories/new
+    about: Privately report security issues. Do not open a public issue.
+  - name: Documentation
+    url: https://monorch.ai/docs
+    about: Product docs, recipes, and API reference.

@@ -87,6 +87,18 @@ const checkpointer = postgresCheckpointer(pool);
 
 `pg` is an optional peer dependency — only required when importing `@monorch/ai/postgres`.
 
+## Community
+
+| | |
+| --- | --- |
+| **Questions** | [Discussions → Q&A](https://github.com/yogthesharma/monorch/discussions/categories/q-a) |
+| **Ideas** | [Discussions → Ideas](https://github.com/yogthesharma/monorch/discussions/categories/ideas) |
+| **Bugs** | [Issues](https://github.com/yogthesharma/monorch/issues) |
+| **Security** | [Private advisories](https://github.com/yogthesharma/monorch/security/advisories/new) · [SECURITY.md](./SECURITY.md) |
+| **Contributing** | [CONTRIBUTING.md](./CONTRIBUTING.md) · [Code of Conduct](./CODE_OF_CONDUCT.md) |
+
+Start here: [Welcome to Monorch Discussions](https://github.com/yogthesharma/monorch/discussions/19).
+
 ## Publishing
 
 See [PUBLISH.md](./PUBLISH.md) for npm release (multi-platform natives + pack checks).

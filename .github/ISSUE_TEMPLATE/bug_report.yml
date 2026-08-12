@@ -1,0 +1,55 @@
+name: Bug report
+description: Something is broken or behaves incorrectly in Monorch.
+title: "[bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. For **questions**, use [Discussions → Q&A](https://github.com/yogthesharma/monorch/discussions/new?category=q-a) instead.
+        For **security**, use [private reporting](https://github.com/yogthesharma/monorch/security/advisories/new).
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Clear description of the bug.
+      placeholder: When I call agent.stream(...), I get...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: Smallest snippet or steps. Prefer a gist/repo link for longer code.
+      render: typescript
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: e.g. @monorch/ai@0.1.2, Node 22, macOS arm64
+      placeholder: "@monorch/ai@x.y.z · Node · OS · server (Fastify/Hono/…)"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / AiEvent sequence
+      description: Error stack, relevant events (`run_start`, `tool_call`, …), or checkpoint status.
+      render: text
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and Discussions
+          required: true
+        - label: This is not a security report (those go to private advisories)
+          required: true
