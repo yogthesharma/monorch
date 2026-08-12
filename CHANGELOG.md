@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `@monorch/runtime-linux-x64-musl` and `@monorch/runtime-linux-arm64-musl` prebuilds (Alpine / musl Docker). Ships on the next npm release tag.
+- CI Postgres integration tests for `@monorch/ai/postgres` adapters.
 
 ## [0.1.2] — 2026-08-12
 

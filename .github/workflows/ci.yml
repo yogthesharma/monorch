@@ -87,3 +87,43 @@ jobs:
         run: pnpm --filter @monorch/ai build
       - name: Smoke on Alpine (node:22-alpine)
         run: docker run --rm -v "$PWD:/work" -w /work node:22-alpine node scripts/alpine-musl-smoke.mjs
+
+  postgres:
+    name: Postgres integration tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: monorch
+          POSTGRES_PASSWORD: monorch
+          POSTGRES_DB: monorch_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U monorch -d monorch_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://monorch:monorch@localhost:5432/monorch_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            . -> target
+            bindings/node -> target
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
+      - name: Test @monorch/ai/postgres
+        run: pnpm test:postgres

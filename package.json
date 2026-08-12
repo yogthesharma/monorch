@@ -10,6 +10,7 @@
     "typecheck": "pnpm --filter @monorch/ai typecheck && pnpm --filter @monorch/example-fastify typecheck",
     "test:engine": "cargo test -p monorch-engine",
     "test:ai": "pnpm --filter @monorch/ai test",
+    "test:postgres": "pnpm --filter @monorch/ai test:postgres",
     "ci": "pnpm test:engine && pnpm build && pnpm typecheck && pnpm test:ai && pnpm smoke",
     "example": "pnpm --filter @monorch/example-fastify start",
     "smoke": "SMOKE=1 pnpm example",
