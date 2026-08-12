@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] — 2026-08-12
+
 ### Added
 
 - Checkpoint migration docs (v1↔v2 read rules, defHash / app-level guidance) + v1 import tests.
@@ -15,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `examples/hono-npm` — Hono BYO HTTP consumer on published `@monorch/ai` (`pnpm smoke:hono`).
 - Structured output recipe + tests (`generateObject` Zod → IR → Rust validate).
 - Recipe polish: Hono, MCP HTTP, cross-links to errors/checkpoints.
+
+### Fixed
+
 - `generateObject` maps fence-substring parse failures to `INVALID_JSON` (not raw `SyntaxError`).
 
 ## [0.1.3] — 2026-08-12

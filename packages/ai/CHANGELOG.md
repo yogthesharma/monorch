@@ -2,6 +2,10 @@
 
 See the monorepo [CHANGELOG.md](https://github.com/yogthesharma/monorch/blob/main/CHANGELOG.md).
 
+## 0.1.4
+
+Hono npm consumer example; structured-output docs/tests; `generateObject` INVALID_JSON fence fix; provenance + bench from 0.3.
+
 ## 0.1.3
 
 linux-musl prebuilds (`@monorch/runtime-linux-*-musl`); expanded tests and Postgres CI.
