@@ -78,6 +78,8 @@ jobs:
           tool: cargo-zigbuild
       - name: Build native
         working-directory: bindings/node
+        # bash so the musl EXTRA logic works on Windows runners (default is pwsh)
+        shell: bash
         run: |
           EXTRA=""
           if [ "${{ matrix.settings.cross }}" = "musl" ]; then
