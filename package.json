@@ -17,6 +17,7 @@
     "smoke:live": "SMOKE=1 LIVE_SMOKE=1 pnpm example",
     "smoke:npm": "npm --prefix examples/npm-smoke install && npm --prefix examples/npm-smoke run smoke",
     "smoke:hono": "npm --prefix examples/hono-npm install && npm --prefix examples/hono-npm run smoke",
+    "smoke:npm-install": "node scripts/npm-install-smoke.mjs",
     "pack:check": "node scripts/pack-check.mjs",
     "bench": "node scripts/bench.mjs",
     "bench:check": "node scripts/bench.mjs --check",

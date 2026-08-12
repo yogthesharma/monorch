@@ -77,6 +77,8 @@ Full write-up: [Public API docs](https://monorch.vercel.app/docs/api).
 
 - Site: [monorch.vercel.app](https://monorch.vercel.app/)
 - Public API: [monorch.vercel.app/docs/api](https://monorch.vercel.app/docs/api)
+- Upgrade guide: [UPGRADE.md](https://github.com/yogthesharma/monorch/blob/main/UPGRADE.md) · [docs/upgrade](https://monorch.vercel.app/docs/upgrade)
+- RC checklist: [RC_CHECKLIST.md](https://github.com/yogthesharma/monorch/blob/main/RC_CHECKLIST.md)
 - Errors & failure modes: [monorch.vercel.app/docs/reference/errors](https://monorch.vercel.app/docs/reference/errors)
 - Docs: [monorch.vercel.app/docs](https://monorch.vercel.app/docs)
 - GitHub: [yogthesharma/monorch](https://github.com/yogthesharma/monorch)

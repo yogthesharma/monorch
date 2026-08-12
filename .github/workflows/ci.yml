@@ -53,6 +53,70 @@ jobs:
       - name: Smoke
         run: pnpm smoke
 
+  npm-consumers:
+    name: Published npm consumer smokes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: smoke:npm
+        run: npm --prefix examples/npm-smoke install && npm --prefix examples/npm-smoke run smoke
+      - name: smoke:hono
+        run: npm --prefix examples/hono-npm install && npm --prefix examples/hono-npm run smoke
+
+  npm-install-matrix:
+    name: npm install smoke (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install published @monorch/ai + load native
+        shell: bash
+        run: node scripts/npm-install-smoke.mjs
+
+  live-smoke:
+    name: Live provider smoke
+    runs-on: ubuntu-latest
+    # Only on main pushes — needs repo secret; skip quietly when unset.
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            . -> target
+            bindings/node -> target
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Live smoke (optional)
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LITELLM_API_KEY: ${{ secrets.LITELLM_API_KEY }}
+          LITELLM_URL: ${{ secrets.LITELLM_URL }}
+          LIVE_MODEL: ${{ vars.LIVE_MODEL }}
+        run: |
+          if [ -z "${OPENAI_API_KEY:-}" ] && [ -z "${LITELLM_API_KEY:-}" ]; then
+            echo "No OPENAI_API_KEY / LITELLM_API_KEY secret — skipping live smoke"
+            exit 0
+          fi
+          LIVE_SMOKE=1 pnpm smoke:live
+
   alpine-musl:
     name: Alpine musl native smoke
     runs-on: ubuntu-latest

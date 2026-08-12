@@ -100,7 +100,9 @@ pnpm build
 pnpm test:engine    # Rust unit tests
 pnpm test:ai        # @monorch/ai TS tests
 pnpm smoke          # examples/fastify
-pnpm smoke:npm      # published @monorch/ai consumer smoke`}</code>
+pnpm smoke:npm      # published @monorch/ai consumer smoke
+pnpm smoke:hono     # Hono published consumer
+pnpm smoke:npm-install`}</code>
             </pre>
           </div>
 

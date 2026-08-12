@@ -44,6 +44,10 @@ export default function SecurityPage() {
                 dd: "API keys and DB URLs are your env. Providers read keys you pass; the engine does not phone home.",
               },
               {
+                dt: "Native + MCP + Postgres",
+                dd: "Trust npm provenance for .node binaries. mcpStdio spawns your command; mcpHttp trusts your URL/headers. Postgres adapters use parameterized SQL and safe table-name checks.",
+              },
+              {
                 dt: "Dependencies",
                 dd: "Review @monorch/ai, @monorch/runtime, and optional pg / MCP SDK peers like any other Node library.",
               },
@@ -84,7 +88,8 @@ export default function SecurityPage() {
             >
               SECURITY.md
             </a>{" "}
-            for scope and response expectations. Use{" "}
+            for scope, threat model (native load, MCP spawn/HTTP, Postgres), and response
+            expectations. Use{" "}
             <a
               href={siteConfig.discussions}
               className="text-foreground underline-offset-4 hover:underline"
@@ -102,10 +107,14 @@ export default function SecurityPage() {
             </Link>
             {" · "}
             <Link
-              href="/docs/reference/errors"
+              href="/docs/upgrade"
               className="text-foreground underline-offset-4 hover:underline"
             >
-              Error codes
+              Upgrade guide
+            </Link>
+            {" · "}
+            <Link href="/docs/rc" className="text-foreground underline-offset-4 hover:underline">
+              RC checklist
             </Link>
           </p>
         </div>

@@ -46,6 +46,55 @@ Include as much as you can:
 - Social engineering, denial-of-service against public docs/site only, or speculative reports without a realistic attack path
 - Secrets you commit to *your* apps (API keys, `DATABASE_URL`) — those never belong in Monorch itself
 
+## Threat model (RC security pass)
+
+### Native `.node` load
+
+- `@monorch/runtime` loads a platform binary from a local build artifact or an
+  `optionalDependency` package (`@monorch/runtime-<platform>`).
+- Trust boundary: **npm provenance + your lockfile**. Pin versions; prefer
+  installs from the official registry after verifying release attestations.
+- App code should not `dlopen` arbitrary paths. Use the published loader only.
+- Failure mode: missing optional binary → load error at import time (fail closed).
+
+### MCP stdio spawn
+
+- `mcpStdio({ command, args, env, cwd, … })` **spawns a child process** with the
+  privileges of your Node process (via the MCP SDK stdio transport).
+- **You** choose `command` / `args` / `env` / `cwd`. Treat untrusted input here
+  like `child_process.spawn` — do not pass user-controlled shell strings.
+- Prefer allowlisted binaries and fixed args. Inherit stderr by default.
+- Tool results from MCP are untrusted data; still run through Monorch tool
+  prepare / permissions when registered via `mcpTools`.
+
+### MCP HTTP
+
+- `mcpHttp({ url, headers })` connects to a URL you supply (Streamable HTTP,
+  with SSE fallback in `auto` mode).
+- Trust boundary: TLS / network path to that host. Pass credentials only through
+  explicit `headers` (e.g. `Authorization`). Do not embed secrets in tool args
+  that models can echo.
+- SSRF: if `url` can be influenced by end users, restrict it in your app layer
+  before calling `mcpHttp`.
+
+### Postgres adapters
+
+- `ensureMonorchSchema` / checkpointer / threads / store use **parameterized**
+  queries for values (`$1`, `$2`, …).
+- Table names are restricted to `^[a-z_][a-z0-9_]*$` (no SQL identifier injection
+  via options).
+- Boot needs DDL privilege once (`CREATE TABLE` / `CREATE INDEX`). Runtime
+  traffic needs only DML on those tables — use a least-privilege DB role after
+  schema bootstrap if your ops model allows.
+- Checkpoint / message JSON is application data; protect `DATABASE_URL` and DB
+  network access like any other datastore holding workflow state.
+
+### Tool permissions & schema
+
+- Local `tool()` permissions (`deny` / `roles` / …) and Zod→IR validation run
+  before `execute`. Do not bypass `callTool` with raw engine calls from app code.
+- Models can request tool calls; your permission config decides whether they run.
+
 ## Secret handling
 
 API keys and database URLs are expected to live in **your** environment. Providers and adapters read credentials you pass; the engine does not phone home.
@@ -55,3 +104,9 @@ If you discover a secret accidentally committed to **this** repository, report i
 ## Non-security bugs
 
 For non-sensitive bugs and questions, use [GitHub Discussions](https://github.com/yogthesharma/monorch/discussions) or a normal issue.
+
+## Related
+
+- [RC checklist](./RC_CHECKLIST.md)
+- [Upgrade guide](./UPGRADE.md)
+- Site: [Security](https://monorch.vercel.app/security)

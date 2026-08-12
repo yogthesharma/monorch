@@ -231,6 +231,29 @@ jobs:
           fi
           echo "OK — registry has @monorch/ai@${VERSION}, runtime optionals=${COUNT}"
 
+      - name: Post-publish consumer smokes
+        if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "require('./packages/ai/package.json').version")"
+          # Ensure examples pin matches the version we just published.
+          node -e "
+            const fs=require('fs');
+            for (const p of ['examples/npm-smoke/package.json','examples/hono-npm/package.json']) {
+              const j=JSON.parse(fs.readFileSync(p,'utf8'));
+              if (j.dependencies['@monorch/ai'] !== process.argv[1]) {
+                console.error(p, 'pins', j.dependencies['@monorch/ai'], 'want', process.argv[1]);
+                process.exit(1);
+              }
+            }
+            console.log('example pins OK @', process.argv[1]);
+          " "$VERSION"
+          npm --prefix examples/npm-smoke install
+          npm --prefix examples/npm-smoke run smoke
+          npm --prefix examples/hono-npm install
+          npm --prefix examples/hono-npm run smoke
+          node scripts/npm-install-smoke.mjs
+
       - uses: actions/upload-artifact@v4
         with:
           name: npm-packs

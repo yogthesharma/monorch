@@ -24,6 +24,16 @@ export const docsNav: DocNavGroup[] = [
         href: "/docs/api",
         description: "Supported exports + SemVer",
       },
+      {
+        title: "Upgrade guide",
+        href: "/docs/upgrade",
+        description: "0.x → 1.0 notes",
+      },
+      {
+        title: "Release candidate",
+        href: "/docs/rc",
+        description: "API freeze + checklist",
+      },
     ],
   },
   {

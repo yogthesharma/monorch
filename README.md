@@ -10,6 +10,8 @@ Not a framework. Not an HTTP stack. Bring your own Fastify/Hono/Nest.
 
 **Current:** `0.1.4` — see [CHANGELOG.md](./CHANGELOG.md). Path to v1: [ROADMAP.md](./ROADMAP.md).
 
+**API freeze (0.9 RC):** toward 1.0 we only take bugfixes and docs unless something is critically broken. See [RC_CHECKLIST.md](./RC_CHECKLIST.md) and [UPGRADE.md](./UPGRADE.md).
+
 ## Product lock
 
 | We provide | We do not provide |
@@ -51,6 +53,7 @@ pnpm build
 pnpm smoke              # Fastify agent + graph smoke (workspace)
 pnpm smoke:npm          # consumer smoke against published @monorch/ai on npm
 pnpm smoke:hono         # same pattern with Hono (examples/hono-npm)
+pnpm smoke:npm-install  # temp-dir registry install + native load
 pnpm smoke:live         # optional live provider (needs API key)
 pnpm dev:www            # homepage + docs on :3100
 ```
@@ -96,6 +99,7 @@ const checkpointer = postgresCheckpointer(pool);
 | **Ideas** | [Discussions → Ideas](https://github.com/yogthesharma/monorch/discussions/categories/ideas) |
 | **Bugs** | [Issues](https://github.com/yogthesharma/monorch/issues) |
 | **Security** | [Private advisories](https://github.com/yogthesharma/monorch/security/advisories/new) · [SECURITY.md](./SECURITY.md) |
+| **Upgrade / RC** | [UPGRADE.md](./UPGRADE.md) · [RC_CHECKLIST.md](./RC_CHECKLIST.md) |
 | **Contributing** | [CONTRIBUTING.md](./CONTRIBUTING.md) · [Code of Conduct](./CODE_OF_CONDUCT.md) |
 
 Start here: [Welcome to Monorch Discussions](https://github.com/yogthesharma/monorch/discussions/19).
