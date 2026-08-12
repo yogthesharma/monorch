@@ -424,4 +424,33 @@ mod tests {
             other => panic!("expected handoff, got {other:?}"),
         }
     }
+
+    #[test]
+    fn max_steps_exceeded() {
+        let config = AgentConfig {
+            name: "a".into(),
+            system: "sys".into(),
+            tools: vec!["add".into()],
+            handoffs: vec![],
+            max_steps: 1,
+        };
+        let mut run = AgentRun::start("1", config, "hi");
+        let _ = run.apply_decision(AgentDecision::ToolCalls {
+            calls: vec![ToolCall {
+                id: "c1".into(),
+                name: "add".into(),
+                arguments: json!({}),
+            }],
+        });
+        let _ = run.apply_tool_results(vec![("c1".into(), "add".into(), "5".into())]);
+        let step = run.apply_decision(AgentDecision::ToolCalls {
+            calls: vec![ToolCall {
+                id: "c2".into(),
+                name: "add".into(),
+                arguments: json!({}),
+            }],
+        });
+        assert!(matches!(step, AgentStepOutcome::Failed { .. }));
+        assert_eq!(run.status, AgentStatus::Failed);
+    }
 }

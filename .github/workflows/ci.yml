@@ -38,7 +38,7 @@ jobs:
           version: 9.15.0
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -46,5 +46,7 @@ jobs:
         run: pnpm build
       - name: Typecheck
         run: pnpm typecheck
+      - name: Test @monorch/ai
+        run: pnpm test:ai
       - name: Smoke
         run: pnpm smoke

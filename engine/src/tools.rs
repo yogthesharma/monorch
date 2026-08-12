@@ -124,3 +124,75 @@ pub fn prepare_call(
     registry.authorize(name, caller)?;
     registry.validate_input(name, args)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::schema::Schema;
+    use serde_json::json;
+
+    fn echo_spec(permission: Permission) -> ToolSpec {
+        ToolSpec {
+            name: "echo".into(),
+            description: "echo".into(),
+            input_schema: Schema::Object {
+                properties: std::collections::BTreeMap::from([(
+                    "text".into(),
+                    Schema::String {
+                        min_length: None,
+                        max_length: None,
+                        pattern: None,
+                        default_value: None,
+                    },
+                )]),
+                required: vec![],
+                additional_properties: true,
+                default_value: None,
+            },
+            output_schema: None,
+            permission,
+        }
+    }
+
+    #[test]
+    fn authorize_allow_and_deny() {
+        let mut reg = ToolRegistry::new();
+        reg.register(echo_spec(Permission::Allow)).unwrap();
+        assert!(reg.authorize("echo", &Caller::default()).is_ok());
+
+        reg.register(ToolSpec {
+            name: "secret".into(),
+            description: "secret".into(),
+            input_schema: Schema::Null {},
+            output_schema: None,
+            permission: Permission::Deny,
+        })
+        .unwrap();
+        let err = reg.authorize("secret", &Caller::default()).unwrap_err();
+        assert!(matches!(err, ToolError::Denied { .. }));
+    }
+
+    #[test]
+    fn authorize_roles() {
+        let mut reg = ToolRegistry::new();
+        reg.register(echo_spec(Permission::Roles(vec!["agent".into(), "admin".into()])))
+            .unwrap();
+
+        assert!(
+            reg.authorize("echo", &Caller { roles: vec!["agent".into()], subject: None })
+                .is_ok()
+        );
+        assert!(
+            reg.authorize("echo", &Caller { roles: vec!["viewer".into()], subject: None })
+                .is_err()
+        );
+    }
+
+    #[test]
+    fn prepare_call_denied_before_validate() {
+        let mut reg = ToolRegistry::new();
+        reg.register(echo_spec(Permission::Deny)).unwrap();
+        let err = prepare_call(&reg, "echo", &Caller::default(), json!({})).unwrap_err();
+        assert!(matches!(err, ToolError::Denied { .. }));
+    }
+}

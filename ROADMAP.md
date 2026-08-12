@@ -23,7 +23,7 @@ Tracking: [issues labeled `roadmap`](https://github.com/yogthesharma/monorch/iss
 ## 0.2 — Harden the contract
 
 - [x] [#1](https://github.com/yogthesharma/monorch/issues/1) Freeze and document the public API surface
-- [ ] [#2](https://github.com/yogthesharma/monorch/issues/2) Expand engine and TypeScript tests beyond smoke
+- [x] [#2](https://github.com/yogthesharma/monorch/issues/2) Expand engine and TypeScript tests beyond smoke
 - [ ] [#3](https://github.com/yogthesharma/monorch/issues/3) Add linux-musl prebuilds for Alpine/Docker
 - [ ] [#4](https://github.com/yogthesharma/monorch/issues/4) Postgres integration tests in CI
 - [ ] [#5](https://github.com/yogthesharma/monorch/issues/5) Fix site copy for published npm status
