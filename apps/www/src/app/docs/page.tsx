@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { docPages } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -71,7 +72,26 @@ export default function DocsIntroPage() {
           },
           {
             q: "What should I learn first?",
-            a: "Start with Getting started, then Tools → Agents → Graphs. Use /compare if you are choosing vs Mastra or LangGraph. HTTP with Fastify is one optional recipe.",
+            a: (
+              <>
+                Start with{" "}
+                <Link
+                  href="/docs/getting-started"
+                  className="text-foreground underline-offset-4 hover:underline"
+                >
+                  Getting started
+                </Link>
+                , skim{" "}
+                <Link href="/docs/api" className="text-foreground underline-offset-4 hover:underline">
+                  Public API
+                </Link>
+                , then Tools → Agents → Graphs. Use{" "}
+                <Link href="/compare" className="text-foreground underline-offset-4 hover:underline">
+                  Compare
+                </Link>{" "}
+                if you are choosing vs Mastra or LangGraph. HTTP with Fastify is one optional recipe.
+              </>
+            ),
           },
         ]}
       />

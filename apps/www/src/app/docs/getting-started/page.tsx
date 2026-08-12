@@ -1,4 +1,5 @@
-import { docPages } from "@/lib/site";
+import Link from "next/link";
+import { docPages, installSnippet } from "@/lib/site";
 import { docMetadata } from "@/lib/seo";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
@@ -15,15 +16,31 @@ export default function GettingStartedPage() {
         patterns into your own HTTP handlers (Fastify, Hono, Nest, …).
       </DocLead>
 
-      <DocH2>Install and build</DocH2>
+      <DocH2>Install from npm</DocH2>
       <DocP>
-        From the monorepo root. Native bindings compile with N-API; TypeScript builds into{" "}
-        <code className="font-mono text-sm">packages/ai/dist</code>.
+        <code className="font-mono text-sm">@monorch/ai</code> ships on npm with prebuilt{" "}
+        <code className="font-mono text-sm">@monorch/runtime</code> binaries. No Rust toolchain
+        required in your app repo.
+      </DocP>
+      <DocCode lang="bash" filename="terminal">{installSnippet()}</DocCode>
+      <DocP>
+        Supported exports and SemVer policy:{" "}
+        <Link href="/docs/api" className="text-foreground underline-offset-4 hover:underline">
+          Public API
+        </Link>
+        .
+      </DocP>
+
+      <DocH2>Monorepo development</DocH2>
+      <DocP>
+        From the repo root when hacking on the engine or docs. Native bindings compile with N-API;
+        TypeScript builds into <code className="font-mono text-sm">packages/ai/dist</code>.
       </DocP>
       <DocCode lang="bash" filename="terminal">{`pnpm install
 pnpm build          # @monorch/runtime + @monorch/ai
 pnpm smoke          # BYO HTTP example (examples/fastify)
-pnpm ci             # engine tests + build + typecheck + smoke
+pnpm smoke:npm      # consumer smoke against published @monorch/ai
+pnpm ci             # engine + TS tests, build, typecheck, smoke
 pnpm dev:www        # docs site on :3100`}</DocCode>
 
       <DocH2>Minimal agent</DocH2>
@@ -79,18 +96,29 @@ if (run.status === "waitingInterrupt") {
   // or later: await refund.restore("t1") then resume
 }`}</DocCode>
 
-      <DocH2>Reference example</DocH2>
+      <DocH2>Smoke tests</DocH2>
       <DocP>
-        The repo smoke lives under <code className="font-mono text-sm">examples/fastify</code> — a
-        BYO HTTP sample, not a Fastify requirement. It covers agent run, SSE stream, handoffs, MCP
-        tools, OTel listener, branching/cycles, checkpoint v2 restore, idempotent{" "}
+        <strong>Monorepo HTTP smoke</strong> —{" "}
+        <code className="font-mono text-sm">examples/fastify</code> is a BYO HTTP sample, not a
+        Fastify requirement. It covers agent run, SSE stream, handoffs, MCP tools, OTel listener,
+        branching/cycles, checkpoint v2 restore, idempotent{" "}
         <code className="font-mono text-sm">drive()</code> while waiting, thread memory, abort, graph{" "}
         <code className="font-mono text-sm">replace</code>, Postgres adapters (in-memory SQL
-        stand-in), and optional <code className="font-mono text-sm">LIVE_SMOKE=1</code>. For a
-        walkthrough of the HTTP wiring, see{" "}
-        <a href="/docs/recipes/fastify" className="text-foreground underline-offset-4 hover:underline">
+        stand-in), and optional <code className="font-mono text-sm">LIVE_SMOKE=1</code>. Walkthrough:{" "}
+        <Link
+          href="/docs/recipes/fastify"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
           HTTP with Fastify
-        </a>
+        </Link>
+        .
+      </DocP>
+      <DocP>
+        <strong>Published npm smoke</strong> —{" "}
+        <code className="font-mono text-sm">examples/npm-smoke</code> installs{" "}
+        <code className="font-mono text-sm">@monorch/ai</code> from the registry (not the workspace)
+        and runs a focused script: native load, agent tool loop, SSE stream, handoff, graph interrupt
+        + checkpoint resume. From the repo root: <code className="font-mono text-sm">pnpm smoke:npm</code>
         .
       </DocP>
 
@@ -103,7 +131,7 @@ if (run.status === "waitingInterrupt") {
           },
           {
             q: "Can I use this outside the monorepo?",
-            a: "Yes once you publish or path-link @monorch/ai and @monorch/runtime. Today the intended path is workspace packages from this repo.",
+            a: "Yes. pnpm add @monorch/ai pulls @monorch/runtime transitively. Run examples/npm-smoke or pnpm smoke:npm from this repo to verify the published tarball on your machine.",
           },
           {
             q: "Why does smoke use mock instead of OpenAI?",

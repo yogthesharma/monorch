@@ -66,14 +66,32 @@ export default function SecurityPage() {
             Prefer private channels for security issues.
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Open a confidential report via GitHub Security Advisories, or start a{" "}
+            Prefer{" "}
+            <a
+              href={`${siteConfig.github}/security/advisories/new`}
+              className="text-foreground underline-offset-4 hover:underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              private vulnerability reporting
+            </a>{" "}
+            on GitHub. See{" "}
+            <a
+              href={`${siteConfig.github}/blob/main/SECURITY.md`}
+              className="text-foreground underline-offset-4 hover:underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              SECURITY.md
+            </a>{" "}
+            for scope and response expectations. Use{" "}
             <a
               href={siteConfig.discussions}
               className="text-foreground underline-offset-4 hover:underline"
               target="_blank"
               rel="noreferrer"
             >
-              Discussion
+              Discussions
             </a>{" "}
             for non-sensitive questions.
           </p>

@@ -14,8 +14,13 @@ const layers = [
   },
   {
     name: "examples/fastify",
-    role: "BYO HTTP example",
-    detail: "Sample handlers (Fastify host). Same APIs for Hono or Nest.",
+    role: "BYO HTTP smoke",
+    detail: "Full handler sample (Fastify host). Same APIs for Hono or Nest.",
+  },
+  {
+    name: "examples/npm-smoke",
+    role: "Published npm smoke",
+    detail: "Installs @monorch/ai from the registry — validates tarball + native load without workspace link.",
   },
   {
     name: "packages/ai",
@@ -37,7 +42,7 @@ const layers = [
 const rules = [
   "Validate, auth, agent, and graph state live in Rust only.",
   "Provider HTTP, node execute, edge predicates, and checkpointer I/O live in TypeScript.",
-  "Prefer graph() over workflow() for new code.",
+  "Prefer graph() over workflow() for new code — see /docs/api for the public contract.",
   "Examples never become frameworks.",
 ];
 

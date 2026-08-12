@@ -87,7 +87,7 @@ export const docPages: DocPageMeta[] = [
     title: "Getting started",
     path: "/docs/getting-started",
     description:
-      "Install, build the native runtime, run the repo smoke, and copy the smallest agent and graph patterns into your HTTP handlers.",
+      "Install @monorch/ai from npm or build from the monorepo, run smoke and smoke:npm, and copy the smallest agent and graph patterns into your HTTP handlers.",
   },
   {
     title: "Public API",
