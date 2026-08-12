@@ -80,6 +80,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Build linux-x64-musl native
         working-directory: bindings/node
-        run: pnpm exec napi build --platform --release --target x86_64-unknown-linux-musl --cross-compile
+        run: pnpm exec napi build --platform --release --target x86_64-unknown-linux-musl --zig
       - name: Smoke on Alpine (node:22-alpine)
         run: docker run --rm -v "$PWD:/work" -w /work node:22-alpine node scripts/alpine-musl-smoke.mjs

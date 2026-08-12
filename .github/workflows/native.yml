@@ -81,7 +81,7 @@ jobs:
         run: |
           EXTRA=""
           if [ "${{ matrix.settings.cross }}" = "musl" ]; then
-            EXTRA="--cross-compile"
+            EXTRA="--zig"
           fi
           pnpm exec napi build --platform --release --target ${{ matrix.settings.target }} $EXTRA
       - uses: actions/upload-artifact@v4

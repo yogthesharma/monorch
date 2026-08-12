@@ -83,4 +83,4 @@ napi `triples.defaults` (x64) plus `additional` arm64:
 - `linux-x64-musl`, `linux-arm64-musl` (Alpine / musl Docker)
 - `win32-x64-msvc`, `win32-arm64-msvc`
 
-Musl builds use `napi build --cross-compile` with Zig on Linux CI hosts. See `.cargo/config.toml` for musl `cdylib` flags.
+Musl builds use `napi build --zig` with Zig on Linux CI hosts. See `.cargo/config.toml` for musl `cdylib` flags.
