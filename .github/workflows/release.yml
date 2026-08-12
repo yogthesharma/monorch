@@ -200,8 +200,25 @@ jobs:
           VERSION="$(node -p "require('./packages/ai/package.json').version")"
           WANT="$(node scripts/platform-utils.mjs count)"
           echo "Verifying @monorch/ai@${VERSION} and runtime optionalDependencies (want ${WANT})…"
-          npm view "@monorch/ai@${VERSION}" version
-          npm view "@monorch/runtime@${VERSION}" version
+
+          # npm can return 404 for a few seconds after a successful publish (CDN lag).
+          attempt=1
+          max_attempts=12
+          sleep_s=5
+          while true; do
+            if npm view "@monorch/ai@${VERSION}" version \
+              && npm view "@monorch/runtime@${VERSION}" version; then
+              break
+            fi
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "Registry still missing @monorch/ai@${VERSION} after ${max_attempts} attempts"
+              exit 1
+            fi
+            echo "Registry lag (attempt ${attempt}/${max_attempts}); sleeping ${sleep_s}s…"
+            sleep "$sleep_s"
+            attempt=$((attempt + 1))
+          done
+
           COUNT="$(node -e "const o=require('child_process').execSync('npm view @monorch/runtime@' + process.argv[1] + ' optionalDependencies --json',{encoding:'utf8'}); const j=JSON.parse(o); console.log(Object.keys(j||{}).length)" "$VERSION")"
           if [ "$WANT" -lt 1 ]; then
             echo "No local platform dirs under bindings/node/npm — assemble step failed?"

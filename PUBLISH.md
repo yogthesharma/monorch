@@ -112,6 +112,9 @@ node ../../scripts/stamp-optional-deps.mjs
 
 ## Post-publish smoke
 
+Publish can succeed while `npm view` still 404s for a few seconds (registry CDN lag). The Release
+workflow retries verify; locally wait a moment or retry if needed.
+
 ```bash
 npm view @monorch/ai version
 npm view @monorch/runtime version

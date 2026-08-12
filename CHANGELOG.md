@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Release registry verify retries `npm view` after publish (npm CDN can 404 for a few seconds).
+
 ## [0.1.4] — 2026-08-12
 
 ### Added
