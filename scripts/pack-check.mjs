@@ -10,6 +10,7 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { expectedPlatformCount } from "./platform-utils.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -32,8 +33,13 @@ run("pnpm", ["pack", "--pack-destination", packs], join(root, "packages/ai"));
 
 const runtimePkg = JSON.parse(readFileSync(join(root, "bindings/node", "package.json"), "utf8"));
 const opts = Object.keys(runtimePkg.optionalDependencies ?? {});
-if (opts.length < 8) {
-  console.error(`Expected >=8 optionalDependencies, got ${opts.length}:`, opts);
+const want = expectedPlatformCount();
+if (want < 1) {
+  console.error("No platform dirs under bindings/node/npm — run napi create-npm-dir first");
+  process.exit(1);
+}
+if (opts.length < want) {
+  console.error(`Expected ${want} optionalDependencies, got ${opts.length}:`, opts);
   process.exit(1);
 }
 

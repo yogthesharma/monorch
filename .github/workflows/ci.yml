@@ -78,8 +78,12 @@ jobs:
         with:
           node-version: 22
       - run: pnpm install --frozen-lockfile
-      - name: Build linux-x64-musl native
+      - name: Build linux musl natives
         working-directory: bindings/node
-        run: pnpm exec napi build --platform --release --target x86_64-unknown-linux-musl --zig
+        run: |
+          pnpm exec napi build --platform --release --target x86_64-unknown-linux-musl --zig
+          pnpm exec napi build --platform --release --target aarch64-unknown-linux-musl --zig
+      - name: Build @monorch/ai
+        run: pnpm --filter @monorch/ai build
       - name: Smoke on Alpine (node:22-alpine)
         run: docker run --rm -v "$PWD:/work" -w /work node:22-alpine node scripts/alpine-musl-smoke.mjs

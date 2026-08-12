@@ -47,7 +47,7 @@ Pushing `v*` runs `.github/workflows/release.yml`:
 1. Build natives on macOS / Linux / Windows
 2. Assemble `bindings/node/npm/*` platform packages (`napi create-npm-dir` + `napi artifacts`)
 3. Stamp `optionalDependencies` via `scripts/stamp-optional-deps.mjs`
-4. `npm publish` platform packages → `@monorch/runtime` → `@monorch/ai`
+4. `npm publish` platform packages (8 targets) → `@monorch/runtime` → `@monorch/ai`
 
 ### Dry-run from Actions
 
@@ -69,6 +69,7 @@ node ../../scripts/stamp-optional-deps.mjs
 npm view @monorch/ai version
 npm view @monorch/runtime version
 npm view @monorch/runtime optionalDependencies
+# Expect 8 entries after musl release (6 on 0.1.2 and earlier)
 mkdir /tmp/monorch-try && cd /tmp/monorch-try
 npm init -y && npm i @monorch/ai
 node -e "import('@monorch/ai').then(m => console.log(Object.keys(m).slice(0,8)))"

@@ -135,6 +135,7 @@ jobs:
           pnpm exec napi create-npm-dir -t .
           pnpm exec napi artifacts --dir ../../artifacts
           node ../../scripts/stamp-optional-deps.mjs
+          node ../../scripts/platform-utils.mjs verify
       - name: Pack
         run: |
           mkdir -p packs
@@ -143,7 +144,8 @@ jobs:
           ls -la packs
           tar -tzf packs/monorch-runtime-*.tgz | head -40
           tar -tzf packs/monorch-ai-*.tgz | head -40
-          node -e "const p=require('./bindings/node/package.json'); if(!p.optionalDependencies||Object.keys(p.optionalDependencies).length<8){console.error('missing optionalDependencies', p.optionalDependencies); process.exit(1)}; console.log('optionalDependencies', p.optionalDependencies)"
+          export WANT="$(node scripts/platform-utils.mjs count)"
+          node -e "const p=require('./bindings/node/package.json'); const n=Object.keys(p.optionalDependencies??{}).length; const want=Number(process.env.WANT); if(n<want){console.error('missing optionalDependencies', n, 'want', want, p.optionalDependencies); process.exit(1)}; console.log('optionalDependencies', n)"
       - name: Publish to npm
         if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
         env:
