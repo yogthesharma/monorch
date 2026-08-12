@@ -89,15 +89,46 @@ export default function ComparePage() {
         secondaryLabel="Product lock in docs"
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
           At a glance
         </p>
-        <h2 className="mt-3 max-w-xl font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+        <h2 className="mt-3 max-w-xl font-display text-2xl font-semibold tracking-tight text-ink sm:text-4xl">
           One table. Honest columns.
         </h2>
 
-        <div className="mt-10 overflow-x-auto">
+        {/* Mobile: stacked cards (table is too wide) */}
+        <div className="mt-8 space-y-4 md:hidden">
+          {rows.map((row) => (
+            <div
+              key={row.dim}
+              className="border border-border/60 bg-card/20 px-4 py-4"
+            >
+              <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                {row.dim}
+              </p>
+              <dl className="mt-3 space-y-3">
+                {(
+                  [
+                    ["Monorch", row.monorch, true],
+                    ["Mastra", row.mastra, false],
+                    ["LangGraph", row.lang, false],
+                    ["DIY", row.diy, false],
+                  ] as const
+                ).map(([label, value, highlight]) => (
+                  <div key={label} className={highlight ? "rounded-md bg-signal/10 px-3 py-2" : ""}>
+                    <dt className="text-sm font-medium text-ink">{label}</dt>
+                    <dd className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                      {value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 hidden overflow-x-auto md:block">
           <table className="w-full min-w-[48rem] border-collapse text-left">
             <thead>
               <tr className="border-b border-border/80">
@@ -128,7 +159,7 @@ export default function ComparePage() {
       </section>
 
       <section className="border-t border-border/70 bg-card/25">
-        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-6 lg:grid-cols-3 lg:gap-10 lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:gap-12 sm:px-6 sm:py-16 lg:grid-cols-3 lg:gap-10 lg:px-8 lg:py-20">
           {[
             {
               title: "Vs Mastra",
@@ -148,7 +179,7 @@ export default function ComparePage() {
               className="border-l border-signal/45 pl-5"
               style={{ animationDelay: `${0.08 * i}s` }}
             >
-              <h3 className="font-display text-2xl font-semibold tracking-tight text-ink">
+              <h3 className="font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl">
                 {block.title}
               </h3>
               <p className="mt-3 text-base leading-relaxed text-muted-foreground">{block.body}</p>
@@ -157,14 +188,14 @@ export default function ComparePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
           Product lock
         </p>
-        <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+        <h2 className="mt-3 max-w-2xl font-display text-2xl font-semibold tracking-tight text-ink sm:text-4xl">
           We ship the control plane. You keep the rest.
         </h2>
-        <div className="mt-10 grid gap-8 sm:grid-cols-2">
+        <div className="mt-8 grid gap-8 sm:mt-10 sm:grid-cols-2">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-signal">Provide</p>
             <ul className="mt-4 space-y-2 text-base text-foreground/90">
@@ -177,7 +208,7 @@ export default function ComparePage() {
               ].map((item) => (
                 <li key={item} className="flex gap-2">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />
-                  {item}
+                  <span className="min-w-0 break-words">{item}</span>
                 </li>
               ))}
             </ul>

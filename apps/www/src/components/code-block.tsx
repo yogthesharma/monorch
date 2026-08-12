@@ -38,7 +38,7 @@ export async function CodeBlock({
         </div>
       </div>
       <div
-        className="code-block overflow-x-auto px-1 py-1 text-[0.95rem] leading-relaxed [&_pre]:m-0 [&_pre]:p-5 [&_code]:font-mono"
+        className="code-block overflow-x-auto px-1 py-1 text-[0.95rem] leading-relaxed [&_pre]:m-0 [&_pre]:p-3 sm:[&_pre]:p-5 [&_code]:font-mono"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>

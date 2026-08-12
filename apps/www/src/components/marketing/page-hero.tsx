@@ -61,29 +61,29 @@ export function MarketingPageHero({
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-24 top-0 h-[28rem] w-[28rem] rounded-full bg-signal/10 blur-3xl animate-drift"
+        className="pointer-events-none absolute -right-16 top-0 h-56 w-56 rounded-full bg-signal/10 blur-3xl animate-drift sm:-right-24 sm:h-[28rem] sm:w-[28rem]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-16 bottom-0 h-[22rem] w-[22rem] rounded-full bg-[hsl(198_55%_40%/0.12)] blur-3xl animate-pulse-soft"
+        className="pointer-events-none absolute -left-12 bottom-0 h-48 w-48 rounded-full bg-[hsl(198_55%_40%/0.12)] blur-3xl animate-pulse-soft sm:-left-16 sm:h-[22rem] sm:w-[22rem]"
       />
 
-      <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <p className="animate-rise flex items-center gap-3 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-          <MonorchLogo className="h-[0.85em] w-auto text-signal" />
-          <span>Monorch</span>
+      <div className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+        <p className="animate-rise flex items-center gap-2.5 font-display text-3xl font-bold tracking-tight text-ink sm:gap-3 sm:text-5xl">
+          <MonorchLogo className="h-[0.85em] w-auto shrink-0 text-signal" />
+          <span className="min-w-0 truncate">Monorch</span>
         </p>
-        <p className="animate-rise-delay mt-8 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="animate-rise-delay mt-6 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground sm:mt-8">
           {kicker}
         </p>
-        <h1 className="animate-rise-delay mt-4 max-w-3xl text-balance font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl lg:text-6xl">
+        <h1 className="animate-rise-delay mt-3 max-w-3xl text-balance font-display text-3xl font-semibold tracking-tight text-ink sm:mt-4 sm:text-5xl lg:text-6xl">
           {title}
         </h1>
-        <p className="animate-rise-delay-2 mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+        <p className="animate-rise-delay-2 mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-5 sm:text-xl">
           {lead}
         </p>
-        <div className="animate-rise-delay-2 mt-9 flex flex-wrap items-center gap-3">
-          <Button asChild size="lg" className="h-12 rounded-md px-7 text-base">
+        <div className="animate-rise-delay-2 mt-8 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+          <Button asChild size="lg" className="h-12 w-full rounded-md px-7 text-base sm:w-auto">
             <CtaLink href={primaryHref}>
               {primaryLabel}
               <ArrowRight className="ml-1.5 inline h-4 w-4" />
@@ -93,7 +93,7 @@ export function MarketingPageHero({
             asChild
             variant="ghost"
             size="lg"
-            className="h-12 rounded-md px-5 text-base text-muted-foreground hover:text-foreground"
+            className="h-12 w-full rounded-md px-5 text-base text-muted-foreground hover:text-foreground sm:w-auto"
           >
             <CtaLink href={secondaryHref}>{secondaryLabel}</CtaLink>
           </Button>

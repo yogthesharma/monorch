@@ -11,7 +11,7 @@ export function MarketingShell({
   className?: string;
 }) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-clip">
       <SiteHeader />
       <main className={cn(className)}>{children}</main>
       <SiteFooter />

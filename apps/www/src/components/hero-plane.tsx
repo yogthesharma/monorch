@@ -14,13 +14,13 @@ export function HeroPlane() {
 /** Meaningful architecture panel for the hero. */
 export function HeroDiagram() {
   return (
-    <div className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
-      <div className="rounded-lg border border-border/70 bg-card/40 p-5 backdrop-blur-sm sm:p-6">
+    <div className="relative mx-auto w-full min-w-0 max-w-md lg:mx-0 lg:max-w-none">
+      <div className="rounded-lg border border-border/70 bg-card/40 p-4 backdrop-blur-sm sm:p-6">
         <div className="flex items-center justify-between gap-3">
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+          <p className="min-w-0 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
             How it sits in your backend
           </p>
-          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-signal">
+          <span className="inline-flex shrink-0 items-center gap-1.5 font-mono text-[11px] text-signal">
             <span className="hero-live-dot h-1.5 w-1.5 rounded-full bg-signal" />
             live path
           </span>
@@ -49,7 +49,7 @@ export function HeroDiagram() {
           />
         </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-2 border-t border-border/60 pt-4">
+        <div className="mt-5 grid grid-cols-1 gap-2 border-t border-border/60 pt-4 sm:grid-cols-3">
           <Leaf title="Models" detail="OpenAI / LiteLLM" step={5} />
           <Leaf title="Events" detail="AiEvent → SSE" step={6} />
           <Leaf title="Resume" detail="checkpoint / HITL" step={7} />
@@ -110,7 +110,7 @@ function Leaf({
 }) {
   return (
     <div
-      className="hero-flow-leaf rounded-md border border-border/50 bg-background/30 px-2.5 py-2.5 text-center"
+      className="hero-flow-leaf rounded-md border border-border/50 bg-background/30 px-2.5 py-2.5 text-left sm:text-center"
       data-step={step}
     >
       <p className="font-mono text-xs font-medium text-foreground/90">{title}</p>

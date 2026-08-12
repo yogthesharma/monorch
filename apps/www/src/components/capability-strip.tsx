@@ -19,7 +19,7 @@ export function CapabilityStrip({ className }: { className?: string }) {
         className,
       )}
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-4 px-5 py-5 sm:grid-cols-3 sm:px-6 lg:grid-cols-6 lg:gap-x-4 lg:px-8">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-4 gap-y-4 px-4 py-4 sm:grid-cols-3 sm:gap-x-6 sm:px-6 sm:py-5 lg:grid-cols-6 lg:gap-x-4 lg:px-8">
         {items.map((item) => (
           <Link
             key={item.href}

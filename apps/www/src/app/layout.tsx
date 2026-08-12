@@ -26,6 +26,9 @@ const mono = IBM_Plex_Mono({
 export const viewport: Viewport = {
   themeColor: "#0a1a14",
   colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {

@@ -19,21 +19,21 @@ export function DocsBreadcrumb() {
 
   return (
     <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
+      <BreadcrumbList className="flex-nowrap overflow-hidden">
+        <BreadcrumbItem className="hidden sm:inline-flex">
           <BreadcrumbLink asChild>
             <Link href="/">Home</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator />
+        <BreadcrumbSeparator className="hidden sm:list-item" />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/docs">Docs</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>{title}</BreadcrumbPage>
+        <BreadcrumbItem className="min-w-0">
+          <BreadcrumbPage className="block truncate">{title}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

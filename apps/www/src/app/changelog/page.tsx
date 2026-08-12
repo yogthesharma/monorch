@@ -85,16 +85,16 @@ export default function ChangelogPage() {
         secondaryLabel="Repo CHANGELOG.md"
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <ol className="space-y-16">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <ol className="space-y-12 sm:space-y-16">
           {releases.map((release, index) => (
-            <li key={release.version} className="relative border-l border-signal/40 pl-8 sm:pl-10">
+            <li key={release.version} className="relative border-l border-signal/40 pl-6 sm:pl-10">
               <span
                 aria-hidden
                 className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-signal shadow-[0_0_0_4px_hsl(var(--background))]"
               />
               <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-                <h2 className="font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+                <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl">
                   <span className="font-mono">{release.version}</span>
                 </h2>
                 <time className="font-mono text-sm text-muted-foreground">{release.date}</time>
@@ -104,8 +104,10 @@ export default function ChangelogPage() {
                   </span>
                 ) : null}
               </div>
-              <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{release.summary}</p>
-              <ul className="mt-8 max-w-3xl space-y-3">
+              <p className="mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
+                {release.summary}
+              </p>
+              <ul className="mt-6 max-w-3xl space-y-3 sm:mt-8">
                 {release.items.map((item) => (
                   <li
                     key={item}
@@ -118,7 +120,7 @@ export default function ChangelogPage() {
             </li>
           ))}
         </ol>
-        <p className="mt-14 max-w-2xl text-base leading-relaxed text-muted-foreground">
+        <p className="mt-12 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-14">
           Prefer <code className="font-mono text-sm">graph()</code> over{" "}
           <code className="font-mono text-sm">workflow()</code>.{" "}
           <code className="font-mono text-sm">pg</code> is optional for Postgres adapters. Install

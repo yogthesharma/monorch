@@ -33,7 +33,7 @@ export default function PlatformsPage() {
         secondaryLabel="Install guide"
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
           Requirements
         </p>
@@ -64,7 +64,7 @@ export default function PlatformsPage() {
       </section>
 
       <section className="border-t border-border/70 bg-card/25">
-        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
             Targets
           </p>
@@ -94,7 +94,7 @@ export default function PlatformsPage() {
                 terminal
               </p>
             </div>
-            <pre className="overflow-x-auto p-5 font-mono text-sm leading-relaxed text-foreground/90">
+            <pre className="overflow-x-auto p-3 font-mono text-xs leading-relaxed text-foreground/90 sm:p-5 sm:text-sm">
               <code>{`pnpm build:native   # from monorepo root
 pnpm build
 pnpm test:engine    # Rust unit tests

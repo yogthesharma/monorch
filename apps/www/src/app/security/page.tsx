@@ -20,16 +20,16 @@ export default function SecurityPage() {
         secondaryLabel="Platforms"
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
               License
             </p>
-            <h2 className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink">
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
               MIT.
             </h2>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
               Use, modify, and distribute under the LICENSE in the repository.
             </p>
           </div>
@@ -58,7 +58,7 @@ export default function SecurityPage() {
       </section>
 
       <section className="border-t border-border/70 bg-card/25">
-        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
             Reporting
           </p>

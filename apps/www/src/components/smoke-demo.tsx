@@ -95,11 +95,11 @@ export function SmokeDemo({ className }: { className?: string }) {
         className,
       )}
     >
-      <div className="flex items-center justify-between border-b border-border/50 px-4 py-2.5">
-        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+      <div className="flex min-w-0 items-center justify-between border-b border-border/50 px-3 py-2.5 sm:px-4">
+        <p className="min-w-0 truncate font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
           {current.label}
         </p>
-        <div className="flex gap-1.5" aria-hidden>
+        <div className="ml-3 flex shrink-0 gap-1.5" aria-hidden>
           {frames.map((_, i) => (
             <button
               key={i}

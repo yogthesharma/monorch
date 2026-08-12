@@ -17,11 +17,11 @@ export function DocsMobileNav() {
           Menu
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] p-0">
+      <SheetContent side="left" className="w-[min(100vw-2rem,20rem)] p-0 sm:max-w-sm">
         <SheetHeader className="border-b px-4 py-4 text-left">
           <SheetTitle className="font-display">Docs</SheetTitle>
         </SheetHeader>
-        <div className="px-2">
+        <div className="max-h-[calc(100svh-4.5rem)] overflow-y-auto px-2 pb-6">
           <DocsSidebar onNavigate={() => setOpen(false)} />
         </div>
       </SheetContent>

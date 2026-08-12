@@ -17,14 +17,18 @@ function headingText(node: ReactNode): string {
 
 export function DocH1({ children }: { children: ReactNode }) {
   return (
-    <h1 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+    <h1 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-5xl">
       {children}
     </h1>
   );
 }
 
 export function DocLead({ children }: { children: ReactNode }) {
-  return <p className="mt-5 text-xl leading-relaxed text-muted-foreground">{children}</p>;
+  return (
+    <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:mt-5 sm:text-xl">
+      {children}
+    </p>
+  );
 }
 
 export function DocH2({ children, id }: { children: ReactNode; id?: string }) {
@@ -33,7 +37,7 @@ export function DocH2({ children, id }: { children: ReactNode; id?: string }) {
   return (
     <h2
       id={headingId}
-      className="mt-14 scroll-mt-28 font-display text-3xl font-semibold tracking-tight text-ink"
+      className="mt-10 scroll-mt-24 font-display text-2xl font-semibold tracking-tight text-ink sm:mt-14 sm:scroll-mt-28 sm:text-3xl"
     >
       {children}
     </h2>
@@ -54,7 +58,11 @@ export function DocH3({ children, id }: { children: ReactNode; id?: string }) {
 }
 
 export function DocP({ children }: { children: ReactNode }) {
-  return <p className="mt-5 text-lg leading-relaxed text-foreground/90">{children}</p>;
+  return (
+    <p className="mt-4 text-base leading-relaxed text-foreground/90 sm:mt-5 sm:text-lg">
+      {children}
+    </p>
+  );
 }
 
 export function DocTerm({

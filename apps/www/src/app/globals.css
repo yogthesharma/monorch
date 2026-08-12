@@ -82,7 +82,15 @@
 
   html {
     scroll-behavior: smooth;
-    font-size: 18px;
+    /* Mobile-first: 16px keeps type readable without blowing small viewports */
+    font-size: 16px;
+    overflow-x: clip;
+  }
+
+  @media (min-width: 640px) {
+    html {
+      font-size: 18px;
+    }
   }
 
   body {
@@ -90,12 +98,20 @@
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     font-size: 1.05rem;
     line-height: 1.65;
+    overflow-x: clip;
     background-color: hsl(var(--background));
     background-image:
       radial-gradient(1000px 520px at 85% -5%, hsl(84 70% 40% / 0.14), transparent 55%),
       radial-gradient(800px 480px at -5% 30%, hsl(198 55% 40% / 0.1), transparent 50%),
       linear-gradient(180deg, hsl(var(--mist)) 0%, hsl(var(--background)) 40%, hsl(var(--background)) 100%);
-    background-attachment: fixed;
+    /* fixed backgrounds jank and can spill horizontally on iOS */
+    background-attachment: scroll;
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      background-attachment: fixed;
+    }
   }
 
   h1,
@@ -224,8 +240,14 @@
 
   .code-block code {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.95rem;
+    font-size: 0.8125rem;
     line-height: 1.7;
+  }
+
+  @media (min-width: 640px) {
+    .code-block code {
+      font-size: 0.95rem;
+    }
   }
 
   ::selection {

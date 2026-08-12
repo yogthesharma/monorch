@@ -57,7 +57,7 @@ export default function ArchitecturePage() {
         secondaryLabel="Getting started"
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
           Stack
         </p>
@@ -86,19 +86,19 @@ export default function ArchitecturePage() {
       </section>
 
       <section className="border-t border-border/70 bg-card/25">
-        <div className="mx-auto grid max-w-6xl gap-14 px-5 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:gap-14 sm:px-6 sm:py-16 lg:grid-cols-2 lg:px-8 lg:py-20">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
               Rules
             </p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink">
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
               Hard boundaries.
             </h2>
             <ul className="mt-8 space-y-4">
               {rules.map((rule, i) => (
-                <li key={rule} className="flex gap-4 text-base leading-relaxed text-foreground/90">
-                  <span className="font-mono text-sm text-signal">{String(i + 1).padStart(2, "0")}</span>
-                  {rule}
+                <li key={rule} className="flex gap-3 text-base leading-relaxed text-foreground/90 sm:gap-4">
+                  <span className="shrink-0 font-mono text-sm text-signal">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="min-w-0">{rule}</span>
                 </li>
               ))}
             </ul>
@@ -107,10 +107,10 @@ export default function ArchitecturePage() {
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
               Request path
             </p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink">
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
               Handler → engine → events.
             </h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-6 text-base leading-relaxed text-muted-foreground sm:text-lg">
               Your route calls <code className="font-mono text-sm">agent.stream</code> or{" "}
               <code className="font-mono text-sm">graph.start</code>. TypeScript talks to the model
               and runs node callbacks. Rust advances the run, prepares tool args, and stores status.
