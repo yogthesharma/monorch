@@ -24,6 +24,9 @@ pub enum Schema {
         minimum: Option<f64>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         maximum: Option<f64>,
+        /// When true, value must be an integer (no fractional part).
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        integer: bool,
         #[serde(default, rename = "default", skip_serializing_if = "Option::is_none")]
         default_value: Option<Value>,
     },
@@ -199,10 +202,14 @@ pub fn to_json_schema(schema: &Schema) -> Value {
         Schema::Number {
             minimum,
             maximum,
+            integer,
             default_value,
         } => {
             let mut m = Map::new();
-            m.insert("type".into(), Value::String("number".into()));
+            m.insert(
+                "type".into(),
+                Value::String(if *integer { "integer" } else { "number" }.into()),
+            );
             if let Some(v) = minimum {
                 if let Some(n) = Number::from_f64(*v) {
                     m.insert("minimum".into(), Value::Number(n));
@@ -365,8 +372,15 @@ fn transform(
                         }
                     }
                     if let Some(pat) = pattern {
-                        if pat != s && !pat.contains('*') {
-                            errors.push(issue(loc, "string does not match pattern"));
+                        match regex::Regex::new(pat) {
+                            Ok(re) => {
+                                if !re.is_match(s) {
+                                    errors.push(issue(loc, "string does not match pattern"));
+                                }
+                            }
+                            Err(_) => {
+                                errors.push(issue(loc, format!("invalid pattern in schema: {pat}")));
+                            }
                         }
                     }
                     Value::String(s.to_string())
@@ -378,7 +392,10 @@ fn transform(
             }
         }
         Schema::Number {
-            minimum, maximum, ..
+            minimum,
+            maximum,
+            integer,
+            ..
         } => {
             let v = if opts.coerce {
                 coerce_number(&value).unwrap_or(value)
@@ -387,6 +404,9 @@ fn transform(
             };
             match v.as_f64() {
                 Some(n) => {
+                    if *integer && n.fract() != 0.0 {
+                        errors.push(issue(loc, "expected integer"));
+                    }
                     if let Some(min) = minimum {
                         if n < *min {
                             errors.push(issue(loc, format!("number less than {min}")));
@@ -601,6 +621,7 @@ mod tests {
                     Schema::Number {
                         minimum: None,
                         maximum: None,
+                        integer: false,
                         default_value: Some(json!(1)),
                     },
                 ),
@@ -611,5 +632,29 @@ mod tests {
         };
         let out = parse(&schema, json!({"name": "a", "n": "2", "x": 1})).unwrap();
         assert_eq!(out, json!({"name": "a", "n": 2.0}));
+    }
+
+    #[test]
+    fn string_pattern_is_regex() {
+        let schema = Schema::String {
+            min_length: None,
+            max_length: None,
+            pattern: Some(r"^[^@]+@[^@]+\.[^@]+$".into()),
+            default_value: None,
+        };
+        assert!(parse(&schema, json!("a@b.co")).is_ok());
+        assert!(parse(&schema, json!("not-an-email")).is_err());
+    }
+
+    #[test]
+    fn number_integer_rejects_float() {
+        let schema = Schema::Number {
+            minimum: None,
+            maximum: None,
+            integer: true,
+            default_value: None,
+        };
+        assert!(parse(&schema, json!(3)).is_ok());
+        assert!(parse(&schema, json!(3.5)).is_err());
     }
 }

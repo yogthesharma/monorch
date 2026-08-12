@@ -62,7 +62,12 @@ impl ToolRegistry {
     }
 
     pub fn register(&mut self, spec: ToolSpec) -> Result<(), String> {
-        if self.tools.contains_key(&spec.name) {
+        self.register_with(spec, false)
+    }
+
+    /// Register a tool. When `replace` is true, overwrites an existing spec.
+    pub fn register_with(&mut self, spec: ToolSpec, replace: bool) -> Result<(), String> {
+        if self.tools.contains_key(&spec.name) && !replace {
             return Err(format!("tool already registered: {}", spec.name));
         }
         self.tools.insert(spec.name.clone(), spec);

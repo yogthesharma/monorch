@@ -22,6 +22,14 @@ export type ToolDefinition<I extends z.ZodTypeAny = z.ZodTypeAny, O = unknown> =
   execute: (input: z.infer<I>, ctx: { caller: ToolCaller }) => Awaitable<O>;
 };
 
+export type ToolRegisterOptions = {
+  /**
+   * Replace an existing tool with the same name (hot-reload / MCP re-bind).
+   * Default false — duplicate names throw AiError TOOL_ALREADY_REGISTERED.
+   */
+  replace?: boolean;
+};
+
 export type RegisteredTool = ToolDefinition & {
   /** @internal */
   _ir: unknown;
@@ -38,9 +46,10 @@ function permissionToRust(p?: ToolPermission): unknown {
 /** Define and register a tool (validated + authorized in Rust). */
 export function tool<I extends z.ZodTypeAny, O>(
   def: ToolDefinition<I, O>,
+  opts?: ToolRegisterOptions,
 ): ToolDefinition<I, O> {
   const ir = zodToIr(def.input);
-  return registerTool(def, ir);
+  return registerTool(def, ir, opts);
 }
 
 /**
@@ -49,21 +58,26 @@ export function tool<I extends z.ZodTypeAny, O>(
  */
 export function toolWithIr<I extends z.ZodTypeAny, O>(
   def: ToolDefinition<I, O> & { inputIr: unknown },
+  opts?: ToolRegisterOptions,
 ): ToolDefinition<I, O> {
   const { inputIr, ...rest } = def;
-  return registerTool(rest, inputIr);
+  return registerTool(rest, inputIr, opts);
 }
 
 function registerTool<I extends z.ZodTypeAny, O>(
   def: ToolDefinition<I, O>,
   ir: unknown,
+  opts?: ToolRegisterOptions,
 ): ToolDefinition<I, O> {
-  getRuntime().toolRegister({
-    name: def.name,
-    description: def.description ?? def.name,
-    inputSchema: ir,
-    permission: permissionToRust(def.permission),
-  });
+  getRuntime().toolRegisterWith(
+    {
+      name: def.name,
+      description: def.description ?? def.name,
+      inputSchema: ir,
+      permission: permissionToRust(def.permission),
+    },
+    opts?.replace ?? false,
+  );
   const registered = { ...def, _ir: ir } as RegisteredTool;
   executors.set(def.name, registered);
   return def;

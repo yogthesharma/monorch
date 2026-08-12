@@ -31,11 +31,8 @@ export type WorkflowBuilder = {
   build(opts?: { checkpointer?: Checkpointer; maxSteps?: number }): Workflow;
 };
 
-/** @deprecated Use GraphRunHandle — status waitingHuman maps to waitingInterrupt */
-export type WorkflowRunHandle = GraphRunHandle & {
-  /** Alias for graph waitingInterrupt */
-  resume(decision?: string): Promise<WorkflowRunHandle>;
-};
+/** Alias of GraphRunHandle — status uses `waitingInterrupt` (same as graphs). */
+export type WorkflowRunHandle = GraphRunHandle;
 
 export type Workflow = {
   name: string;
@@ -54,6 +51,9 @@ function toWfCtx(ctx: GraphContext): WorkflowContext {
  * Linear workflow sugar over {@link graph}.
  * Prefer `graph()` for branching, cycles, interrupts, and checkpoints.
  * `workflow()` remains a supported public API (see docs/api SemVer policy).
+ *
+ * Status strings match graphs (`waitingInterrupt`). Older `waitingHuman` is only
+ * accepted by `resume()` for backwards compatibility — it is never emitted.
  */
 export function workflow(
   name: string,
@@ -105,33 +105,10 @@ export function workflow(
           : {}),
       });
 
-      const wrap = (h: GraphRunHandle): WorkflowRunHandle => {
-        const handle = h as WorkflowRunHandle;
-        // Map waitingInterrupt → waitingHuman for existing callers
-        if (handle.status === "waitingInterrupt") {
-          (handle as { status: string }).status = "waitingHuman";
-        }
-        const origResume = handle.resume.bind(handle);
-        handle.resume = async (decision?: string) => {
-          // graph.resume accepts waitingHuman; keep alias for callers
-          if (handle.status === "waitingHuman") {
-            (handle as { status: string }).status = "waitingInterrupt";
-          }
-          const next = await origResume(decision);
-          return wrap(next);
-        };
-        return handle;
-      };
-
       return {
         name,
-        async start(input, startOpts) {
-          const run = await compiled.start(input, startOpts);
-          return wrap(run);
-        },
-        async restore(threadId) {
-          return wrap(await compiled.restore(threadId));
-        },
+        start: (input, startOpts) => compiled.start(input, startOpts),
+        restore: (threadId) => compiled.restore(threadId),
       };
     },
   };

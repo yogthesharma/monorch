@@ -71,9 +71,16 @@ execute: async (input, { caller }) => {
       <DocH2>Schema IR</DocH2>
       <DocP>
         Zod objects, strings, numbers, booleans, arrays, enums, optionals, and unions map through{" "}
-        <code className="font-mono text-sm">zodToIr</code>. Rust strips unknown keys when{" "}
-        <code className="font-mono text-sm">additionalProperties: false</code> and coerces where
-        configured.
+        <code className="font-mono text-sm">zodToIr</code>. String{" "}
+        <code className="font-mono text-sm">email</code> /{" "}
+        <code className="font-mono text-sm">uuid</code> /{" "}
+        <code className="font-mono text-sm">url</code> /{" "}
+        <code className="font-mono text-sm">regex</code> and number{" "}
+        <code className="font-mono text-sm">int</code> are enforced in Rust.{" "}
+        <code className="font-mono text-sm">refine</code> /{" "}
+        <code className="font-mono text-sm">transform</code> throw{" "}
+        <code className="font-mono text-sm">SCHEMA_UNSUPPORTED</code>. Duplicate tool names fail
+        unless you pass <code className="font-mono text-sm">tool(def, {"{ replace: true }"})</code>.
       </DocP>
 
       <DocH2>JSON Schema without Zod</DocH2>

@@ -40,9 +40,16 @@ impl Engine {
 
   #[napi]
   pub fn tool_register(&self, spec: serde_json::Value) -> Result<()> {
+    self.tool_register_with(spec, false)
+  }
+
+  #[napi]
+  pub fn tool_register_with(&self, spec: serde_json::Value, replace: bool) -> Result<()> {
     let spec: ToolSpec = serde_json::from_value(spec)
       .map_err(|e| Error::from_reason(format!("invalid tool spec: {e}")))?;
-    self.inner.tool_register(spec).map_err(Error::from_reason)
+    self.inner
+      .tool_register_with(spec, replace)
+      .map_err(Error::from_reason)
   }
 
   #[napi]

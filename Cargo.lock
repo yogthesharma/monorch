@@ -66,15 +66,16 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 
 [[package]]
 name = "monorch-engine"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
+ "regex",
  "serde",
  "serde_json",
 ]
 
 [[package]]
 name = "monorch-runtime"
-version = "0.1.6"
+version = "0.2.0"
 dependencies = [
  "monorch-engine",
  "napi",

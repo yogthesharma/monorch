@@ -8,6 +8,7 @@ export declare class Engine {
   parse(schema: any, value: any): any
   toJsonSchema(schema: any): any
   toolRegister(spec: any): void
+  toolRegisterWith(spec: any, replace: boolean): void
   toolList(): any
   toolPrepare(name: string, caller: any, args: any): any
   agentStart(config: any, user: string): any

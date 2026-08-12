@@ -60,7 +60,12 @@ impl Engine {
     // --- tools ---
 
     pub fn tool_register(&self, spec: ToolSpec) -> Result<(), String> {
-        self.tools.lock().expect("tools").register(spec)
+        self.tool_register_with(spec, false)
+    }
+
+    /// Register a tool. When `replace` is true, overwrites an existing spec.
+    pub fn tool_register_with(&self, spec: ToolSpec, replace: bool) -> Result<(), String> {
+        self.tools.lock().expect("tools").register_with(spec, replace)
     }
 
     pub fn tool_list_json(&self) -> serde_json::Value {

@@ -92,4 +92,45 @@ describe("structured output (Zod → IR → validate)", () => {
     const bad = getRuntime().parse(ir, { tags: "nope", ok: true });
     assert.equal(bad.ok, false);
   });
+
+  it("maps email/uuid/int checks into IR validation", () => {
+    const Schema = z.object({
+      email: z.string().email(),
+      id: z.string().uuid(),
+      n: z.number().int(),
+    });
+    const ir = zodToIr(Schema);
+    const good = getRuntime().parse(ir, {
+      email: "a@b.co",
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      n: 3,
+    });
+    assert.equal(good.ok, true);
+
+    const badEmail = getRuntime().parse(ir, {
+      email: "nope",
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      n: 3,
+    });
+    assert.equal(badEmail.ok, false);
+
+    const badInt = getRuntime().parse(ir, {
+      email: "a@b.co",
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      n: 3.5,
+    });
+    assert.equal(badInt.ok, false);
+  });
+
+  it("throws SCHEMA_UNSUPPORTED for ZodEffects", () => {
+    const Schema = z.string().refine((s) => s.length > 0);
+    assert.throws(
+      () => zodToIr(Schema),
+      (err: unknown) => {
+        assert.ok(err instanceof AiError);
+        assert.equal(err.code, "SCHEMA_UNSUPPORTED");
+        return true;
+      },
+    );
+  });
 });

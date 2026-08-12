@@ -252,6 +252,11 @@ try {
           <code className="font-mono text-sm">waitingInterrupt</code> /{" "}
           <code className="font-mono text-sm">waitingHuman</code>.
         </DocTerm>
+        <DocTerm name="GRAPH_BUSY">
+          Concurrent <code className="font-mono text-sm">drive()</code> /{" "}
+          <code className="font-mono text-sm">stream()</code> /{" "}
+          <code className="font-mono text-sm">resume()</code> on the same handle.
+        </DocTerm>
         <DocTerm name="NODE_MISSING">
           Engine asked for a node id with no TypeScript handler map entry.
         </DocTerm>
@@ -276,8 +281,9 @@ try {
           Restore/advance referenced a graph name that is not compiled in this process.
         </DocTerm>
         <DocTerm name="TOOL_ALREADY_REGISTERED">
-          Second <code className="font-mono text-sm">tool()</code> with the same name (use a unique
-          name or unregister policy — see roadmap).
+          Second <code className="font-mono text-sm">tool()</code> with the same name without{" "}
+          <code className="font-mono text-sm">{"{ replace: true }"}</code>. MCP{" "}
+          <code className="font-mono text-sm">mcpTools</code> defaults to replace.
         </DocTerm>
         <DocTerm name="ENGINE_ERROR">
           Other Rust/N-API failures remapped from a plain native{" "}
@@ -303,13 +309,24 @@ try {
           quotas, and the response body in the message.
         </DocTerm>
         <DocTerm name="OPENAI_STREAM">SSE body missing or stream error.</DocTerm>
+        <DocTerm name="OPENAI_NETWORK">
+          TCP/DNS/<code className="font-mono text-sm">fetch</code> failures talking to an
+          OpenAI-compatible host (not HTTP status — that is{" "}
+          <code className="font-mono text-sm">OPENAI_HTTP</code>).
+        </DocTerm>
+        <DocTerm name="SCHEMA_UNSUPPORTED">
+          <code className="font-mono text-sm">zodToIr</code> hit{" "}
+          <code className="font-mono text-sm">ZodEffects</code> or an unsupported check/type.
+        </DocTerm>
       </DocTerms>
 
       <DocH3>MCP</DocH3>
       <DocTerms>
         <DocTerm name="MCP_CONNECT">
-          <code className="font-mono text-sm">mcpHttp</code> could not open Streamable HTTP or SSE.
-          Verify URL, headers, and that the server speaks one of those transports.
+          <code className="font-mono text-sm">mcpStdio</code> /{" "}
+          <code className="font-mono text-sm">mcpHttp</code> could not connect (spawn, Streamable
+          HTTP, or SSE). Verify command/URL, headers, and transport. Failed Streamable sessions are
+          closed before SSE fallback in <code className="font-mono text-sm">auto</code> mode.
         </DocTerm>
         <DocTerm name="MCP_TOOL_MISSING">Requested MCP tool name not in listTools.</DocTerm>
         <DocTerm name="MCP_TOOL_ERROR">Remote tool returned isError / failed payload.</DocTerm>

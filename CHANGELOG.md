@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-08-12
+
+### Fixed
+
+- `zodToIr` maps string `email` / `uuid` / `url` / `regex` and number `int` into Rust IR; pattern validation uses real regex; unsupported Zod (e.g. `ZodEffects`) throws `SCHEMA_UNSUPPORTED` (#47, #54).
+- Early cancel of `agent.stream` / `graph.stream` drops native runs (`agentDrop` / `graphDrop`) (#48).
+- `workflow()` no longer remaps status to `waitingHuman` — emits `waitingInterrupt` like graphs (#49).
+- `mcpStdio` and non-auto `mcpHttp` connect failures wrap as `AiError("MCP_CONNECT")`; auto mode closes failed Streamable sessions before SSE fallback (#50, #53).
+- OpenAI-compatible network/`fetch` failures map to `OPENAI_NETWORK` (#51).
+- `tool(def, { replace: true })` / `toolRegisterWith` for hot-reload; `mcpTools` defaults to replace (#52).
+- Concurrent `drive` / `stream` / `resume` on one handle rejects with `GRAPH_BUSY` (#55).
+- `postgresThreads.append` uses a single multi-row `INSERT` (atomic turn) (#56).
+
 ## [0.1.6] — 2026-08-12
 
 ### Fixed

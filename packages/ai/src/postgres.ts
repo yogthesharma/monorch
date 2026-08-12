@@ -149,12 +149,20 @@ export function postgresThreads(
       return res.rows.map((row) => asJson(row["message"]) as AiMessage);
     },
     async append(threadId, messages) {
+      if (!messages.length) return;
+      // Single multi-row INSERT is atomic — avoids partial turns without requiring a Pool client.
+      const values: unknown[] = [];
+      const placeholders: string[] = [];
+      let i = 1;
       for (const message of messages) {
-        await db.query(
-          `INSERT INTO ${table} (thread_id, message) VALUES ($1, $2::jsonb)`,
-          [threadId, JSON.stringify(message)],
-        );
+        placeholders.push(`($${i}, $${i + 1}::jsonb)`);
+        values.push(threadId, JSON.stringify(message));
+        i += 2;
       }
+      await db.query(
+        `INSERT INTO ${table} (thread_id, message) VALUES ${placeholders.join(", ")}`,
+        values,
+      );
     },
     async clear(threadId) {
       await db.query(`DELETE FROM ${table} WHERE thread_id = $1`, [threadId]);

@@ -125,8 +125,8 @@ export default function AiReferencePage() {
         <code className="font-mono text-sm">waitingInterrupt</code>,{" "}
         <code className="font-mono text-sm">needsRoute</code>,{" "}
         <code className="font-mono text-sm">completed</code>,{" "}
-        <code className="font-mono text-sm">failed</code>. Workflows may still surface{" "}
-        <code className="font-mono text-sm">waitingHuman</code>.
+        <code className="font-mono text-sm">failed</code>. Workflows use the same status strings as
+        graphs (<code className="font-mono text-sm">waitingInterrupt</code>).
       </DocP>
 
       <DocH3>run_end.status</DocH3>
