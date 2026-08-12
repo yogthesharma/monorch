@@ -33,7 +33,7 @@ jobs:
           workspaces: |
             . -> target
             bindings/node -> target
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 9.15.0
       - uses: actions/setup-node@v4
@@ -71,7 +71,7 @@ jobs:
       - uses: taiki-e/install-action@v2
         with:
           tool: cargo-zigbuild
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 9.15.0
       - uses: actions/setup-node@v4
@@ -115,7 +115,7 @@ jobs:
           workspaces: |
             . -> target
             bindings/node -> target
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 9.15.0
       - uses: actions/setup-node@v4
