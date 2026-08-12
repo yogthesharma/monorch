@@ -84,15 +84,17 @@ const refund = graph("refund")
 
       <DocH2>Checkpoint blob v2</DocH2>
       <DocP>
-        Blobs include a version, the original input, and a definition hash so restore can detect
-        incompatible graph replacements.
+        Every export writes <code className="font-mono text-sm">version: 2</code>. Fields (camelCase
+        in JSON):
       </DocP>
-      <DocCode lang="typescript" filename="blob-v2.ts">{`// illustrative shape persisted via checkpointer.put
-{
+      <DocCode lang="typescript" filename="blob-v2.ts">{`{
   version: 2,
-  defHash: "...",
-  input: { orderId: "ord_9" },
-  // plus run cursor / state / outputs from the engine
+  defHash: "…",           // FNV-1a fingerprint of the compiled GraphDef
+  input: { orderId: "ord_9" }, // original start input
+  run: {
+    id, graph, status, cursor, steps,
+    input, state, defHash, outputs, error?, routeFrom?
+  }
 }`}</DocCode>
       <DocP>
         After a definition replace, restore / resume can fail on hash mismatch. Codes and recovery:{" "}
@@ -103,6 +105,57 @@ const refund = graph("refund")
           Errors &amp; failure modes
         </Link>
         .
+      </DocP>
+
+      <DocH2>Migration &amp; compatibility</DocH2>
+      <DocP>
+        <strong>Reading:</strong> the engine accepts checkpoint{" "}
+        <code className="font-mono text-sm">version</code> <code className="font-mono text-sm">1</code>{" "}
+        and <code className="font-mono text-sm">2</code>. Unknown versions are rejected. On import,
+        missing top-level <code className="font-mono text-sm">input</code> /{" "}
+        <code className="font-mono text-sm">defHash</code> are backfilled from{" "}
+        <code className="font-mono text-sm">run</code> (the v1 shape).
+      </DocP>
+      <DocP>
+        <strong>Writing:</strong> new checkpoints are always v2. You do not need an offline rewrite
+        job for v1 blobs — restore still works if the graph is registered and{" "}
+        <code className="font-mono text-sm">defHash</code> matches.
+      </DocP>
+      <DocP>
+        <strong>Empty defHash:</strong> restore fails. Re-run or re-checkpoint after upgrading from
+        a build that did not stamp hashes.
+      </DocP>
+      <DocP>
+        <strong>Graph shape changes (app-level):</strong>
+      </DocP>
+      <DocCode lang="typescript" filename="migrate-thread.ts">{`// When you must change nodes / interrupts incompatible with old defHash:
+// 1. Keep the old graph name registered until waiting threads finish, OR
+// 2. Start a new threadId for the new definition and mark the old one abandoned.
+//
+// Avoid compile({ replace: true }) while production threads still wait on the old hash
+// unless you accept restore/resume failures (GRAPH_FAILED / def_hash mismatch).
+
+async function resumeOrRestart(
+  compiled: { restore(id: string): Promise<{ resume(d?: string): Promise<unknown> }>; start(input: object, opts: { threadId: string }): Promise<unknown> },
+  threadId: string,
+  input: object,
+) {
+  try {
+    const run = await compiled.restore(threadId);
+    return run.resume("approved");
+  } catch {
+    // def_hash mismatch or missing blob → start fresh for this customer
+    return compiled.start(input, { threadId: \`\${threadId}:vNext\` });
+  }
+}`}</DocCode>
+      <DocP>
+        Prefer additive graph changes (new optional nodes behind edges) over renames. Treat{" "}
+        <code className="font-mono text-sm">defHash</code> as the contract between stored threads
+        and the compiled definition.
+      </DocP>
+      <DocP>
+        Future formats (v3+) will be documented here with an explicit read path. Until then, only
+        v1 and v2 are supported.
       </DocP>
 
       <DocFaq
@@ -145,6 +198,10 @@ const refund = graph("refund")
           {
             q: "Is drive() safe after restore while waiting?",
             a: "Yes. waitingInterrupt advance is idempotent: drive() re-emits wait. Call resume(decision) when the human or system decides.",
+          },
+          {
+            q: "Can I restore a v1 checkpoint?",
+            a: "Yes. Import accepts version 1 and 2. Missing top-level input/defHash are backfilled from run. Exports always write version 2.",
           },
           {
             q: "Can I keep checkpoint history?",

@@ -15,6 +15,9 @@ npm/
 *.tgz
 packs/
 
+# Bench outputs (baseline.json is committed)
+benchmarks/latest.json
+
 # IDE
 .idea/
 .vscode/

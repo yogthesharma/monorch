@@ -17,6 +17,8 @@
     "smoke:live": "SMOKE=1 LIVE_SMOKE=1 pnpm example",
     "smoke:npm": "npm --prefix examples/npm-smoke install && npm --prefix examples/npm-smoke run smoke",
     "pack:check": "node scripts/pack-check.mjs",
+    "bench": "node scripts/bench.mjs",
+    "bench:check": "node scripts/bench.mjs --check",
     "version:stamp": "node scripts/set-version.mjs"
   },
   "engines": {
