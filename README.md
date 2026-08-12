@@ -8,7 +8,7 @@
 
 Not a framework. Not an HTTP stack. Bring your own Fastify/Hono/Nest.
 
-**Current:** `0.1.3` — see [CHANGELOG.md](./CHANGELOG.md). Path to v1: [ROADMAP.md](./ROADMAP.md).
+**Current:** `0.1.4` — see [CHANGELOG.md](./CHANGELOG.md). Path to v1: [ROADMAP.md](./ROADMAP.md).
 
 ## Product lock
 
