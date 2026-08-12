@@ -59,11 +59,14 @@ app.post("/support/stream", async (c) => {
 });`}</DocCode>
 
       <DocH2>3. Interrupt + resume</DocH2>
-      <DocCode lang="typescript" filename="refund.ts">{`import { graph, memorySaver } from "@monorch/ai";
+      <DocCode lang="typescript" filename="refund.ts">{`import { AiError, graph, memorySaver } from "@monorch/ai";
 
 const refund = graph("refund")
-  .node("lookup", async ({ input }) => \`order:\${input.orderId}\`)
-  .interrupt("approve")
+  .node("lookup", async ({ input }) => ({
+    output: \`order:\${input.orderId}\`,
+    state: { orderId: input.orderId },
+  }))
+  .interrupt("approve", { prompt: "Approve refund?" })
   .node("pay", async ({ outputs }) => \`refunded:\${outputs.lookup}\`)
   .compile({ checkpointer: memorySaver() });
 
@@ -74,9 +77,16 @@ app.post("/refund", async (c) => {
 });
 
 app.post("/refund/:threadId/resume", async (c) => {
-  const run = await refund.restore(c.req.param("threadId"));
-  const done = await run.resume("approved");
-  return c.json({ status: done.status, outputs: done.outputs });
+  try {
+    const run = await refund.restore(c.req.param("threadId"));
+    const done = await run.resume("approved");
+    return c.json({ status: done.status, outputs: done.outputs });
+  } catch (e) {
+    if (e instanceof AiError && e.code === "CHECKPOINT_NOT_FOUND") {
+      return c.json({ error: "unknown thread" }, 404);
+    }
+    throw e;
+  }
 });`}</DocCode>
 
       <DocH2>Related</DocH2>

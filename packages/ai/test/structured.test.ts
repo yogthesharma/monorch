@@ -31,6 +31,27 @@ describe("structured output (Zod → IR → validate)", () => {
     );
   });
 
+  it("extracts JSON from markdown fences", async () => {
+    const Schema = z.object({ n: z.number() });
+    const handle = model(
+      mock([{ text: '```json\n{"n": 7}\n```' }]),
+    );
+    assert.deepEqual(await handle.generateObject({ prompt: "x", output: Schema }), { n: 7 });
+  });
+
+  it("throws INVALID_JSON when a fence-like substring is still invalid JSON", async () => {
+    const Schema = z.object({ n: z.number() });
+    const handle = model(mock([{ text: 'prefix {"n":} suffix' }]));
+    await assert.rejects(
+      () => handle.generateObject({ prompt: "x", output: Schema }),
+      (err: unknown) => {
+        assert.ok(err instanceof AiError);
+        assert.equal(err.code, "INVALID_JSON");
+        return true;
+      },
+    );
+  });
+
   it("throws VALIDATION_FAILED when JSON fails the schema", async () => {
     const Schema = z.object({ n: z.number() });
     const handle = model(mock([{ text: JSON.stringify({ n: "nope" }) }]));

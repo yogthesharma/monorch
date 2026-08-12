@@ -8,9 +8,11 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { serve } from "@hono/node-server";
+import type { ServerType } from "@hono/node-server";
 import { Hono } from "hono";
 import { streamSSE } from "hono/streaming";
 import {
+  AiError,
   agent,
   getRuntime,
   graph,
@@ -33,6 +35,16 @@ function packageRootFromEntry(entryUrl: string): string {
   } catch {
     return join(dir, "..");
   }
+}
+
+function exampleRoot(): string {
+  return join(dirname(fileURLToPath(import.meta.url)), "..");
+}
+
+function closeServer(server: ServerType): Promise<void> {
+  return new Promise((resolve, reject) => {
+    server.close((err) => (err ? reject(err) : resolve()));
+  });
 }
 
 const add = tool({
@@ -80,8 +92,16 @@ async function main() {
     !runtimeRoot.includes("/bindings/node"),
     `expected npm @monorch/runtime, got: ${runtimeRoot}`,
   );
+
+  const pkg = JSON.parse(readFileSync(join(exampleRoot(), "package.json"), "utf8")) as {
+    dependencies: { "@monorch/ai": string };
+  };
+  const expectedVersion = pkg.dependencies["@monorch/ai"];
   const aiVersion = JSON.parse(readFileSync(join(aiRoot, "package.json"), "utf8")).version as string;
-  assert(aiVersion === "0.1.3", `expected @monorch/ai@0.1.3, got ${aiVersion} from ${aiRoot}`);
+  assert(
+    aiVersion === expectedVersion,
+    `expected @monorch/ai@${expectedVersion}, got ${aiVersion} from ${aiRoot}`,
+  );
 
   const app = new Hono();
 
@@ -124,17 +144,32 @@ async function main() {
   app.post("/refund/:threadId/resume", async (c) => {
     const threadId = c.req.param("threadId");
     const body = (await c.req.json().catch(() => ({}))) as { decision?: string };
-    const restored = await refund.restore(threadId);
-    const resumed = await restored.resume(body.decision ?? "approved");
-    return c.json({ id: resumed.id, status: resumed.status, outputs: resumed.outputs });
+    try {
+      const restored = await refund.restore(threadId);
+      const resumed = await restored.resume(body.decision ?? "approved");
+      return c.json({ id: resumed.id, status: resumed.status, outputs: resumed.outputs });
+    } catch (err) {
+      if (err instanceof AiError && err.code === "CHECKPOINT_NOT_FOUND") {
+        return c.json({ error: "unknown thread", code: err.code }, 404);
+      }
+      throw err;
+    }
   });
 
-  const port = Number(process.env.PORT ?? 3200);
-  const server = serve({ fetch: app.fetch, port, hostname: "127.0.0.1" });
+  const port = Number(process.env.PORT || 3200);
+  assert(Number.isInteger(port) && port > 0 && port < 65536, `invalid PORT: ${process.env.PORT}`);
+
+  const server = await new Promise<ServerType>((resolve, reject) => {
+    const s = serve({ fetch: app.fetch, port, hostname: "127.0.0.1" }, () => resolve(s));
+    s.once("error", reject);
+  });
 
   if (process.env.SMOKE === "1") {
-    await runSmoke(port);
-    server.close();
+    try {
+      await runSmoke(port);
+    } finally {
+      await closeServer(server);
+    }
     process.exit(0);
   }
 
@@ -151,6 +186,17 @@ async function runSmoke(port: number) {
   );
   console.log("hono-npm /health", health);
 
+  const support = await fetch(`${base}/support`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ message: "2+3" }),
+  }).then(async (r) => ({ status: r.status, body: await r.json() }));
+  assert(
+    support.status === 200 && support.body?.text === "2 + 3 = 5",
+    `support failed: ${JSON.stringify(support)}`,
+  );
+  console.log("hono-npm /support", { text: support.body.text });
+
   const streamText = await fetch(`${base}/support/stream`, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -162,7 +208,17 @@ async function runSmoke(port: number) {
   );
   console.log("hono-npm /support/stream", { bytes: streamText.length });
 
-  const threadId = "hono-npm-refund";
+  const missing = await fetch(`${base}/refund/does-not-exist/resume`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ decision: "approved" }),
+  }).then(async (r) => ({ status: r.status, body: await r.json() }));
+  assert(
+    missing.status === 404 && missing.body?.code === "CHECKPOINT_NOT_FOUND",
+    `missing resume should 404: ${JSON.stringify(missing)}`,
+  );
+
+  const threadId = `hono-npm-refund-${Date.now()}`;
   const started = await fetch(`${base}/refund`, {
     method: "POST",
     headers: { "content-type": "application/json" },

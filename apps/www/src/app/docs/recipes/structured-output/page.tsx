@@ -61,7 +61,9 @@ const weather = await handle.generateObject({
         <DocTerm name="3. Model text">
           The provider is asked for JSON-only. Empty text →{" "}
           <code className="font-mono text-sm">EMPTY_OUTPUT</code>. Unparseable →{" "}
-          <code className="font-mono text-sm">INVALID_JSON</code>.
+          <code className="font-mono text-sm">INVALID_JSON</code> (including markdown fences that
+          still do not contain valid JSON — never a raw{" "}
+          <code className="font-mono text-sm">SyntaxError</code>).
         </DocTerm>
         <DocTerm name="4. Rust parse">
           <code className="font-mono text-sm">getRuntime().parse(ir, json)</code> validates. Failure →{" "}

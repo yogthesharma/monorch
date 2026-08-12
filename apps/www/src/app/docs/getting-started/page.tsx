@@ -40,6 +40,7 @@ export default function GettingStartedPage() {
 pnpm build          # @monorch/runtime + @monorch/ai
 pnpm smoke          # BYO HTTP example (examples/fastify)
 pnpm smoke:npm      # consumer smoke against published @monorch/ai
+pnpm smoke:hono     # same, Hono host (examples/hono-npm)
 pnpm ci             # engine + TS tests, build, typecheck, smoke
 pnpm dev:www        # docs site on :3100`}</DocCode>
 
@@ -119,7 +120,9 @@ if (run.status === "waitingInterrupt") {
         <code className="font-mono text-sm">@monorch/ai</code> from the registry (not the workspace)
         and runs a focused script: native load, agent tool loop, SSE stream, handoff, graph interrupt
         + checkpoint resume. From the repo root: <code className="font-mono text-sm">pnpm smoke:npm</code>
-        .
+        . A second host is{" "}
+        <code className="font-mono text-sm">examples/hono-npm</code> (
+        <code className="font-mono text-sm">pnpm smoke:hono</code>).
       </DocP>
 
       <DocFaq
@@ -131,7 +134,7 @@ if (run.status === "waitingInterrupt") {
           },
           {
             q: "Can I use this outside the monorepo?",
-            a: "Yes. pnpm add @monorch/ai pulls @monorch/runtime transitively. Run examples/npm-smoke or pnpm smoke:npm from this repo to verify the published tarball on your machine.",
+            a: "Yes. pnpm add @monorch/ai pulls @monorch/runtime transitively. Run examples/npm-smoke (pnpm smoke:npm) or examples/hono-npm (pnpm smoke:hono) to verify the published tarball on your machine.",
           },
           {
             q: "Why does smoke use mock instead of OpenAI?",
