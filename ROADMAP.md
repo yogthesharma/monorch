@@ -1,6 +1,6 @@
 # Roadmap to v1.0
 
-Current release: **`@monorch/ai@0.1.6`** ([npm](https://www.npmjs.com/package/@monorch/ai), [site](https://monorch.vercel.app/)).
+Current release: **`@monorch/ai@0.2.0`** ([npm](https://www.npmjs.com/package/@monorch/ai), [site](https://monorch.vercel.app/)).
 
 **v1 gate:** someone can run Monorch in a real Fastify/Hono service with Postgres checkpoints, MCP tools, and an OpenAI-compatible model, and the documented public API stays stable without a breaking change for normal production use.
 

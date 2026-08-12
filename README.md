@@ -8,7 +8,7 @@
 
 Not a framework. Not an HTTP stack. Bring your own Fastify/Hono/Nest.
 
-**Current:** `0.1.6` — see [CHANGELOG.md](./CHANGELOG.md). Path to v1: [ROADMAP.md](./ROADMAP.md).
+**Current:** `0.2.0` — see [CHANGELOG.md](./CHANGELOG.md). Path to v1: [ROADMAP.md](./ROADMAP.md).
 
 **API freeze (0.9 RC):** toward 1.0 we only take bugfixes and docs unless something is critically broken. See [RC_CHECKLIST.md](./RC_CHECKLIST.md) and [UPGRADE.md](./UPGRADE.md).
 

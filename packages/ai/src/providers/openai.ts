@@ -245,7 +245,10 @@ function mapFetchAbort(err: unknown): Error {
       return new AiError("ABORTED", message);
     }
   }
-  return err instanceof Error ? err : new Error(String(err));
+  const message = err instanceof Error ? err.message : String(err);
+  return new AiError("OPENAI_NETWORK", message, {
+    cause: err instanceof Error ? err.name : typeof err,
+  });
 }
 
 function mergeAbort(signal: AbortSignal | undefined, timeoutMs: number): AbortSignal {

@@ -33,6 +33,11 @@ export type McpToolsOptions = {
   /** Prefix tool names to avoid collisions (default: `mcp_`). */
   prefix?: string;
   permission?: ToolDefinition["permission"];
+  /**
+   * Replace existing tool names on re-bind (default true — MCP hot-reload).
+   * Pass false to fail on duplicates like local `tool()`.
+   */
+  replace?: boolean;
 };
 
 export type McpStdioOptions = StdioServerParameters & {
@@ -62,20 +67,24 @@ export async function mcpTools(
   opts: McpToolsOptions = {},
 ): Promise<ToolDefinition[]> {
   const prefix = opts.prefix ?? "mcp_";
+  const replace = opts.replace ?? true;
   const listed = await transport.listTools();
   const out: ToolDefinition[] = [];
 
   for (const info of listed) {
     const name = `${prefix}${info.name}`;
     const ir = jsonSchemaToIr(info.inputSchema);
-    const def = toolWithIr({
-      name,
-      description: info.description ?? info.name,
-      input: z.object({}).passthrough(),
-      inputIr: ir,
-      ...(opts.permission ? { permission: opts.permission } : {}),
-      execute: async (args) => transport.callTool(info.name, args),
-    }) as unknown as ToolDefinition;
+    const def = toolWithIr(
+      {
+        name,
+        description: info.description ?? info.name,
+        input: z.object({}).passthrough(),
+        inputIr: ir,
+        ...(opts.permission ? { permission: opts.permission } : {}),
+        execute: async (args) => transport.callTool(info.name, args),
+      },
+      { replace },
+    ) as unknown as ToolDefinition;
     out.push(def);
   }
   return out;
@@ -112,12 +121,16 @@ export function mockMcp(
 
 /** Connect to an MCP server over stdio (spawns the process). */
 export async function mcpStdio(opts: McpStdioOptions): Promise<McpSession> {
-  const { clientName, clientVersion, ...server } = opts;
-  const transport = new StdioClientTransport({
-    ...server,
-    stderr: server.stderr ?? "inherit",
-  });
-  return connectSession(transport, clientName, clientVersion);
+  try {
+    const { clientName, clientVersion, ...server } = opts;
+    const transport = new StdioClientTransport({
+      ...server,
+      stderr: server.stderr ?? "inherit",
+    });
+    return await connectSession(transport, clientName, clientVersion);
+  } catch (err) {
+    throw asMcpConnect(err, "MCP stdio connect failed");
+  }
 }
 
 /**
@@ -130,28 +143,64 @@ export async function mcpHttp(opts: McpHttpOptions): Promise<McpSession> {
   const httpOpts = opts.headers ? { requestInit: { headers: opts.headers } as RequestInit } : {};
 
   if (mode === "sse") {
-    const transport = new SSEClientTransport(url, httpOpts);
-    return connectSession(transport as never, opts.clientName, opts.clientVersion);
+    try {
+      const transport = new SSEClientTransport(url, httpOpts);
+      return await connectSession(transport as never, opts.clientName, opts.clientVersion);
+    } catch (err) {
+      throw asMcpConnect(err, "MCP SSE connect failed");
+    }
   }
 
   if (mode === "streamable-http") {
-    const transport = new StreamableHTTPClientTransport(url, httpOpts);
-    return connectSession(transport as never, opts.clientName, opts.clientVersion);
+    try {
+      const transport = new StreamableHTTPClientTransport(url, httpOpts);
+      return await connectSession(transport as never, opts.clientName, opts.clientVersion);
+    } catch (err) {
+      throw asMcpConnect(err, "MCP Streamable HTTP connect failed");
+    }
+  }
+
+  let streamableErr: unknown;
+  const streamable = new StreamableHTTPClientTransport(url, httpOpts);
+  try {
+    return await connectSession(streamable as never, opts.clientName, opts.clientVersion);
+  } catch (err) {
+    streamableErr = err;
+    await closeTransport(streamable);
   }
 
   try {
-    const transport = new StreamableHTTPClientTransport(url, httpOpts);
-    return await connectSession(transport as never, opts.clientName, opts.clientVersion);
-  } catch (err) {
-    const transport = new SSEClientTransport(url, httpOpts);
-    try {
-      return await connectSession(transport as never, opts.clientName, opts.clientVersion);
-    } catch (sseErr) {
-      throw new AiError(
-        "MCP_CONNECT",
-        `MCP HTTP connect failed (streamable + sse). streamable: ${String(err)}; sse: ${String(sseErr)}`,
-      );
-    }
+    const sse = new SSEClientTransport(url, httpOpts);
+    return await connectSession(sse as never, opts.clientName, opts.clientVersion);
+  } catch (sseErr) {
+    throw new AiError(
+      "MCP_CONNECT",
+      `MCP HTTP connect failed (streamable + sse). streamable: ${stringifyErr(streamableErr)}; sse: ${stringifyErr(sseErr)}`,
+      {
+        streamable: stringifyErr(streamableErr),
+        sse: stringifyErr(sseErr),
+      },
+    );
+  }
+}
+
+function asMcpConnect(err: unknown, prefix: string): AiError {
+  if (err instanceof AiError && err.code === "MCP_CONNECT") return err;
+  return new AiError("MCP_CONNECT", `${prefix}: ${stringifyErr(err)}`, {
+    cause: stringifyErr(err),
+  });
+}
+
+function stringifyErr(err: unknown): string {
+  if (err instanceof Error) return err.message || err.name;
+  return String(err);
+}
+
+async function closeTransport(transport: { close?: () => Promise<void> | void }): Promise<void> {
+  try {
+    await transport.close?.();
+  } catch {
+    // best-effort teardown before SSE fallback
   }
 }
 
@@ -161,7 +210,12 @@ async function connectSession(
   clientVersion = "0.1.0",
 ): Promise<McpSession> {
   const client = new Client({ name: clientName, version: clientVersion });
-  await client.connect(transport);
+  try {
+    await client.connect(transport);
+  } catch (err) {
+    await closeTransport(transport);
+    throw err;
+  }
 
   return {
     async listTools() {
@@ -257,9 +311,15 @@ function convertJsonSchema(schema: Record<string, unknown>): unknown {
         ...(typeof schema.pattern === "string" ? { pattern: schema.pattern } : {}),
       };
     case "number":
+      return {
+        type: "number",
+        ...(typeof schema.minimum === "number" ? { minimum: schema.minimum } : {}),
+        ...(typeof schema.maximum === "number" ? { maximum: schema.maximum } : {}),
+      };
     case "integer":
       return {
         type: "number",
+        integer: true,
         ...(typeof schema.minimum === "number" ? { minimum: schema.minimum } : {}),
         ...(typeof schema.maximum === "number" ? { maximum: schema.maximum } : {}),
       };

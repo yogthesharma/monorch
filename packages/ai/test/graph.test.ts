@@ -158,4 +158,28 @@ describe("graph orchestration", () => {
     assert.ok(again.defHash && again.defHash.length > 0);
     assert.equal(again.defHash, v2.defHash);
   });
+
+  it("rejects concurrent drive on the same handle", async () => {
+    const name = `busy_${randomUUID().slice(0, 8)}`;
+    const compiled = graph(name)
+      .interrupt("wait", { prompt: "?" })
+      .node("slow", async () => {
+        await new Promise((r) => setTimeout(r, 80));
+        return "ok";
+      })
+      .compile();
+
+    const waiting = await compiled.start({});
+    assert.equal(waiting.status, "waitingInterrupt");
+
+    const resumeP = waiting.resume("approved");
+    await new Promise((r) => setTimeout(r, 10));
+    await assert.rejects(() => waiting.drive(), (err: unknown) => {
+      assert.ok(err instanceof AiError);
+      assert.equal(err.code, "GRAPH_BUSY");
+      return true;
+    });
+    const done = await resumeP;
+    assert.equal(done.status, "completed");
+  });
 });

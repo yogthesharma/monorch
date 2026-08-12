@@ -1,6 +1,6 @@
 # Hono + published npm consumer
 
-Installs **`@monorch/ai@0.1.6` from the npm registry**, not the monorepo workspace — same pattern as `examples/npm-smoke`, but with **Hono** instead of Fastify.
+Installs **`@monorch/ai@0.2.0` from the npm registry**, not the monorepo workspace — same pattern as `examples/npm-smoke`, but with **Hono** instead of Fastify.
 
 ```bash
 cd examples/hono-npm

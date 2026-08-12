@@ -67,13 +67,17 @@ export function createMemorySql(): SqlQueryable {
       }
 
       if (sql.includes("insert into monorch_thread_messages")) {
-        const [thread_id, message] = values as [string, string];
-        msgSeq += 1;
-        messages.push({
-          thread_id,
-          seq: msgSeq,
-          message: JSON.parse(message),
-        });
+        // Supports single-row and multi-row VALUES (atomic append).
+        for (let i = 0; i + 1 < values.length; i += 2) {
+          const thread_id = String(values[i]);
+          const message = String(values[i + 1]);
+          msgSeq += 1;
+          messages.push({
+            thread_id,
+            seq: msgSeq,
+            message: JSON.parse(message),
+          });
+        }
         return { rows: [] };
       }
 

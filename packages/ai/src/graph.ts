@@ -265,10 +265,20 @@ async function driveWithEvents(
   threadId: string | undefined,
   onEvent: (ev: AiEvent) => Awaitable<void>,
   initialAdvance?: RustAdvance,
+  signal?: AbortSignal,
 ): Promise<GraphRunHandle> {
   let pending: RustAdvance | undefined = initialAdvance;
 
   for (;;) {
+    if (signal?.aborted) {
+      try {
+        getRuntime().graphDrop(handle.id);
+      } catch {
+        // best-effort
+      }
+      throw new AiError("ABORTED", "graph drive aborted", { runId: handle.id });
+    }
+
     let advance: RustAdvance;
     if (pending) {
       advance = pending;
@@ -373,6 +383,14 @@ async function driveWithEvents(
       });
       try {
         const out = await executeNode(handle, input, node.id);
+        if (signal?.aborted) {
+          try {
+            getRuntime().graphDrop(handle.id);
+          } catch {
+            // best-effort
+          }
+          throw new AiError("ABORTED", "graph drive aborted", { runId: handle.id });
+        }
         const completed = getRuntime().graphCompleteNode(
           handle.id,
           node.id,
@@ -390,6 +408,7 @@ async function driveWithEvents(
         pending = completed.advance;
         continue;
       } catch (err) {
+        if (err instanceof AiError && err.code === "ABORTED") throw err;
         const message = err instanceof Error ? err.message : String(err);
         getRuntime().graphFailNode(handle.id, message);
         await persist(handle, checkpointer, threadId);
@@ -412,6 +431,23 @@ function createHandle(
   checkpointer?: Checkpointer,
   threadId?: string,
 ): GraphRunHandle {
+  let driving: Promise<unknown> | null = null;
+
+  const withDriveLock = (fn: () => Promise<GraphRunHandle>): Promise<GraphRunHandle> => {
+    if (driving) {
+      throw new AiError(
+        "GRAPH_BUSY",
+        "drive/stream already in progress on this handle",
+        { runId: run.id },
+      );
+    }
+    const p = fn().finally(() => {
+      if (driving === p) driving = null;
+    });
+    driving = p;
+    return p;
+  };
+
   const handle: GraphRunHandle = {
     id: run.id,
     graph: run.graph,
@@ -425,9 +461,19 @@ function createHandle(
       return blob;
     },
     async drive() {
-      return driveWithEvents(handle, input, checkpointer, threadId, async () => {});
+      return withDriveLock(() =>
+        driveWithEvents(handle, input, checkpointer, threadId, async () => {}),
+      );
     },
     async *stream() {
+      if (driving) {
+        throw new AiError(
+          "GRAPH_BUSY",
+          "drive/stream already in progress on this handle",
+          { runId: handle.id },
+        );
+      }
+
       yield {
         type: "run_start",
         runId: handle.id,
@@ -440,16 +486,25 @@ function createHandle(
       let done = false;
       let failure: unknown = null;
       let result: GraphRunHandle | null = null;
+      const ac = new AbortController();
 
       const kick = () => {
         wake?.();
         wake = null;
       };
 
-      const running = driveWithEvents(handle, input, checkpointer, threadId, async (ev) => {
-        queue.push(ev);
-        kick();
-      }).then(
+      const running = driveWithEvents(
+        handle,
+        input,
+        checkpointer,
+        threadId,
+        async (ev) => {
+          queue.push(ev);
+          kick();
+        },
+        undefined,
+        ac.signal,
+      ).then(
         (h) => {
           result = h;
           done = true;
@@ -461,18 +516,34 @@ function createHandle(
           kick();
         },
       );
+      const locked = running.finally(() => {
+        if (driving === locked) driving = null;
+      });
+      driving = locked;
 
-      while (!done || queue.length) {
-        while (queue.length) yield queue.shift()!;
-        if (!done) {
-          await new Promise<void>((r) => {
-            wake = r;
-          });
+      try {
+        while (!done || queue.length) {
+          while (queue.length) yield queue.shift()!;
+          if (!done) {
+            await new Promise<void>((r) => {
+              wake = r;
+            });
+          }
         }
+        await running;
+        if (failure) throw failure;
+        return result!;
+      } finally {
+        if (!done) {
+          ac.abort();
+          try {
+            getRuntime().graphDrop(handle.id);
+          } catch {
+            // best-effort
+          }
+        }
+        await running.catch(() => undefined);
       }
-      await running;
-      if (failure) throw failure;
-      return result!;
     },
     async resume(decision = "approved") {
       if (handle.status !== "waitingInterrupt" && handle.status !== "waitingHuman") {
@@ -482,33 +553,35 @@ function createHandle(
           { runId: handle.id },
         );
       }
-      try {
-        getRuntime().graphResumeInterrupt(handle.id);
-        const stepped = getRuntime().graphCompleteInterrupt(handle.id, decision) as {
-          run: RustRun;
-          advance: RustAdvance;
-        };
-        syncHandle(handle, stepped.run);
-        await persist(handle, checkpointer, threadId);
-        return driveWithEvents(
-          handle,
-          input,
-          checkpointer,
-          threadId,
-          async () => {},
-          stepped.advance,
-        );
-      } catch (err) {
-        const current = getRuntime().graphGet(handle.id) as RustRun | null;
-        if (current) syncHandle(handle, current);
-        throw err instanceof AiError
-          ? err
-          : new AiError(
-              "GRAPH_FAILED",
-              err instanceof Error ? err.message : String(err),
-              { runId: handle.id },
-            );
-      }
+      return withDriveLock(async () => {
+        try {
+          getRuntime().graphResumeInterrupt(handle.id);
+          const stepped = getRuntime().graphCompleteInterrupt(handle.id, decision) as {
+            run: RustRun;
+            advance: RustAdvance;
+          };
+          syncHandle(handle, stepped.run);
+          await persist(handle, checkpointer, threadId);
+          return driveWithEvents(
+            handle,
+            input,
+            checkpointer,
+            threadId,
+            async () => {},
+            stepped.advance,
+          );
+        } catch (err) {
+          const current = getRuntime().graphGet(handle.id) as RustRun | null;
+          if (current) syncHandle(handle, current);
+          throw err instanceof AiError
+            ? err
+            : new AiError(
+                "GRAPH_FAILED",
+                err instanceof Error ? err.message : String(err),
+                { runId: handle.id },
+              );
+        }
+      });
     },
   };
   return handle;

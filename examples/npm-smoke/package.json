@@ -10,7 +10,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@monorch/ai": "0.1.6",
+    "@monorch/ai": "0.2.0",
     "fastify": "^5.2.0",
     "zod": "^3.24.0"
   },

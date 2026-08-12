@@ -1,8 +1,19 @@
 import type { z } from "zod";
+import { AiError } from "./errors.js";
+
+/**
+ * Patterns must be valid for Rust's `regex` crate (no look-around / backrefs).
+ * Pragmatic — not full RFC / WHATWG.
+ */
+const EMAIL_PATTERN = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+const UUID_PATTERN =
+  "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
+const URL_PATTERN = "^https?://\\S+$";
 
 /**
  * Compile a Zod schema into the Rust schema IR.
- * Supports common object/string/number/boolean/array/enum/optional shapes.
+ * Supports common object/string/number/boolean/array/enum/optional shapes,
+ * plus string email/uuid/url/regex and number.int().
  */
 export function zodToIr(schema: z.ZodTypeAny): unknown {
   return convert(schema);
@@ -16,28 +27,91 @@ function convert(schema: z.ZodTypeAny): unknown {
       const checks = (schema as z.ZodString)._def.checks ?? [];
       let minLength: number | undefined;
       let maxLength: number | undefined;
+      let pattern: string | undefined;
       for (const c of checks) {
-        if (c.kind === "min") minLength = c.value;
-        if (c.kind === "max") maxLength = c.value;
+        switch (c.kind) {
+          case "min":
+            minLength = c.value;
+            break;
+          case "max":
+            maxLength = c.value;
+            break;
+          case "length":
+            minLength = c.value;
+            maxLength = c.value;
+            break;
+          case "email":
+            pattern = EMAIL_PATTERN;
+            break;
+          case "uuid":
+            pattern = UUID_PATTERN;
+            break;
+          case "url":
+            pattern = URL_PATTERN;
+            break;
+          case "regex":
+            pattern = c.regex.source;
+            break;
+          case "startsWith":
+            pattern = `^${escapeRegex(c.value)}`;
+            break;
+          case "endsWith":
+            pattern = `${escapeRegex(c.value)}$`;
+            break;
+          case "includes":
+            pattern = escapeRegex(c.value);
+            break;
+          case "trim":
+          case "toLowerCase":
+          case "toUpperCase":
+            // transforms — IR validates the post-transform shape; ignore here
+            break;
+          default:
+            throw new AiError(
+              "SCHEMA_UNSUPPORTED",
+              `zodToIr: unsupported ZodString check '${(c as { kind: string }).kind}'`,
+              { kind: (c as { kind: string }).kind },
+            );
+        }
       }
       return {
         type: "string",
         ...(minLength !== undefined ? { minLength } : {}),
         ...(maxLength !== undefined ? { maxLength } : {}),
+        ...(pattern !== undefined ? { pattern } : {}),
       };
     }
     case "ZodNumber": {
       const checks = (schema as z.ZodNumber)._def.checks ?? [];
       let minimum: number | undefined;
       let maximum: number | undefined;
+      let integer = false;
       for (const c of checks) {
-        if (c.kind === "min") minimum = c.value;
-        if (c.kind === "max") maximum = c.value;
+        switch (c.kind) {
+          case "min":
+            minimum = c.value;
+            break;
+          case "max":
+            maximum = c.value;
+            break;
+          case "int":
+            integer = true;
+            break;
+          case "finite":
+            break;
+          default:
+            throw new AiError(
+              "SCHEMA_UNSUPPORTED",
+              `zodToIr: unsupported ZodNumber check '${(c as { kind: string }).kind}'`,
+              { kind: (c as { kind: string }).kind },
+            );
+        }
       }
       return {
         type: "number",
         ...(minimum !== undefined ? { minimum } : {}),
         ...(maximum !== undefined ? { maximum } : {}),
+        ...(integer ? { integer: true } : {}),
       };
     }
     case "ZodBoolean":
@@ -96,11 +170,16 @@ function convert(schema: z.ZodTypeAny): unknown {
       return { type: "union", anyOf: options.map(convert) };
     }
     case "ZodEffects":
-      throw new Error(
+      throw new AiError(
+        "SCHEMA_UNSUPPORTED",
         "zodToIr: ZodEffects (refine/transform/pipe) is unsupported — validate with Zod after parse, or unwrap the inner schema",
       );
     default:
-      throw new Error(`zodToIr: unsupported Zod type ${def.typeName ?? "unknown"}`);
+      throw new AiError(
+        "SCHEMA_UNSUPPORTED",
+        `zodToIr: unsupported Zod type ${def.typeName ?? "unknown"}`,
+        { typeName: def.typeName ?? "unknown" },
+      );
   }
 }
 
@@ -114,4 +193,8 @@ function unwrapOptional(schema: z.ZodTypeAny): { ir: unknown; optional: boolean 
     return { ir: convert(schema), optional: true };
   }
   return { ir: convert(schema), optional: false };
+}
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

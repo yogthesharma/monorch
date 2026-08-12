@@ -128,12 +128,17 @@ export function agent(options: AgentOptions): Agent {
     },
     async *stream(input: string, opts?: AgentRunOptions): AsyncGenerator<AiEvent, AgentResult> {
       const gen = runAgentLoop(name, internal, { kind: "start", input }, opts);
-      let step = await gen.next();
-      while (!step.done) {
-        yield step.value;
-        step = await gen.next();
+      try {
+        let step = await gen.next();
+        while (!step.done) {
+          yield step.value;
+          step = await gen.next();
+        }
+        return step.value;
+      } finally {
+        // Forward cancel/return so runAgentLoop finally can agentDrop.
+        await gen.return(undefined as never).catch(() => undefined);
       }
-      return step.value;
     },
     async handoff(target, input, opts) {
       const fromInternal = internals.get(name);
@@ -407,7 +412,6 @@ async function* runAgentLoop(
   } catch (err) {
     const stillActive = activeId !== null;
     const runId = activeId ?? run?.id ?? "unknown";
-    dropActive();
     if (stillActive) {
       const aborted =
         (err instanceof AiError && err.code === "ABORTED") || isAbortError(err);
@@ -421,10 +425,13 @@ async function* runAgentLoop(
         status: aborted ? "aborted" : "failed",
       });
       if (aborted && !(err instanceof AiError)) {
+        dropActive();
         throw new AiError("ABORTED", message, { runId });
       }
     }
     throw err;
+  } finally {
+    dropActive();
   }
 }
 

@@ -7,6 +7,7 @@ export type RuntimeEngine = {
   parse(schema: unknown, value: unknown): { ok: boolean; value?: unknown; errors?: unknown };
   toJsonSchema(schema: unknown): unknown;
   toolRegister(spec: unknown): void;
+  toolRegisterWith(spec: unknown, replace: boolean): void;
   toolList(): unknown;
   toolPrepare(
     name: string,

@@ -10,7 +10,13 @@ export { model } from "./model.js";
 export type { ModelHandle } from "./model.js";
 
 export { tool, toolWithIr, callTool, listTools } from "./tool.js";
-export type { ToolCaller, ToolDefinition, ToolPermission } from "./tool.js";
+export type {
+  ToolDefinition,
+  ToolPermission,
+  ToolCaller,
+  ToolRegisterOptions,
+  RegisteredTool,
+} from "./tool.js";
 
 export { agent, getAgent } from "./agent.js";
 export type { Agent, AgentOptions, AgentResult, AgentRunOptions } from "./agent.js";

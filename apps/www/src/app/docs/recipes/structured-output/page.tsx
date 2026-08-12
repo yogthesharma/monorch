@@ -48,10 +48,17 @@ const weather = await handle.generateObject({
       <DocH2>Pipeline</DocH2>
       <DocTerms>
         <DocTerm name="1. Zod">
-          You pass a Zod schema as <code className="font-mono text-sm">output</code>. Exotic{" "}
-          <code className="font-mono text-sm">refine</code> / <code className="font-mono text-sm">transform</code>{" "}
-          / <code className="font-mono text-sm">pipe</code> are not mirrored in IR — keep schemas in
-          the common subset (objects, primitives, arrays, enums, optional, union).
+          You pass a Zod schema as <code className="font-mono text-sm">output</code>. Supported
+          checks include string <code className="font-mono text-sm">email</code> /{" "}
+          <code className="font-mono text-sm">uuid</code> /{" "}
+          <code className="font-mono text-sm">url</code> /{" "}
+          <code className="font-mono text-sm">regex</code> and number{" "}
+          <code className="font-mono text-sm">int</code>. Exotic{" "}
+          <code className="font-mono text-sm">refine</code> /{" "}
+          <code className="font-mono text-sm">transform</code> /{" "}
+          <code className="font-mono text-sm">pipe</code> throw{" "}
+          <code className="font-mono text-sm">SCHEMA_UNSUPPORTED</code> — keep schemas in the common
+          subset (objects, primitives, arrays, enums, optional, union + those checks).
         </DocTerm>
         <DocTerm name="2. zodToIr">
           Monorch compiles the schema to IR for the Rust validator (

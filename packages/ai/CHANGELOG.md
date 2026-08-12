@@ -2,6 +2,10 @@
 
 See the monorepo [CHANGELOG.md](https://github.com/yogthesharma/monorch/blob/main/CHANGELOG.md).
 
+## 0.2.0
+
+Bugfix batch: zodToIr checks + SCHEMA_UNSUPPORTED; stream cancel cleanup; workflow waitingInterrupt; MCP_CONNECT / mcpHttp teardown; OPENAI_NETWORK; tool replace; GRAPH_BUSY; transactional thread append.
+
 ## 0.1.6
 
 Native errors remap to AiError (DEF_HASH_MISMATCH, GRAPH_ALREADY_REGISTERED, …).
