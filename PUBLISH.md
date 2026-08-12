@@ -90,7 +90,14 @@ npm audit signatures
 
 On [npmjs.com](https://www.npmjs.com/package/@monorch/ai) → version → look for **Provenance** / “Built and signed on GitHub Actions”.
 
-If provenance is missing on an older release (pre-0.1.4), that version was published before `--provenance` was enabled; prefer the latest tag.
+If provenance is missing on an older release (e.g. `0.1.3` and earlier), that version was
+published before `--provenance` / `publishConfig.provenance` were enabled; prefer a newer tag.
+
+Also set on the publish job:
+
+- Workflow `permissions.id-token: write` (OIDC for Sigstore)
+- Env `NPM_CONFIG_PROVENANCE=true` (helps pnpm → npm)
+- `publishConfig.provenance: true` on `@monorch/ai` and `@monorch/runtime`
 
 ## Manual publish (if needed)
 

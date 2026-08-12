@@ -158,6 +158,8 @@ jobs:
         if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Belt-and-suspenders for pnpm → npm publish (OIDC via id-token: write)
+          NPM_CONFIG_PROVENANCE: "true"
         run: |
           set -euo pipefail
           if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
@@ -176,7 +178,7 @@ jobs:
               if [[ "$dir" == bindings/node/npm/* ]]; then
                 (cd "$dir" && npm publish --access public --provenance)
               else
-                # pnpm rewrites workspace:* for consumers; --provenance needs OIDC (id-token)
+                # pnpm rewrites workspace:* for consumers; provenance via flag + NPM_CONFIG_PROVENANCE
                 (cd "$dir" && pnpm publish --access public --no-git-checks --provenance)
               fi
             fi
@@ -196,17 +198,21 @@ jobs:
         run: |
           set -euo pipefail
           VERSION="$(node -p "require('./packages/ai/package.json').version")"
-          echo "Verifying @monorch/ai@${VERSION} and runtime optionalDependencies…"
+          WANT="$(node scripts/platform-utils.mjs count)"
+          echo "Verifying @monorch/ai@${VERSION} and runtime optionalDependencies (want ${WANT})…"
           npm view "@monorch/ai@${VERSION}" version
           npm view "@monorch/runtime@${VERSION}" version
           COUNT="$(node -e "const o=require('child_process').execSync('npm view @monorch/runtime@' + process.argv[1] + ' optionalDependencies --json',{encoding:'utf8'}); const j=JSON.parse(o); console.log(Object.keys(j||{}).length)" "$VERSION")"
-          WANT="$(node scripts/platform-utils.mjs count)"
-          # After assemble, platform dirs exist; count should be 8 for current triples.
-          if [ "$COUNT" -lt 6 ]; then
-            echo "Expected at least 6 optionalDependencies on @monorch/runtime@${VERSION}, got ${COUNT}"
+          if [ "$WANT" -lt 1 ]; then
+            echo "No local platform dirs under bindings/node/npm — assemble step failed?"
             exit 1
           fi
-          echo "OK — registry has @monorch/ai@${VERSION}, runtime optionals=${COUNT} (local npm dirs want=${WANT})"
+          if [ "$COUNT" -lt "$WANT" ]; then
+            echo "Expected ${WANT} optionalDependencies on @monorch/runtime@${VERSION}, got ${COUNT}"
+            npm view "@monorch/runtime@${VERSION}" optionalDependencies
+            exit 1
+          fi
+          echo "OK — registry has @monorch/ai@${VERSION}, runtime optionals=${COUNT}"
 
       - uses: actions/upload-artifact@v4
         with:

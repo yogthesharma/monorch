@@ -138,6 +138,8 @@ describe("graph orchestration", () => {
       run: v2.run,
     }) as { status: string; defHash?: string };
     assert.equal(again.status, "waitingInterrupt");
-    assert.ok(again.defHash || (v2.run as { defHash?: string }).defHash);
+    assert.equal(typeof again.defHash, "string");
+    assert.ok(again.defHash && again.defHash.length > 0);
+    assert.equal(again.defHash, v2.defHash);
   });
 });

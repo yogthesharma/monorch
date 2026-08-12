@@ -135,7 +135,11 @@ const refund = graph("refund")
 // Avoid compile({ replace: true }) while production threads still wait on the old hash
 // unless you accept restore/resume failures (GRAPH_FAILED / def_hash mismatch).
 
-async function resumeOrRestart(compiled: CompiledGraph, threadId: string, input: object) {
+async function resumeOrRestart(
+  compiled: { restore(id: string): Promise<{ resume(d?: string): Promise<unknown> }>; start(input: object, opts: { threadId: string }): Promise<unknown> },
+  threadId: string,
+  input: object,
+) {
   try {
     const run = await compiled.restore(threadId);
     return run.resume("approved");

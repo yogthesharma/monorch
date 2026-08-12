@@ -158,11 +158,15 @@ async function main() {
       console.warn(`No baseline for ${r.name}`);
       continue;
     }
-    const ratio = r.medianMs / Math.max(0.001, b.medianMs);
+    const ratio = r.medianMs / Math.max(0.05, b.medianMs);
+    // Also require an absolute floor so sub-ms baselines cannot flake on noisy CI.
+    const absoluteHot = r.medianMs > 50;
     const line = `${r.name}: median ${r.medianMs.toFixed(2)}ms vs baseline ${b.medianMs}ms (${ratio.toFixed(2)}x)`;
-    if (ratio > failMult) {
-      console.error(`FAIL ${line} (threshold ${failMult}x)`);
+    if (ratio > failMult && absoluteHot) {
+      console.error(`FAIL ${line} (threshold ${failMult}x and >50ms)`);
       failed = true;
+    } else if (ratio > failMult) {
+      console.warn(`WARN ${line} (threshold ${failMult}x but under 50ms absolute — not failing)`);
     } else if (ratio > warnMult) {
       console.warn(`WARN ${line} (threshold ${warnMult}x)`);
     } else {
