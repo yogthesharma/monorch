@@ -4,7 +4,7 @@
  * native runtime loads. Used by CI platform matrix (#14).
  *
  *   node scripts/npm-install-smoke.mjs
- *   VERSION=0.1.5 node scripts/npm-install-smoke.mjs
+ *   VERSION=0.1.6 node scripts/npm-install-smoke.mjs
  *
  * Exit 0 with skip notice if the version is not on the registry yet (e.g. release
  * PR that stamped package.json before publish). Set REQUIRE_PUBLISHED=1 to fail

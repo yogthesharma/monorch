@@ -54,7 +54,7 @@ export type { OtelHooks } from "./otel.js";
 export { collectEvents } from "./events.js";
 export type { AiEvent, AiEventListener } from "./events.js";
 
-export { AiError } from "./errors.js";
+export { AiError, fromNativeError, nativeCall } from "./errors.js";
 export { getRuntime } from "./native.js";
 export { zodToIr } from "./zod-ir.js";
 

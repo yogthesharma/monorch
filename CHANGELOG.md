@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] — 2026-08-12
+
+### Fixed
+
+- Native/N-API engine failures now throw `AiError` (via `fromNativeError`) instead of raw `Error` — codes include `DEF_HASH_MISMATCH`, `GRAPH_ALREADY_REGISTERED`, `TOOL_ALREADY_REGISTERED`, `ENGINE_ERROR` (#46).
+
 ## [0.1.5] — 2026-08-12
 
 ### Added

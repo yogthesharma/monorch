@@ -32,7 +32,7 @@ casual breaks, and the [RC checklist](./RC_CHECKLIST.md) freezes the surface.
 
 ## Breaking / behavior notes from 0.1.x
 
-As of **0.1.5** there are **no intentional breaking API removals** from earlier
+As of **0.1.6** there are **no intentional breaking API removals** from earlier
 `0.1.x` packages. Watch these behaviors when upgrading patches:
 
 ### Checkpoint blobs

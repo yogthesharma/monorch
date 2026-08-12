@@ -262,6 +262,28 @@ try {
         <DocTerm name="CHECKPOINT_NOT_FOUND">
           No blob for that <code className="font-mono text-sm">threadId</code> in the checkpointer.
         </DocTerm>
+        <DocTerm name="DEF_HASH_MISMATCH">
+          Checkpoint or in-flight run{" "}
+          <code className="font-mono text-sm">defHash</code> does not match the compiled graph
+          (definition changed). Start a new <code className="font-mono text-sm">threadId</code> or
+          keep the old definition registered.
+        </DocTerm>
+        <DocTerm name="GRAPH_ALREADY_REGISTERED">
+          <code className="font-mono text-sm">compile()</code> without{" "}
+          <code className="font-mono text-sm">replace: true</code> when the graph name exists.
+        </DocTerm>
+        <DocTerm name="GRAPH_NOT_REGISTERED">
+          Restore/advance referenced a graph name that is not compiled in this process.
+        </DocTerm>
+        <DocTerm name="TOOL_ALREADY_REGISTERED">
+          Second <code className="font-mono text-sm">tool()</code> with the same name (use a unique
+          name or unregister policy — see roadmap).
+        </DocTerm>
+        <DocTerm name="ENGINE_ERROR">
+          Other Rust/N-API failures remapped from a plain native{" "}
+          <code className="font-mono text-sm">Error</code>. Prefer matching more specific codes when
+          present; message carries the engine reason.
+        </DocTerm>
       </DocTerms>
 
       <DocH3>Model / structured output</DocH3>
@@ -308,7 +330,12 @@ try {
     case "CHECKPOINT_NOT_FOUND":
     case "AGENT_MISSING":
     case "TOOL_MISSING":
+    case "GRAPH_NOT_REGISTERED":
       return 404;
+    case "DEF_HASH_MISMATCH":
+    case "GRAPH_ALREADY_REGISTERED":
+    case "TOOL_ALREADY_REGISTERED":
+      return 409;
     default:
       return 500;
   }

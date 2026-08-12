@@ -1,4 +1,5 @@
 import { createRequire } from "node:module";
+import { fromNativeError } from "./errors.js";
 
 const require = createRequire(import.meta.url);
 
@@ -53,8 +54,24 @@ export const NativeEngine: EngineCtor = binding.Engine;
 
 let shared: RuntimeEngine | null = null;
 
-/** Process-wide runtime engine (Rust). */
+function wrapEngine(raw: RuntimeEngine): RuntimeEngine {
+  return new Proxy(raw, {
+    get(target, prop, receiver) {
+      const value = Reflect.get(target, prop, receiver);
+      if (typeof value !== "function") return value;
+      return (...args: unknown[]) => {
+        try {
+          return value.apply(target, args);
+        } catch (err) {
+          throw fromNativeError(err);
+        }
+      };
+    },
+  });
+}
+
+/** Process-wide runtime engine (Rust). Native throws are remapped to AiError. */
 export function getRuntime(): RuntimeEngine {
-  if (!shared) shared = new NativeEngine();
+  if (!shared) shared = wrapEngine(new NativeEngine());
   return shared;
 }

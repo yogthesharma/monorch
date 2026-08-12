@@ -1,6 +1,6 @@
 {
   "name": "@monorch/runtime",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Prebuilt N-API bindings for the Monorch Rust engine (agents, tools, and graphs). Required by @monorch/ai.",
   "license": "MIT",
   "keywords": [

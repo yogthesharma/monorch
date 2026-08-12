@@ -83,10 +83,26 @@ describe("graph orchestration", () => {
       .compile({ checkpointer, replace: true });
 
     await assert.rejects(() => v1.restore(threadId), (err: unknown) => {
-      assert.ok(err instanceof Error);
+      assert.ok(err instanceof AiError);
+      assert.equal(err.code, "DEF_HASH_MISMATCH");
       assert.match(err.message, /def_hash|definition/i);
       return true;
     });
+  });
+
+  it("duplicate graph register without replace throws AiError", () => {
+    const name = `dup_${randomUUID().slice(0, 8)}`;
+    graph(name).node("a", async () => "x").compile();
+    assert.throws(
+      () => {
+        graph(name).node("a", async () => "y").compile();
+      },
+      (err: unknown) => {
+        assert.ok(err instanceof AiError);
+        assert.equal(err.code, "GRAPH_ALREADY_REGISTERED");
+        return true;
+      },
+    );
   });
 
   it("imports legacy checkpoint v1 blobs (backfill input + defHash)", async () => {
