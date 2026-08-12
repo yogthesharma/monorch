@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
 import { docMetadata } from "@/lib/seo";
@@ -17,8 +18,7 @@ export default function HandoffRecipePage() {
       </DocLead>
 
       <DocH2>Pattern</DocH2>
-      <DocCode lang="typescript" filename="handoff.ts">{`import { agent } from "@monorch/ai";
-import { mock } from "@monorch/ai/openai";
+      <DocCode lang="typescript" filename="handoff.ts">{`import { agent, mock } from "@monorch/ai";
 
 const billing = agent({
   name: "billing",
@@ -44,7 +44,7 @@ const triage = agent({
 });
 
 const result = await triage.run("I need a refund");
-// events include handoff; billing run continues
+// events include handoff; billing run continues; run_end status handed_off then completed
 
 // or force:
 await triage.handoff(billing, "Customer wants a refund");`}</DocCode>
@@ -52,7 +52,15 @@ await triage.handoff(billing, "Customer wants a refund");`}</DocCode>
       <DocH2>Notes</DocH2>
       <DocP>
         Target must be listed in <code className="font-mono text-sm">handoffs</code>. Unique agent
-        names matter; <code className="font-mono text-sm">getAgent</code> resolves by name.
+        names matter; <code className="font-mono text-sm">getAgent</code> resolves by name. Denied
+        targets throw <code className="font-mono text-sm">HANDOFF_DENIED</code> —{" "}
+        <Link
+          href="/docs/reference/errors"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          error codes
+        </Link>
+        .
       </DocP>
 
       <DocFaq
@@ -61,6 +69,10 @@ await triage.handoff(billing, "Customer wants a refund");`}</DocCode>
           {
             q: "Can handoff mix with other tools?",
             a: "Not in the same model turn. Monorch throws HANDOFF_MIXED.",
+          },
+          {
+            q: "Where is this smoked?",
+            a: "examples/npm-smoke /handoff and the Fastify smoke cover handoff events end-to-end.",
           },
         ]}
       />

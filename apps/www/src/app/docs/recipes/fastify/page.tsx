@@ -140,7 +140,7 @@ const threads = postgresThreads(pool);
         items={[
           {
             q: "Do I need Fastify specifically?",
-            a: "No. Same agent.stream / graph.start patterns work in Hono, Nest, or plain Node. This recipe uses Fastify because the repo smoke does.",
+            a: "No. Same agent.stream / graph.start patterns work in Hono, Nest, or plain Node. See also the Hono recipe (examples/hono-npm) for a second published-npm host.",
           },
           {
             q: "Why mock instead of OpenAI first?",

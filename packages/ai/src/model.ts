@@ -58,7 +58,12 @@ export function model(provider: ModelProvider): ModelHandle {
       } catch {
         const m = text.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
         if (!m) throw new AiError("INVALID_JSON", "model did not return JSON", { text });
-        json = JSON.parse(m[0]!) as unknown;
+        try {
+          json = JSON.parse(m[0]!) as unknown;
+        } catch {
+          // Fence/substring match can still be invalid JSON — keep AiError, not SyntaxError.
+          throw new AiError("INVALID_JSON", "model did not return JSON", { text });
+        }
       }
       const ir = zodToIr(output);
       const parsed = getRuntime().parse(ir, json);

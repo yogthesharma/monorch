@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
 import { docMetadata } from "@/lib/seo";
@@ -12,12 +13,13 @@ export default function AbortRecipePage() {
       <DocH1>Abort + timeouts</DocH1>
       <DocLead>
         Cancel agent loops and provider calls with{" "}
-        <code className="font-mono text-sm">AbortSignal</code>. Timeouts share the same path.
+        <code className="font-mono text-sm">AbortSignal</code>. Timeouts share the same path and
+        surface as <code className="font-mono text-sm">AiError</code> code{" "}
+        <code className="font-mono text-sm">ABORTED</code>.
       </DocLead>
 
       <DocH2>Agent abort</DocH2>
-      <DocCode lang="typescript" filename="abort-agent.ts">{`import { agent, AiError } from "@monorch/ai";
-import { mock } from "@monorch/ai/openai";
+      <DocCode lang="typescript" filename="abort-agent.ts">{`import { agent, AiError, mock } from "@monorch/ai";
 
 const bot = agent({ name: "abortable", model: mock([{ text: "hi" }]) });
 const ctrl = new AbortController();
@@ -47,7 +49,14 @@ await model.generate({
 
       <DocH2>Notes</DocH2>
       <DocP>
-        Default openai timeout is 60s. Pre-aborted signals throw before model I/O.
+        Default openai timeout is 60s. Pre-aborted signals throw before model I/O. Full catalog:{" "}
+        <Link
+          href="/docs/reference/errors"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          Errors &amp; failure modes
+        </Link>
+        .
       </DocP>
 
       <DocFaq

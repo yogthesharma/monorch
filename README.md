@@ -50,6 +50,7 @@ pnpm install
 pnpm build
 pnpm smoke              # Fastify agent + graph smoke (workspace)
 pnpm smoke:npm          # consumer smoke against published @monorch/ai on npm
+pnpm smoke:hono         # same pattern with Hono (examples/hono-npm)
 pnpm smoke:live         # optional live provider (needs API key)
 pnpm dev:www            # homepage + docs on :3100
 ```

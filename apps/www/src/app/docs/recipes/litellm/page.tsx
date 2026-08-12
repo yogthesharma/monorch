@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DocCode, DocH1, DocH2, DocLead, DocP } from "@/components/docs/doc-blocks";
 import { DocFaq } from "@/components/docs/doc-faq";
 import { docMetadata } from "@/lib/seo";
@@ -12,7 +13,8 @@ export default function LitellmRecipePage() {
       <DocH1>LiteLLM proxy</DocH1>
       <DocLead>
         Point the OpenAI-compatible client at LiteLLM (or OpenRouter / vLLM) with{" "}
-        <code className="font-mono text-sm">baseUrl</code>.
+        <code className="font-mono text-sm">baseUrl</code>. Same{" "}
+        <code className="font-mono text-sm">openai()</code> helper as direct OpenAI.
       </DocLead>
 
       <DocH2>Pattern</DocH2>
@@ -35,8 +37,23 @@ await bot.run("ping");`}</DocCode>
 
       <DocH2>Notes</DocH2>
       <DocP>
-        Same API as direct OpenAI. Agent <code className="font-mono text-sm">opts.signal</code>{" "}
-        forwards into provider fetch.
+        Auth missing → <code className="font-mono text-sm">OPENAI_AUTH</code>. Non-OK HTTP →{" "}
+        <code className="font-mono text-sm">OPENAI_HTTP</code>. Agent{" "}
+        <code className="font-mono text-sm">opts.signal</code> forwards into provider fetch. See{" "}
+        <Link
+          href="/docs/reference/errors"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          Errors
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/docs/reference/openai"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          openai reference
+        </Link>
+        .
       </DocP>
 
       <DocFaq
@@ -44,7 +61,7 @@ await bot.run("ping");`}</DocCode>
         items={[
           {
             q: "How do I smoke live?",
-            a: "LIVE_SMOKE=1 with OPENAI_API_KEY or LITELLM_API_KEY against the repo smoke example.",
+            a: "From the monorepo: LIVE_SMOKE=1 pnpm smoke:live with OPENAI_API_KEY or LITELLM_API_KEY / LITELLM_URL.",
           },
         ]}
       />

@@ -159,7 +159,13 @@ export const docPages: DocPageMeta[] = [
     title: "HTTP with Fastify",
     path: "/docs/recipes/fastify",
     description:
-      "One BYO HTTP recipe using Fastify: agent SSE, interrupt + resume, and Postgres adapters. Same patterns work in Hono or Nest.",
+      "BYO HTTP recipe using Fastify: agent SSE, interrupt + resume, and Postgres adapters.",
+  },
+  {
+    title: "HTTP with Hono",
+    path: "/docs/recipes/hono",
+    description:
+      "Second BYO HTTP stack on Hono using published @monorch/ai from npm (stream + HITL).",
   },
   {
     title: "HITL refund",
@@ -172,9 +178,9 @@ export const docPages: DocPageMeta[] = [
     description: "triage → billing with handoffs and handoff().",
   },
   {
-    title: "MCP stdio",
+    title: "MCP stdio / HTTP",
     path: "/docs/recipes/mcp-stdio",
-    description: "Local MCP server tools via mcpStdio + mcpTools.",
+    description: "mcpStdio / mcpHttp + mcpTools bridge for remote tools.",
   },
   {
     title: "LiteLLM proxy",
@@ -185,6 +191,11 @@ export const docPages: DocPageMeta[] = [
     title: "Abort + timeouts",
     path: "/docs/recipes/abort",
     description: "AbortSignal on agents and timeoutMs on providers.",
+  },
+  {
+    title: "Structured output",
+    path: "/docs/recipes/structured-output",
+    description: "Zod → IR → Rust validate via model().generateObject.",
   },
   {
     title: "Graph hot-reload",

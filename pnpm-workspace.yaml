@@ -3,5 +3,5 @@ packages:
   - "packages/*"
   - "examples/fastify"
   - "apps/*"
-  # examples/npm-smoke is intentionally outside the workspace so it installs
-  # @monorch/ai from the npm registry instead of linking packages/ai.
+  # examples/npm-smoke and examples/hono-npm are intentionally outside the workspace
+  # so they install @monorch/ai from the npm registry instead of linking packages/ai.
