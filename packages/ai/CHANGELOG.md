@@ -2,6 +2,10 @@
 
 See the monorepo [CHANGELOG.md](https://github.com/yogthesharma/monorch/blob/main/CHANGELOG.md).
 
+## 0.1.5
+
+RC checklist / upgrade guide / security threat model; CI consumer + install-matrix smokes; release post-publish gates.
+
 ## 0.1.4
 
 Hono npm consumer example; structured-output docs/tests; `generateObject` INVALID_JSON fence fix; provenance + bench from 0.3.

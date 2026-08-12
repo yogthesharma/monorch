@@ -1,6 +1,6 @@
 {
   "name": "@monorch/ai",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "AI control plane for TypeScript backends. Typed agents and graphs with a Rust engine, HITL checkpoints, MCP, and OpenAI-compatible streaming. Bring your own HTTP stack.",
   "type": "module",
   "license": "MIT",
