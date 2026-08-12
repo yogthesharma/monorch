@@ -100,7 +100,7 @@ jobs:
             EXTRA="--zig"
           fi
           pnpm exec napi build --platform --release --target ${{ matrix.settings.target }} $EXTRA
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: bindings-${{ matrix.settings.target }}
           path: bindings/node/*.node
@@ -181,7 +181,7 @@ jobs:
           publish_if_needed bindings/node
           publish_if_needed packages/ai
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: npm-packs
           path: packs/*.tgz
