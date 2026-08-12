@@ -5,24 +5,52 @@
  *
  *   node scripts/npm-install-smoke.mjs
  *   VERSION=0.1.4 node scripts/npm-install-smoke.mjs
+ *
+ * Exit 0 with skip notice if the version is not on the registry yet (e.g. release
+ * PR that stamped package.json before publish). Set REQUIRE_PUBLISHED=1 to fail
+ * instead (release / main gates).
  */
 import { execSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
+import { setTimeout as sleep } from "node:timers/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const pkgVersion = JSON.parse(readFileSync(join(root, "packages/ai/package.json"), "utf8"))
   .version;
 const version = process.env.VERSION || pkgVersion;
+const requirePublished = process.env.REQUIRE_PUBLISHED === "1";
+
+function registryHas(version) {
+  try {
+    execSync(`npm view @monorch/ai@${version} version`, {
+      stdio: ["ignore", "pipe", "pipe"],
+      encoding: "utf8",
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+if (!registryHas(version)) {
+  const msg = `@monorch/ai@${version} is not on the npm registry yet`;
+  if (requirePublished) {
+    console.error(`npm-install-smoke FAIL: ${msg}`);
+    process.exit(1);
+  }
+  console.log(`npm-install-smoke SKIP: ${msg}`);
+  process.exit(0);
+}
 
 const dir = mkdtempSync(join(tmpdir(), "monorch-npm-install-"));
 const cleanup = () => {
   try {
     rmSync(dir, { recursive: true, force: true });
   } catch {
-    /* ignore */
+    /* Windows can hold locks on loaded .node briefly — ignore. */
   }
 };
 
@@ -42,15 +70,30 @@ try {
   );
 
   console.log(`npm-install-smoke: installing @monorch/ai@${version} in ${dir}`);
-  execSync("npm install --no-fund --no-audit", {
-    cwd: dir,
-    stdio: "inherit",
-    env: { ...process.env, npm_config_fund: "false" },
-  });
+  // Retry briefly — registry CDN can lag right after publish.
+  let lastErr;
+  for (let i = 1; i <= 6; i++) {
+    try {
+      execSync("npm install --no-fund --no-audit", {
+        cwd: dir,
+        stdio: "inherit",
+        env: { ...process.env, npm_config_fund: "false" },
+      });
+      lastErr = undefined;
+      break;
+    } catch (err) {
+      lastErr = err;
+      console.warn(`npm install attempt ${i}/6 failed; retrying in 5s…`);
+      await sleep(5000);
+    }
+  }
+  if (lastErr) throw lastErr;
 
   const aiRoot = join(dir, "node_modules", "@monorch", "ai");
   const runtimeRoot = join(dir, "node_modules", "@monorch", "runtime");
-  if (aiRoot.includes(`${join("packages", "ai")}`)) {
+  // Guard against accidental workspace linking (path contains /packages/ai/ as a segment).
+  const normalized = aiRoot.replace(/\\/g, "/");
+  if (normalized.includes("/packages/ai/") || normalized.endsWith("/packages/ai")) {
     throw new Error(`expected registry install, got workspace path: ${aiRoot}`);
   }
 

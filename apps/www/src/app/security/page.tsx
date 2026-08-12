@@ -107,6 +107,13 @@ export default function SecurityPage() {
             </Link>
             {" · "}
             <Link
+              href="/docs/reference/errors"
+              className="text-foreground underline-offset-4 hover:underline"
+            >
+              Error codes
+            </Link>
+            {" · "}
+            <Link
               href="/docs/upgrade"
               className="text-foreground underline-offset-4 hover:underline"
             >

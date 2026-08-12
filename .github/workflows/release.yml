@@ -233,6 +233,8 @@ jobs:
 
       - name: Post-publish consumer smokes
         if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
+        env:
+          REQUIRE_PUBLISHED: "1"
         run: |
           set -euo pipefail
           VERSION="$(node -p "require('./packages/ai/package.json').version")"
@@ -248,10 +250,7 @@ jobs:
             }
             console.log('example pins OK @', process.argv[1]);
           " "$VERSION"
-          npm --prefix examples/npm-smoke install
-          npm --prefix examples/npm-smoke run smoke
-          npm --prefix examples/hono-npm install
-          npm --prefix examples/hono-npm run smoke
+          bash scripts/consumer-smoke.sh both
           node scripts/npm-install-smoke.mjs
 
       - uses: actions/upload-artifact@v4

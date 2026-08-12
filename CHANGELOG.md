@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: published `smoke:npm` / `smoke:hono`, npm-install matrix (ubuntu/macOS/Windows), optional live smoke on main.
 - Release workflow: post-publish consumer smokes + `npm-install-smoke` gate.
 - `pnpm smoke:npm-install` (`scripts/npm-install-smoke.mjs`).
+- Consumer smokes skip cleanly when `packages/ai` version is not published yet; release uses `REQUIRE_PUBLISHED=1`.
+- Live smoke skips the native build when provider secrets are unset.
 
 ### Fixed
 

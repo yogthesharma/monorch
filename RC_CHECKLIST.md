@@ -14,31 +14,31 @@ Track: [roadmap issues](https://github.com/yogthesharma/monorch/issues?q=is%3Ais
 
 ### Platforms (#14)
 
-- [ ] Release workflow builds all **8** triples (darwin / linux-gnu / linux-musl / win32 × x64+arm64)
-- [ ] Alpine musl CI smoke green (`scripts/alpine-musl-smoke.mjs`)
-- [ ] `scripts/npm-install-smoke.mjs` green on ubuntu + macOS + Windows (CI matrix)
-- [ ] `npm view @monorch/runtime@<ver> optionalDependencies` has **8** entries after publish
+- [x] Release workflow builds all **8** triples (darwin / linux-gnu / linux-musl / win32 × x64+arm64)
+- [x] Alpine musl CI smoke green (`scripts/alpine-musl-smoke.mjs`)
+- [x] `scripts/npm-install-smoke.mjs` green on ubuntu + macOS + Windows (CI matrix)
+- [ ] `npm view @monorch/runtime@<ver> optionalDependencies` has **8** entries after each publish (manual / release verify)
 
 ### Smokes (#15)
 
-- [ ] `pnpm smoke` (workspace Fastify) on every PR / main
-- [ ] `pnpm smoke:npm` against published `@monorch/ai`
-- [ ] `pnpm smoke:hono` against published `@monorch/ai`
-- [ ] Optional `LIVE_SMOKE=1` job when `OPENAI_API_KEY` / LiteLLM secrets are set
-- [ ] Release workflow fails if post-publish consumer smokes fail
+- [x] `pnpm smoke` (workspace Fastify) on every PR / main
+- [x] `pnpm smoke:npm` against published `@monorch/ai` (skips if version not published yet)
+- [x] `pnpm smoke:hono` against published `@monorch/ai`
+- [x] Optional `LIVE_SMOKE=1` job on `main` when `OPENAI_API_KEY` / LiteLLM secrets are set
+- [x] Release workflow fails if post-publish consumer smokes fail (`REQUIRE_PUBLISHED=1`)
 
 ### Docs & contract (#13, #17)
 
-- [ ] Public API page matches shipped exports
-- [ ] Errors / checkpoints / recipes accurate
-- [ ] [UPGRADE.md](./UPGRADE.md) current for 0.x → 1.0
-- [ ] CHANGELOG has an Unreleased / RC section ready to stamp
+- [x] Public API page matches shipped exports (freeze points here)
+- [x] Errors / checkpoints / recipes accurate (0.4 polish)
+- [x] [UPGRADE.md](./UPGRADE.md) current for 0.x → 1.0
+- [x] CHANGELOG has an Unreleased / RC section ready to stamp
 
 ### Security (#16)
 
-- [ ] [SECURITY.md](./SECURITY.md) threat model reviewed (native load, MCP, Postgres)
-- [ ] Site `/security` points at reporting + threat model
-- [ ] No known open critical advisories blocking RC
+- [x] [SECURITY.md](./SECURITY.md) threat model reviewed (native load, MCP, Postgres)
+- [x] Site `/security` points at reporting + threat model
+- [ ] No known open critical advisories blocking RC (human gate before `1.0.0-rc.*`)
 
 ### Cut RC
 
