@@ -52,7 +52,12 @@ export const docsNav: DocNavGroup[] = [
       {
         title: "HTTP with Fastify",
         href: "/docs/recipes/fastify",
-        description: "One BYO HTTP example (same patterns in Hono)",
+        description: "BYO HTTP (Fastify)",
+      },
+      {
+        title: "HTTP with Hono",
+        href: "/docs/recipes/hono",
+        description: "BYO HTTP from npm",
       },
       {
         title: "HITL refund",
@@ -65,9 +70,9 @@ export const docsNav: DocNavGroup[] = [
         description: "triage → billing",
       },
       {
-        title: "MCP stdio",
+        title: "MCP stdio / HTTP",
         href: "/docs/recipes/mcp-stdio",
-        description: "Local MCP server as tools",
+        description: "Local or remote MCP tools",
       },
       {
         title: "LiteLLM proxy",
@@ -78,6 +83,11 @@ export const docsNav: DocNavGroup[] = [
         title: "Abort + timeouts",
         href: "/docs/recipes/abort",
         description: "AbortSignal and timeoutMs",
+      },
+      {
+        title: "Structured output",
+        href: "/docs/recipes/structured-output",
+        description: "Zod → IR → Rust validate",
       },
       {
         title: "Graph hot-reload",

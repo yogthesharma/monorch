@@ -37,9 +37,9 @@ Tracking: [issues labeled `roadmap`](https://github.com/yogthesharma/monorch/iss
 
 ## 0.4 — Ecosystem confidence
 
-- [ ] [#10](https://github.com/yogthesharma/monorch/issues/10) Second BYO example (Hono or Nest) on published package
-- [ ] [#11](https://github.com/yogthesharma/monorch/issues/11) Polish docs recipes (HITL, handoff, MCP, LiteLLM, abort)
-- [ ] [#12](https://github.com/yogthesharma/monorch/issues/12) End-to-end structured output path (Zod → IR → validate)
+- [x] [#10](https://github.com/yogthesharma/monorch/issues/10) Second BYO example (Hono or Nest) on published package
+- [x] [#11](https://github.com/yogthesharma/monorch/issues/11) Polish docs recipes (HITL, handoff, MCP, LiteLLM, abort)
+- [x] [#12](https://github.com/yogthesharma/monorch/issues/12) End-to-end structured output path (Zod → IR → validate)
 
 ## 0.9 — Release candidate
 
