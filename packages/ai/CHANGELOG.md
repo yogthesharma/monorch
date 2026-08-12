@@ -2,6 +2,10 @@
 
 See the monorepo [CHANGELOG.md](https://github.com/yogthesharma/monorch/blob/main/CHANGELOG.md).
 
+## 0.1.6
+
+Native errors remap to AiError (DEF_HASH_MISMATCH, GRAPH_ALREADY_REGISTERED, …).
+
 ## 0.1.5
 
 RC checklist / upgrade guide / security threat model; CI consumer + install-matrix smokes; release post-publish gates.
