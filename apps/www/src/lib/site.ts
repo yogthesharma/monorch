@@ -228,14 +228,14 @@ export function absoluteUrl(path = "/") {
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** Install snippet for homepage / docs — honest about publish state. */
+/** Install snippet for homepage / docs — npm by default; monorepo when NEXT_PUBLIC_NPM_PUBLISHED=0. */
 export function installSnippet(): string {
   if (siteConfig.npmPublished) {
     return `pnpm add @monorch/ai
 # optional: pnpm add pg   # only for @monorch/ai/postgres`;
   }
   const repo = siteConfig.github.replace(/\/$/, "").replace(/\.git$/i, "");
-  return `# Packages are developed in the monorepo (npm publish may not be live yet).
+  return `# Build from source (site preview override — packages are on npm)
 git clone ${repo}.git
 cd monorch
 pnpm install

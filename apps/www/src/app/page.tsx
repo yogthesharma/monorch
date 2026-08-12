@@ -154,10 +154,22 @@ export default async function HomePage() {
                 </Button>
               </div>
               <p className="animate-rise-delay-2 mt-4 font-mono text-xs text-muted-foreground/90">
-                v{siteConfig.version}
-                {siteConfig.npmPublished
-                  ? " · pnpm add @monorch/ai"
-                  : " · monorepo install (npm publish pending)"}
+                {siteConfig.npmPublished ? (
+                  <>
+                    <Link
+                      href={siteConfig.npm}
+                      className="text-foreground/90 underline-offset-4 hover:underline"
+                    >
+                      @monorch/ai@{siteConfig.version}
+                    </Link>
+                    {" · pnpm add @monorch/ai"}
+                  </>
+                ) : (
+                  <>
+                    v{siteConfig.version}
+                    {" · build from source (monorepo)"}
+                  </>
+                )}
               </p>
             </div>
 

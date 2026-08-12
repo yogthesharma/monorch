@@ -16,20 +16,19 @@ export default function FastifyRecipePage() {
       </DocLead>
 
       <DocH2>1. Install</DocH2>
-      {!siteConfig.npmPublished ? (
-        <DocP>
-          <code className="font-mono text-sm">@monorch/ai</code> is developed in this monorepo.
-          Public npm may not be live yet. Clone and build, or set{" "}
-          <code className="font-mono text-sm">NEXT_PUBLIC_NPM_PUBLISHED=1</code> on the site once you
-          publish.
-        </DocP>
-      ) : (
-        <DocP>
-          Install the library. Native binaries for{" "}
-          <code className="font-mono text-sm">@monorch/runtime</code> ship as optional platform
-          packages.
-        </DocP>
-      )}
+      <DocP>
+        Install from{" "}
+        <a href={siteConfig.npm} className="underline-offset-4 hover:underline">
+          npm
+        </a>{" "}
+        (<code className="font-mono text-sm">@monorch/ai@{siteConfig.version}</code>). Native
+        binaries for <code className="font-mono text-sm">@monorch/runtime</code> ship as optional
+        platform packages — see{" "}
+        <a href="/platforms" className="underline-offset-4 hover:underline">
+          platforms
+        </a>
+        .
+      </DocP>
       <DocCode lang="bash" filename="terminal">
         {installSnippet()}
       </DocCode>

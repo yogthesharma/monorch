@@ -10,6 +10,8 @@ const aiPkg = JSON.parse(
 const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_MONORCH_VERSION: aiPkg.version,
+    /** Default published — set NEXT_PUBLIC_NPM_PUBLISHED=0 locally to preview monorepo install copy. */
+    NEXT_PUBLIC_NPM_PUBLISHED: process.env.NEXT_PUBLIC_NPM_PUBLISHED ?? "1",
   },
   async redirects() {
     return [
