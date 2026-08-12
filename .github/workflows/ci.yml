@@ -53,6 +53,82 @@ jobs:
       - name: Smoke
         run: pnpm smoke
 
+  npm-consumers:
+    name: Published npm consumer smokes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: smoke:npm + smoke:hono
+        run: bash scripts/consumer-smoke.sh both
+
+  npm-install-matrix:
+    name: npm install smoke (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install published @monorch/ai + load native
+        shell: bash
+        run: node scripts/npm-install-smoke.mjs
+
+  live-smoke:
+    name: Live provider smoke
+    runs-on: ubuntu-latest
+    # Only on main pushes — needs repo secret; skip quietly when unset.
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check provider secrets
+        id: creds
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LITELLM_API_KEY: ${{ secrets.LITELLM_API_KEY }}
+        run: |
+          if [ -z "${OPENAI_API_KEY:-}" ] && [ -z "${LITELLM_API_KEY:-}" ]; then
+            echo "has_creds=false" >> "$GITHUB_OUTPUT"
+            echo "No OPENAI_API_KEY / LITELLM_API_KEY — skipping live smoke (no build)"
+          else
+            echo "has_creds=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.creds.outputs.has_creds == 'true'
+        uses: dtolnay/rust-toolchain@stable
+      - if: steps.creds.outputs.has_creds == 'true'
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            . -> target
+            bindings/node -> target
+      - if: steps.creds.outputs.has_creds == 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+      - if: steps.creds.outputs.has_creds == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - if: steps.creds.outputs.has_creds == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.creds.outputs.has_creds == 'true'
+        run: pnpm build
+      - name: Live smoke
+        if: steps.creds.outputs.has_creds == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LITELLM_API_KEY: ${{ secrets.LITELLM_API_KEY }}
+          LITELLM_URL: ${{ secrets.LITELLM_URL }}
+          LIVE_MODEL: ${{ vars.LIVE_MODEL }}
+        run: LIVE_SMOKE=1 pnpm smoke:live
+
   alpine-musl:
     name: Alpine musl native smoke
     runs-on: ubuntu-latest

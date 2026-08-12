@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- RC checklist (`RC_CHECKLIST.md`) + docs `/docs/rc`; API freeze announced in README.
+- Upgrade guide (`UPGRADE.md`) + docs `/docs/upgrade` (0.x → 1.0).
+- Security threat model for native `.node` load, MCP stdio/HTTP, and Postgres adapters.
+- CI: published `smoke:npm` / `smoke:hono`, npm-install matrix (ubuntu/macOS/Windows), optional live smoke on main.
+- Release workflow: post-publish consumer smokes + `npm-install-smoke` gate.
+- `pnpm smoke:npm-install` (`scripts/npm-install-smoke.mjs`).
+- Consumer smokes skip cleanly when `packages/ai` version is not published yet; release uses `REQUIRE_PUBLISHED=1`.
+- Live smoke skips the native build when provider secrets are unset.
+
 ### Fixed
 
 - Release registry verify retries `npm view` after publish (npm CDN can 404 for a few seconds).

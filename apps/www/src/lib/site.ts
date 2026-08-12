@@ -71,7 +71,7 @@ export const productPages: DocPageMeta[] = [
     title: "Security",
     path: "/security",
     description:
-      "MIT license, library data posture, and how to report security issues.",
+      "MIT license, threat model (native load, MCP, Postgres), and how to report vulnerabilities.",
   },
 ];
 
@@ -94,6 +94,18 @@ export const docPages: DocPageMeta[] = [
     path: "/docs/api",
     description:
       "Supported @monorch/ai exports, SemVer policy, prefer graph() over workflow(), and intentional non-public surfaces.",
+  },
+  {
+    title: "Upgrade guide",
+    path: "/docs/upgrade",
+    description:
+      "0.x → 1.0 upgrade notes: checkpoints, structured output errors, MCP and Postgres trust boundaries.",
+  },
+  {
+    title: "Release candidate",
+    path: "/docs/rc",
+    description:
+      "API freeze toward 1.0, RC checklist for platforms, smokes, docs, and security.",
   },
   {
     title: "Agents",

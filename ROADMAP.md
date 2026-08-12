@@ -43,11 +43,11 @@ Tracking: [issues labeled `roadmap`](https://github.com/yogthesharma/monorch/iss
 
 ## 0.9 — Release candidate
 
-- [ ] [#13](https://github.com/yogthesharma/monorch/issues/13) API freeze window and RC checklist
-- [ ] [#14](https://github.com/yogthesharma/monorch/issues/14) Full platform matrix green including musl
-- [ ] [#15](https://github.com/yogthesharma/monorch/issues/15) CI gates: smoke, smoke:npm, and live provider smoke
-- [ ] [#16](https://github.com/yogthesharma/monorch/issues/16) Security pass: native load, MCP spawn, Postgres adapters
-- [ ] [#17](https://github.com/yogthesharma/monorch/issues/17) Changelog and 0.x → 1.0 upgrade guide
+- [x] [#13](https://github.com/yogthesharma/monorch/issues/13) API freeze window and RC checklist
+- [x] [#14](https://github.com/yogthesharma/monorch/issues/14) Full platform matrix green including musl
+- [x] [#15](https://github.com/yogthesharma/monorch/issues/15) CI gates: smoke, smoke:npm, and live provider smoke
+- [x] [#16](https://github.com/yogthesharma/monorch/issues/16) Security pass: native load, MCP spawn, Postgres adapters
+- [x] [#17](https://github.com/yogthesharma/monorch/issues/17) Changelog and 0.x → 1.0 upgrade guide
 
 ## 1.0 — Ship
 
