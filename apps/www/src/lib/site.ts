@@ -7,7 +7,7 @@ export const siteConfig = {
    * Injected from packages/ai/package.json via next.config.ts.
    * Keep that package version aligned with the npm release you want the site to advertise.
    */
-  version: process.env.NEXT_PUBLIC_MONORCH_VERSION ?? "0.1.2",
+  version: process.env.NEXT_PUBLIC_MONORCH_VERSION ?? "0.1.3",
   /**
    * Packages are on the public npm registry. Set NEXT_PUBLIC_NPM_PUBLISHED=0 to force
    * monorepo/git install copy on the site.

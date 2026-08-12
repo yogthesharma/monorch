@@ -2,6 +2,10 @@
 
 See the monorepo [CHANGELOG.md](https://github.com/yogthesharma/monorch/blob/main/CHANGELOG.md).
 
+## 0.1.3
+
+linux-musl prebuilds (`@monorch/runtime-linux-*-musl`); expanded tests and Postgres CI.
+
 ## 0.1.2
 
 Homepage set to https://monorch.vercel.app/; description without em dashes.

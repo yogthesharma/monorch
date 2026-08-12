@@ -1,6 +1,6 @@
 # Published npm consumer smoke
 
-This example installs **`@monorch/ai@0.1.2` from the npm registry**, not the monorepo workspace.
+This example installs **`@monorch/ai@0.1.3` from the npm registry**, not the monorepo workspace.
 
 It is excluded from the pnpm workspace so installs cannot accidentally link `packages/ai`.
 

@@ -115,7 +115,7 @@ async function main() {
     `expected npm @monorch/runtime, got: ${runtimeRoot}`,
   );
   const aiVersion = JSON.parse(readFileSync(join(aiRoot, "package.json"), "utf8")).version as string;
-  assert(aiVersion === "0.1.2", `expected @monorch/ai@0.1.2, got ${aiVersion} from ${aiRoot}`);
+  assert(aiVersion === "0.1.3", `expected @monorch/ai@0.1.3, got ${aiVersion} from ${aiRoot}`);
 
   const app = Fastify({ logger: true });
 

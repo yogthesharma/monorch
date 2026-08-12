@@ -16,6 +16,16 @@ type Release = {
 /** Keep in sync with packages/ai/CHANGELOG.md / monorepo CHANGELOG. */
 const releases: Release[] = [
   {
+    version: "0.1.3",
+    date: "2026-08-12",
+    summary: "linux-musl prebuilds and stronger CI coverage.",
+    items: [
+      "Platform packages: @monorch/runtime-linux-x64-musl and linux-arm64-musl (8 targets total)",
+      "Expanded engine + @monorch/ai tests; Postgres adapter tests in CI",
+      "Docs: public API surface and AiError / failure modes reference",
+    ],
+  },
+  {
     version: "0.1.2",
     date: "2026-08-12",
     summary: "Homepage and package metadata polish.",

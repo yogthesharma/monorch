@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] — 2026-08-12
+
 ### Added
 
-- `@monorch/runtime-linux-x64-musl` and `@monorch/runtime-linux-arm64-musl` prebuilds (Alpine / musl Docker). Ships on the next npm release tag.
-- CI Postgres integration tests for `@monorch/ai/postgres` adapters.
+- `@monorch/runtime-linux-x64-musl` and `@monorch/runtime-linux-arm64-musl` prebuilds (Alpine / musl Docker). `@monorch/runtime` now declares **8** platform `optionalDependencies` (was 6).
+- Expanded engine + `@monorch/ai` unit tests and CI Postgres integration tests for `@monorch/ai/postgres`.
+
+### Notes
+
+- GNU vs musl Linux is selected by the N-API loader from the host libc. No app code changes required for Alpine images.
+- Docs: public API surface, failure modes / `AiError` catalog on the site.
 
 ## [0.1.2] — 2026-08-12
 

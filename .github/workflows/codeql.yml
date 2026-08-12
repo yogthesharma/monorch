@@ -28,7 +28,8 @@ jobs:
           - language: javascript-typescript
             build-mode: none
           - language: rust
-            build-mode: autobuild
+            # Rust CodeQL extractor does not support autobuild.
+            build-mode: none
 
     steps:
       - name: Checkout
