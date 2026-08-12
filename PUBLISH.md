@@ -20,6 +20,20 @@ installs do not need unpublished `@monorch/runtime-*` packages).
 2. npm org `@monorch` (or change the scope)
 3. npm **Automation** token with publish rights → Actions secret `NPM_TOKEN`
 4. Green CI on `main` (`cargo test`, build, smoke)
+5. Workflow `permissions.id-token: write` (already set) for npm provenance / OIDC
+
+## When publish runs (integrity)
+
+`.github/workflows/release.yml` publishes **only** when:
+
+| Trigger | Publishes? |
+| ------- | ---------- |
+| Push of tag `v*` (e.g. `v0.1.3`) | Yes |
+| `workflow_dispatch` with `dry_run: false` | Yes |
+| `workflow_dispatch` with `dry_run: true` (default) | Pack only — **no** npm publish |
+| Push to `main` / PRs | Never |
+
+Do not publish from a laptop against production unless recovering from a failed CI publish.
 
 ## Local pack check (this machine only)
 
@@ -33,25 +47,50 @@ This validates tarball contents for the **current** OS/arch. Full multi-platform
 ## Release (recommended)
 
 ```bash
-# 1. Stamp version if needed
-node scripts/set-version.mjs 0.1.0
+# Prefer a release PR → merge to main, then:
 
-# 2. Commit + tag
-git add -A && git commit -m "release: 0.1.0"
-git tag v0.1.0
-git push origin main --tags
+# 1. Stamp version if needed
+node scripts/set-version.mjs 0.1.4
+
+# 2. Commit on a branch / PR, merge to main when CI is green
+git tag v0.1.4
+git push origin v0.1.4
 ```
 
 Pushing `v*` runs `.github/workflows/release.yml`:
 
-1. Build natives on macOS / Linux / Windows
+1. Build natives on macOS / Linux / Windows (8 targets including musl)
 2. Assemble `bindings/node/npm/*` platform packages (`napi create-npm-dir` + `napi artifacts`)
 3. Stamp `optionalDependencies` via `scripts/stamp-optional-deps.mjs`
-4. `npm publish` platform packages (8 targets) → `@monorch/runtime` → `@monorch/ai`
+4. `npm publish --provenance` platform packages → `@monorch/runtime` → `@monorch/ai`
 
 ### Dry-run from Actions
 
 Workflow dispatch → **Release** → leave `dry_run: true` (default). Downloads `npm-packs` artifacts without publishing.
+
+## Provenance
+
+Release publishes with **`--provenance`** so npm attaches a Sigstore attestation that the tarball was built by this GitHub Actions workflow from this repository.
+
+### Verify a published package
+
+```bash
+# Metadata (version + optionalDependencies)
+npm view @monorch/ai@0.1.3
+npm view @monorch/runtime@0.1.3 optionalDependencies
+
+# Attestations (npm CLI 9.5+ / current npm)
+npm audit signatures
+# or inspect attestations for a specific package:
+npm view @monorch/ai@0.1.3 dist
+npx @npmcli/arborist  # optional; or use:
+npm install @monorch/ai@0.1.3 --ignore-scripts
+npm audit signatures
+```
+
+On [npmjs.com](https://www.npmjs.com/package/@monorch/ai) → version → look for **Provenance** / “Built and signed on GitHub Actions”.
+
+If provenance is missing on an older release (pre-0.1.4), that version was published before `--provenance` was enabled; prefer the latest tag.
 
 ## Manual publish (if needed)
 
@@ -61,6 +100,7 @@ cd bindings/node && pnpm exec napi create-npm-dir -t .
 pnpm exec napi artifacts --dir ../../artifacts --dist .
 node ../../scripts/stamp-optional-deps.mjs
 # then publish npm/* , runtime, ai
+# Prefer re-running the Release workflow instead of local publish.
 ```
 
 ## Post-publish smoke
@@ -69,13 +109,14 @@ node ../../scripts/stamp-optional-deps.mjs
 npm view @monorch/ai version
 npm view @monorch/runtime version
 npm view @monorch/runtime optionalDependencies
-# Expect 8 entries after musl release (6 on 0.1.2 and earlier)
+# Expect 8 entries (gnu + musl)
 mkdir /tmp/monorch-try && cd /tmp/monorch-try
 npm init -y && npm i @monorch/ai
 node -e "import('@monorch/ai').then(m => console.log(Object.keys(m).slice(0,8)))"
+pnpm smoke:npm   # from monorepo root
 ```
 
-## First-release platform set
+## Platform set
 
 napi `triples.defaults` (x64) plus `additional` arm64:
 

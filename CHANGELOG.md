@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Checkpoint migration docs (v1↔v2 read rules, defHash / app-level guidance) + v1 import tests.
+- npm publish `--provenance` on release; PUBLISH.md verification + publish gates.
+- `pnpm bench` / `pnpm bench:check` timed baselines for agent tool-loop and graph interrupt/resume (CI).
+
 ## [0.1.3] — 2026-08-12
 
 ### Added

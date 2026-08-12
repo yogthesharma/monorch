@@ -591,6 +591,46 @@ mod tests {
     }
 
     #[test]
+    fn checkpoint_v1_import_backfills_input_and_def_hash() {
+        let def = refund_graph();
+        let mut run = GraphRun::start("g-v1", &def, serde_json::json!({"orderId": "legacy"}));
+        assert!(matches!(run.advance(&def), GraphAdvance::Next { .. }));
+        let _ = run
+            .complete_node(&def, "lookup", Some("order:legacy".into()), None)
+            .unwrap();
+        assert_eq!(run.status, GraphStatus::WaitingInterrupt);
+
+        // Historical v1 shape: version + run only (no top-level input / defHash).
+        let v1 = serde_json::json!({
+            "version": 1,
+            "run": run,
+        });
+        let cp = checkpoint_import(v1).unwrap();
+        assert_eq!(cp.version, 1);
+        assert_eq!(cp.input, serde_json::json!({"orderId": "legacy"}));
+        assert!(!cp.def_hash.is_empty());
+        assert_eq!(cp.def_hash, run.def_hash);
+        assert_eq!(cp.run.input, serde_json::json!({"orderId": "legacy"}));
+        assert!(!cp.run.def_hash.is_empty());
+    }
+
+    #[test]
+    fn checkpoint_rejects_unknown_version() {
+        let err = checkpoint_import(serde_json::json!({
+            "version": 99,
+            "run": {
+                "id": "x",
+                "graph": "g",
+                "status": "running",
+                "cursor": null,
+                "steps": 0
+            }
+        }))
+        .unwrap_err();
+        assert!(err.contains("unsupported checkpoint version"));
+    }
+
+    #[test]
     fn conditional_need_route() {
         let def = GraphDef {
             name: "branch".into(),

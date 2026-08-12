@@ -3,8 +3,14 @@ name: Release
 # Publishes @monorch/runtime (+ per-platform optional packages) and @monorch/ai.
 # Secrets: NPM_TOKEN (Automation token with publish rights on @monorch)
 #
+# Publish gates (do not loosen):
+#   - Tag push v* → publish with npm --provenance
+#   - workflow_dispatch + dry_run=false → publish
+#   - workflow_dispatch + dry_run=true (default) → pack only
+#   - Never publishes on push to main / pull_request
+#
 # Recommended flow:
-#   1. Ensure CI is green on main
+#   1. Ensure CI is green on main (via PR)
 #   2. Bump version in package.json / Cargo.toml workspace (or pass workflow_dispatch version)
 #   3. Tag v0.1.0 and push, OR run this workflow with dry_run=false
 #   4. Default workflow_dispatch is dry_run=true (pack only)
@@ -166,12 +172,12 @@ jobs:
             if npm view "${name}@${version}" version >/dev/null 2>&1; then
               echo "Skip already published ${name}@${version}"
             else
-              echo "Publishing ${name}@${version} from ${dir}"
+              echo "Publishing ${name}@${version} from ${dir} (with provenance)"
               if [[ "$dir" == bindings/node/npm/* ]]; then
-                (cd "$dir" && npm publish --access public)
+                (cd "$dir" && npm publish --access public --provenance)
               else
-                # pnpm rewrites workspace:* for consumers
-                (cd "$dir" && pnpm publish --access public --no-git-checks)
+                # pnpm rewrites workspace:* for consumers; --provenance needs OIDC (id-token)
+                (cd "$dir" && pnpm publish --access public --no-git-checks --provenance)
               fi
             fi
           }
@@ -182,6 +188,25 @@ jobs:
           done
           publish_if_needed bindings/node
           publish_if_needed packages/ai
+
+      - name: Verify published packages on registry
+        if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "require('./packages/ai/package.json').version")"
+          echo "Verifying @monorch/ai@${VERSION} and runtime optionalDependencies…"
+          npm view "@monorch/ai@${VERSION}" version
+          npm view "@monorch/runtime@${VERSION}" version
+          COUNT="$(node -e "const o=require('child_process').execSync('npm view @monorch/runtime@' + process.argv[1] + ' optionalDependencies --json',{encoding:'utf8'}); const j=JSON.parse(o); console.log(Object.keys(j||{}).length)" "$VERSION")"
+          WANT="$(node scripts/platform-utils.mjs count)"
+          # After assemble, platform dirs exist; count should be 8 for current triples.
+          if [ "$COUNT" -lt 6 ]; then
+            echo "Expected at least 6 optionalDependencies on @monorch/runtime@${VERSION}, got ${COUNT}"
+            exit 1
+          fi
+          echo "OK — registry has @monorch/ai@${VERSION}, runtime optionals=${COUNT} (local npm dirs want=${WANT})"
 
       - uses: actions/upload-artifact@v4
         with:

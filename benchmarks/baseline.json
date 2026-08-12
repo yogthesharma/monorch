@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-08-12T10:42:35.044Z",
+  "iters": 40,
+  "node": "v24.18.0",
+  "platform": "darwin-arm64",
+  "results": [
+    {
+      "name": "agent_tool_loop_ms",
+      "medianMs": 0.128,
+      "p95Ms": 0.371
+    },
+    {
+      "name": "graph_interrupt_resume_ms",
+      "medianMs": 0.066,
+      "p95Ms": 0.121
+    }
+  ]
+}

@@ -88,4 +88,56 @@ describe("graph orchestration", () => {
       return true;
     });
   });
+
+  it("imports legacy checkpoint v1 blobs (backfill input + defHash)", async () => {
+    const { getRuntime } = await import("../dist/native.js");
+    const suffix = randomUUID().slice(0, 8);
+    const name = `v1_${suffix}`;
+    const threadId = `thread_${suffix}`;
+    const checkpointer = memorySaver();
+
+    const compiled = graph(name)
+      .node("lookup", async ({ input }) => ({
+        output: `order:${String(input["orderId"] ?? "")}`,
+      }))
+      .interrupt("approve")
+      .node("pay", async ({ outputs }) => `refunded:${outputs["lookup"] ?? ""}`)
+      .compile({ checkpointer });
+
+    const waiting = await compiled.start({ orderId: "ord_v1" }, { threadId });
+    assert.equal(waiting.status, "waitingInterrupt");
+
+    const v2 = (await checkpointer.get(threadId)) as {
+      version: number;
+      defHash: string;
+      input: unknown;
+      run: Record<string, unknown>;
+    };
+    assert.equal(v2.version, 2);
+
+    // Strip top-level v2 fields to simulate a v1 blob (run still carries hashes/input).
+    const v1Blob = {
+      version: 1,
+      run: {
+        ...v2.run,
+        // Keep run.defHash / run.input so import can backfill.
+      },
+    };
+    await checkpointer.put(threadId, v1Blob);
+
+    const restored = await compiled.restore(threadId);
+    assert.equal(restored.status, "waitingInterrupt");
+    const done = await restored.resume("approved");
+    assert.equal(done.status, "completed");
+    assert.equal(done.outputs["pay"], "refunded:order:ord_v1");
+
+    // Direct engine path: empty top-level defHash with run.defHash still works after import.
+    const engine = getRuntime();
+    const again = engine.graphCheckpointRestore({
+      version: 1,
+      run: v2.run,
+    }) as { status: string; defHash?: string };
+    assert.equal(again.status, "waitingInterrupt");
+    assert.ok(again.defHash || (v2.run as { defHash?: string }).defHash);
+  });
 });

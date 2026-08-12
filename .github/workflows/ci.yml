@@ -48,6 +48,8 @@ jobs:
         run: pnpm typecheck
       - name: Test @monorch/ai
         run: pnpm test:ai
+      - name: Performance baselines
+        run: pnpm bench:check
       - name: Smoke
         run: pnpm smoke
 
