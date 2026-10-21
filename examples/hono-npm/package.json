@@ -12,7 +12,7 @@
   "dependencies": {
     "@hono/node-server": "^1.14.0",
     "@monorch/ai": "0.2.0",
-    "hono": "^4.7.0",
+    "hono": "^4.13.13",
     "zod": "^3.24.0"
   },
   "devDependencies": {
