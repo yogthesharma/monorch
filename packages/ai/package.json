@@ -58,7 +58,7 @@
     "test:postgres": "node --experimental-strip-types --test test/postgres.test.ts"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@modelcontextprotocol/sdk": "^1.32.0",
     "@monorch/runtime": "workspace:*",
     "zod": "^3.24.0"
   },
